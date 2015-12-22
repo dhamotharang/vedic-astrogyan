@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+
+	<defaultCache
+                maxElementsInMemory="50"
+                eternal="false"
+                overflowToDisk="false"
+                memoryStoreEvictionPolicy="LFU" />
+
+   <cache name="countries"
+                maxElementsInMemory="50"
+                eternal="false"
+                overflowToDisk="false"
+                memoryStoreEvictionPolicy="LFU" />
+     <cache name="countriesV2"
+                maxElementsInMemory="50"
+                eternal="false"
+                overflowToDisk="false"
+                memoryStoreEvictionPolicy="LFU" />             
+   <cache name="states"
+                maxElementsInMemory="50"
+                eternal="false"
+                overflowToDisk="false"
+                memoryStoreEvictionPolicy="LFU" />
+   <cache name="languages"
+                maxElementsInMemory="50"
+                eternal="false"
+                overflowToDisk="false"
+                memoryStoreEvictionPolicy="LFU" />
+               
+</ehcache>

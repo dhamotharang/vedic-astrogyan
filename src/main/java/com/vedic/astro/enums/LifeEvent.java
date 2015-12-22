@@ -1,0 +1,7 @@
+package com.vedic.astro.enums;
+
+public enum LifeEvent {
+	
+	MARRIAGE, CHILD_BIRTH, FATHER_DEATH, MOTHER_DEATH, FOREIGN_TRAVEL, FAMILY_TRAVEL, TRANSFER, PROFESSION_CHANGE
+
+}

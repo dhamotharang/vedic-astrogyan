@@ -1,0 +1,57 @@
+package test.vedic.astro.data;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.vedic.astro.domain.EntityRelationshipRefData;
+import com.vedic.astro.repository.EntityRelRepository;
+import com.vedic.astro.util.BaseEntityRelationshipRefData;
+
+/**
+ * Test case for unit testing the Member repository.
+ * 
+ * @author Sumeer Saxena
+ *
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
+public class EntityRelRefDataRepositoryTest extends BaseEntityRelationshipRefData{
+
+	@Autowired
+	@Qualifier("entityRelRepository")
+	private EntityRelRepository entityRelRepository;
+
+	/**
+	 * Tests the create member functionality.
+	 * 
+	 * @throws Exception
+	 */
+	@Test
+	public void testCreatePlanet_PlanetRelRefData() throws Exception {
+
+		EntityRelationshipRefData planetRelData = super.createPlanet_PlanetRelRefData();
+		entityRelRepository.add(planetRelData);
+
+	}
+
+	@Test
+	public void testCreatePlanet_HouseRelRefData() throws Exception {
+
+		EntityRelationshipRefData planetRelData = super.createPlanet_HouseRelRefData();
+		entityRelRepository.add(planetRelData);
+
+	}
+
+	@Test
+	public void testCreatePlanet_ZodiacRelRefData() throws Exception {
+
+		EntityRelationshipRefData planetRelData = super.createPlanet_ZodiacRelRefData();
+		entityRelRepository.add(planetRelData);
+
+	}
+
+}

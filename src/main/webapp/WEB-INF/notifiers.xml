@@ -1,0 +1,74 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+ <util:map id="notifiersMap" key-type="com.genophen.crm.domain.NotificationType" value-type="com.genophen.crm.notification.Notifier">
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">createSignUp</value></key>
+        <ref bean="signUpNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">createMigratedMember</value></key>
+        <ref bean="signUpNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">introduceMemberByAdmin</value></key>
+        <ref bean="enrollNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">introduceMemberByPhysician</value></key>
+        <ref bean="enrollNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">introducePhysicianByAdmin</value></key>
+        <ref bean="enrollNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">introducePhysicianByMember</value></key>
+        <ref bean="enrollNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">introduceNurseByPhysician</value></key>
+        <ref bean="enrollNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">enrollEGAdmin</value></key>
+        <ref bean="enrollNotifier"/>
+    </entry>
+    
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">updateAccount</value></key>
+        <ref bean="loginNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">addMemberToCareGroup</value></key>
+        <ref bean="loginNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">registerPhysicianByAdmin</value></key>
+        <ref bean="physicianRegisterCompleteNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">registerPhysicianByMember</value></key>
+        <ref bean="physicianRegisterCompleteNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">selectPhysician</value></key>
+        <ref bean="loginNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">productPaymentRecieved</value></key>
+        <ref bean="paymentNotifier"/>
+    </entry>
+    <entry>
+        <key><value type="com.genophen.crm.domain.NotificationType">introducePhysicianByCRMAdmin</value></key>
+        <ref bean="invitePhysicianNotifier"/>
+    </entry>
+    
+</util:map>
+</beans>
