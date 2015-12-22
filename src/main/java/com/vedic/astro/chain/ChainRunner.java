@@ -13,6 +13,7 @@ public class ChainRunner implements BeanFactoryAware {
 	public void runChain( String chainName, Context context ) {
 		try {
 			createChain ( chainName ).execute( context );
+			
 		}
 		catch ( Exception exc ) {
 			throw new RuntimeException(
