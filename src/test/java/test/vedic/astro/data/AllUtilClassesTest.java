@@ -24,7 +24,6 @@ import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.HouseType;
 import com.vedic.astro.enums.Nakshatra;
 import com.vedic.astro.enums.Planet;
-import com.vedic.astro.enums.PlanetAge;
 import com.vedic.astro.enums.Zodiac;
 import com.vedic.astro.service.AstroPredictiveService;
 import com.vedic.astro.service.PlanetPositionsDataService;
@@ -38,7 +37,6 @@ import com.vedic.astro.util.PlanetUtil;
 import com.vedic.astro.util.RelationshipUtil;
 import com.vedic.astro.util.VimshotriDashaUtil;
 import com.vedic.astro.vo.AbsolutePlanetaryPositions;
-import com.vedic.astro.vo.PlanetOwnStrengthInput;
 import com.vedic.astro.vo.PlanetPosition;
 
 /**
@@ -132,30 +130,6 @@ public class AllUtilClassesTest extends BaseUtilTest {
 
 	}
 	
-	/**
-	 * Tests the create member functionality.
-	 * 
-	 * @throws Exception
-	 */
-    //@Test
-	public void testEvaluateStrength() throws Exception {
-
-		PlanetOwnStrengthInput input = new PlanetOwnStrengthInput();
-		
-		input.setZodiac(Zodiac.LEO);
-		input.setHouse(House.H12);
-		input.setPlanet(Planet.SUN);
-		input.setPlanetAge(PlanetAge.Infant);
-		input.setOwnerOfHouse(Planet.SAT);
-		
-		List<Planet> otherInhabitants = new ArrayList<Planet>();
-		otherInhabitants.add(Planet.MER);
-		
-		input.setOtherInhabitants(otherInhabitants);
-
-//		System.out.println(planetUtil.evaluateOwnStrength(input));
-
-	}
 	
 
 	//@Test
