@@ -27,7 +27,7 @@ import com.vedic.astro.vo.PersonalInfo;
  */
 @Controller
 @RequestMapping("/main")
-public class MainController extends BaseController {
+public class ChartController extends BaseController {
 
 	@Autowired
 	@Qualifier("astroPredictiveService")
