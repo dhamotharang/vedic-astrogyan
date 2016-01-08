@@ -1,9 +1,5 @@
 package com.vedic.astro.vo;
 
-import java.util.Date;
-import java.util.UUID;
-
-import com.vedic.astro.domain.BirthPlanetaryPositions;
 import com.vedic.astro.enums.Gender;
 
 public class PersonalInfo {
@@ -18,7 +14,19 @@ public class PersonalInfo {
 	
 	private String dob = null;
 	
-	private BirthPlanetaryPositions birthPlanetaryPositions = null;
+	private String tob = null;
+	
+	private String cityCode = null;
+	
+	private String countryCode = null;
+	
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -52,28 +60,35 @@ public class PersonalInfo {
 		this.dob = dob;
 	}
 
-	public BirthPlanetaryPositions getBirthPlanetaryPositions() {
-		return birthPlanetaryPositions;
+	public String getTob() {
+		return tob;
 	}
 
-	public void setBirthPlanetaryPositions(
-			BirthPlanetaryPositions birthPlanetaryPositions) {
-		this.birthPlanetaryPositions = birthPlanetaryPositions;
-	}
-	
-	public String getPid() {
-		return pid;
+	public void setTob(String tob) {
+		this.tob = tob;
 	}
 
-	public void setPid(String pid) {
-		this.pid = pid;
+	public String getCityCode() {
+		return cityCode;
+	}
+
+	public void setCityCode(String cityCode) {
+		this.cityCode = cityCode;
+	}
+
+	public String getCountryCode() {
+		return countryCode;
+	}
+
+	public void setCountryCode(String countryCode) {
+		this.countryCode = countryCode;
 	}
 
 	@Override
 	public String toString() {
 		return "PersonalInfo [pid=" + pid + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", gender=" + gender + ", dob="
-				+ dob + ", birthPlanetaryPositions=" + birthPlanetaryPositions
-				+ "]";
+				+ dob + ", tob=" + tob + ", cityCode=" + cityCode
+				+ ", countryCode=" + countryCode + "]";
 	}
 }

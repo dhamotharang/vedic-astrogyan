@@ -9,7 +9,6 @@ import com.vedic.astro.enums.Gender;
 import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.Zodiac;
-import com.vedic.astro.util.DateUtil;
 import com.vedic.astro.vo.ChartHouse;
 import com.vedic.astro.vo.HousePlanetInput;
 import com.vedic.astro.vo.PersonalInfo;
@@ -22,7 +21,7 @@ public class BaseUtilTest {
 	public PersonalInfo preparePersonalInfo(){
 		PersonalInfo personalInfo = new PersonalInfo();
 		
-		personalInfo.setBirthPlanetaryPositions(this.prepareLagnaData());
+	//	personalInfo.setBirthPlanetaryPositions(this.prepareLagnaData());
 		personalInfo.setFirstName("Shailja");
 		personalInfo.setLastName("Saxena");
 		personalInfo.setGender(Gender.Female);

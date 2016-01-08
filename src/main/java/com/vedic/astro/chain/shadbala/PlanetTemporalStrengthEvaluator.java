@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import com.vedic.astro.constant.Constants;
 import com.vedic.astro.domain.BirthChartData;
+import com.vedic.astro.domain.PersonalBirthInfo;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.PlanetNature;
 import com.vedic.astro.enums.Weekday;
@@ -32,7 +33,6 @@ import com.vedic.astro.util.PlanetUtil;
 import com.vedic.astro.util.RelationshipUtil;
 import com.vedic.astro.vo.BirthChartCalcPrep;
 import com.vedic.astro.vo.DayPortion;
-import com.vedic.astro.vo.PersonalBirthInfo;
 
 @Component("planetTemporalStrengthEvaluator")
 public class PlanetTemporalStrengthEvaluator implements Command {

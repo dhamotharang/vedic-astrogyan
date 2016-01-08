@@ -18,6 +18,7 @@ import com.vedic.astro.chain.shadbala.PlanetPositionalStrengthEvaluator;
 import com.vedic.astro.chain.shadbala.PlanetTemporalStrengthEvaluator;
 import com.vedic.astro.constant.Constants;
 import com.vedic.astro.domain.BirthChartData;
+import com.vedic.astro.domain.PersonalBirthInfo;
 import com.vedic.astro.domain.SunriseSunsetData;
 import com.vedic.astro.enums.BirthChartType;
 import com.vedic.astro.enums.Planet;
@@ -28,7 +29,6 @@ import com.vedic.astro.util.HouseUtil;
 import com.vedic.astro.util.PlanetUtil;
 import com.vedic.astro.util.RelationshipUtil;
 import com.vedic.astro.vo.AbsolutePlanetaryPositions;
-import com.vedic.astro.vo.PersonalBirthInfo;
 import com.vedic.astro.vo.PlanetAbsoluteLocation;
  
 @RunWith( SpringJUnit4ClassRunner.class )

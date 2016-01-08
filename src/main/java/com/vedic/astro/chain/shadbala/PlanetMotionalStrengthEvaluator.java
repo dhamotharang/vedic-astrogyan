@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.vedic.astro.constant.Constants;
 import com.vedic.astro.domain.BirthChartData;
+import com.vedic.astro.domain.PersonalBirthInfo;
 import com.vedic.astro.domain.PlanetDetails;
 import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.Planet;
@@ -21,7 +22,6 @@ import com.vedic.astro.util.PlanetUtil;
 import com.vedic.astro.util.RelationshipUtil;
 import com.vedic.astro.util.ZodiacUtil;
 import com.vedic.astro.vo.BirthChartCalcPrep;
-import com.vedic.astro.vo.PersonalBirthInfo;
 
 @Component("planetMotionalStrengthEvaluator")
 public class PlanetMotionalStrengthEvaluator implements Command {

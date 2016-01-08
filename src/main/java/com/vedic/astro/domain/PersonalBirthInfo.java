@@ -1,6 +1,5 @@
-package com.vedic.astro.vo;
+package com.vedic.astro.domain;
 
-import com.vedic.astro.domain.SunriseSunsetData;
 import com.vedic.astro.enums.Gender;
 
 public class PersonalBirthInfo {
