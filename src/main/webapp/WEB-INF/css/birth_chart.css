@@ -1,0 +1,20 @@
+svg{
+    font-family: "Helvetica",sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+}
+.zodiac{
+    fill: blue;
+}
+.planet{
+    fill: red;
+}
+.nakshatra{
+    fill: green;
+}
+polygon {
+    stroke: black;
+    stroke-width: 2;
+    fill: white;
+}
+

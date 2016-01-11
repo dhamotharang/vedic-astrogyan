@@ -12,7 +12,7 @@ public class RestServiceResult <T> {
     /**
      * The status of the response. By default it is SUCCESS.
      */
-	private RestServiceStatus status = RestServiceStatus.SUCCESS;
+	private RestServiceStatus responseStatus = RestServiceStatus.SUCCESS;
 	
 	/**
 	 * Reason of failure of RESTFul call.
@@ -22,31 +22,36 @@ public class RestServiceResult <T> {
     /**
      * Response data. Set by the definition of the RestServiceResult.
      */
-    private T data = null;
-    
-	public RestServiceStatus getStatus() {
-		return status;
+    private T responseData = null;
+
+	public RestServiceStatus getResponseStatus() {
+		return responseStatus;
 	}
-	public void setStatus(RestServiceStatus status) {
-		this.status = status;
+
+	public void setResponseStatus(RestServiceStatus responseStatus) {
+		this.responseStatus = responseStatus;
 	}
+
 	public RestServiceFailureReason getFailureReason() {
 		return failureReason;
 	}
+
 	public void setFailureReason(RestServiceFailureReason failureReason) {
 		this.failureReason = failureReason;
 	}
-	public T getData() {
-		return data;
+
+	public T getResponseData() {
+		return responseData;
 	}
-	public void setData(T data) {
-		this.data = data;
+
+	public void setResponseData(T responseData) {
+		this.responseData = responseData;
 	}
 
 	@Override
 	public String toString() {
-		return "RestServiceResult [status=" + status + ", failureReason="
-				+ failureReason + ", data=" + data + "]";
+		return "RestServiceResult [responseStatus=" + responseStatus
+				+ ", failureReason=" + failureReason + ", responseData="
+				+ responseData + "]";
 	}
-    
 }

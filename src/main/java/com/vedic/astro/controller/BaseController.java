@@ -85,7 +85,7 @@ public class BaseController {
 		}
 
 		result.setFailureReason(reason);
-		result.setStatus(RestServiceStatus.FAILURE);
+		result.setResponseStatus(RestServiceStatus.FAILURE);
 
 		return result;
 	}
@@ -123,7 +123,7 @@ public class BaseController {
 		reason.setErrorMessage(ex.getErrorMessage());
 
 		result.setFailureReason(reason);
-		result.setStatus(RestServiceStatus.FAILURE);
+		result.setResponseStatus(RestServiceStatus.FAILURE);
 
 		return result;
 
@@ -150,7 +150,7 @@ public class BaseController {
 		}
 
 		result.setFailureReason(reason);
-		result.setStatus(RestServiceStatus.FAILURE);
+		result.setResponseStatus(RestServiceStatus.FAILURE);
 
 		return result;
 
@@ -177,7 +177,7 @@ public class BaseController {
 		}
 
 		result.setFailureReason(reason);
-		result.setStatus(RestServiceStatus.FAILURE);
+		result.setResponseStatus(RestServiceStatus.FAILURE);
 
 		return result;
 

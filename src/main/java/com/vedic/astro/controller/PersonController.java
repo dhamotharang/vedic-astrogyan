@@ -13,10 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.vedic.astro.enums.Gender;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.SystemException;
-import com.vedic.astro.service.AstroPredictiveService;
-import com.vedic.astro.service.DashaPredictService;
 import com.vedic.astro.service.PersonInfoService;
 import com.vedic.astro.vo.PersonalInfo;
 
@@ -53,7 +52,7 @@ public class PersonController extends BaseController {
 		// If the emailID of the given nurse is present in the system,
 		// it throws a BusinessException
 		String pid = personalInfoService.addPersonalInfo(personalInfo);
-		result.setData(pid);
+		result.setResponseData(pid);
 
 		return result;
 	}
@@ -64,8 +63,17 @@ public class PersonController extends BaseController {
 			throws BusinessException, SystemException {
 
 		RestServiceResult<PersonalInfo> result = new RestServiceResult<PersonalInfo>();
-		PersonalInfo personalInfo = personalInfoService.getPersonalInfo(id);
+/*		PersonalInfo personalInfo = personalInfoService.getPersonalInfo(id);
 		result.setData(personalInfo);
+*/
+		
+		PersonalInfo personalInfo = new PersonalInfo();
+		
+		personalInfo.setFirstName("Shailja");
+		personalInfo.setLastName("Saxena");
+		personalInfo.setGender(Gender.Female);
+		personalInfo.setDob("10/07/1976");
+		result.setResponseData(personalInfo);
 
 		return result;
 

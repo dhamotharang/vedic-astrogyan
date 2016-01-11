@@ -1,0 +1,12 @@
+ .gauge_container {
+    width: 100px;
+    height: 80px; 
+    margin: 1px 1px 1px 1px;
+  }
+
+  .gauge {
+    width: 100px;
+    height: 80px;
+  }
+
+ 
