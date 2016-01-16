@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:int-stream="http://www.springframework.org/schema/integration/stream"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/stream
+		http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd">
+
+	<!-- Declare the gateway -->
+	<int:gateway id="birthChartPipelineGateway" service-interface="com.vedic.astro.pipeline.service.BirthChartPipelineGateway" />
+
+	<!-- Declare the input channel in which Orders are placed for processing -->
+	<int:channel id="birthChartChannel" />
+
+	<int:logging-channel-adapter id="logger" logger-name="WIRETAP"
+		level="INFO"  expression="'payload: ' + getPayload()" />
+
+	<int:channel id="birthChartChannel">
+		 <!--  declare wiretap on 'orderItemsChannel' channel 	-->
+		 <!-- TODO: not currently working -->
+		<int:interceptors>
+			<int:wire-tap channel="logger"/>
+		</int:interceptors>	
+	</int:channel>
+
+	<int:service-activator input-channel="birthChartChannel"
+		ref="divChartCalcService" method="calculateDivCharts" output-channel="divChartChannel" />
+
+	<beans:bean id="divChartCalcService" class="com.vedic.astro.pipeline.service.DivChartCalcService" />
+
+	<!-- drink order items are aggregated in a call to the waiter -->
+	<int:channel id="divChartChannel" />
+
+	<beans:bean id="divChartAnalysisService" class="com.vedic.astro.pipeline.service.DivChartAnalysisService" />
+
+	<int:service-activator input-channel="divChartChannel"
+		ref="divChartAnalysisService" method="analyzeDivCharts" output-channel="entityStrengthsChannel"/>
+
+    <int:publish-subscribe-channel id="entityStrengthsChannel"/>
+    <beans:bean id="planetaryStrengthCalcService" class="com.vedic.astro.pipeline.service.PlanetaryStrengthsCalcService" />
+    <beans:bean id="houseStrengthCalcService" class="com.vedic.astro.pipeline.service.HouseStrengthsCalcService" />
+    <beans:bean id="dashaStrengthCalcService" class="com.vedic.astro.pipeline.service.DashaStrengthsCalcService" />
+    
+    <int:service-activator input-channel="entityStrengthsChannel"
+		ref="planetaryStrengthCalcService" method="calculateStrengths" output-channel="yogasChannel" />
+
+    <int:service-activator input-channel="entityStrengthsChannel"
+		ref="houseStrengthCalcService" method="calculateStrengths" />
+
+    <int:service-activator input-channel="entityStrengthsChannel"
+		ref="dashaStrengthCalcService" method="calculateStrengths" />
+	
+	<int:channel id="yogasChannel" />
+	<int:channel id="channelA" />
+	<int:channel id="channelB" />
+	<int:channel id="channelC" />
+		
+	<int:recipient-list-router id="customRouter" input-channel="yogasChannel">
+		<int:recipient channel="channelA"/>
+		<int:recipient channel="channelB"/>
+		<int:recipient channel="channelC"/>
+    </int:recipient-list-router>	
+
+    <int:service-activator input-channel="channelA"
+		ref="channelAService" method="calculateStrengths" />
+    <int:service-activator input-channel="channelB"
+		ref="channelBService" method="calculateStrengths" />
+    <int:service-activator input-channel="channelC"
+		ref="channelCService" method="calculateStrengths" />
+
+    <beans:bean id="channelAService" class="com.vedic.astro.pipeline.service.ChannelAService" />
+    <beans:bean id="channelBService" class="com.vedic.astro.pipeline.service.ChannelBService" />
+    <beans:bean id="channelCService" class="com.vedic.astro.pipeline.service.ChannelCService" />
+    
+</beans:beans>
