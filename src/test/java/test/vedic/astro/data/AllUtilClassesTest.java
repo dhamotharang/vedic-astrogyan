@@ -7,14 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource;
-
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vedic.astro.domain.AshtakvargaChart;
 import com.vedic.astro.domain.BirthChartData;
@@ -45,48 +39,36 @@ import com.vedic.astro.vo.PlanetPosition;
  * @author Sumeer Saxena
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
 public class AllUtilClassesTest extends BaseUtilTest {
 	
 	@Autowired
-	@Qualifier("astroPredictiveService")
-	private AstroPredictiveService astroPredictiveService;
-
+	AstroPredictiveService astroPredictiveService;
 
 	@Autowired
-	@Qualifier("houseUtil")
-	private HouseUtil houseUtil;
+	HouseUtil houseUtil;
 	
 	@Autowired
-	@Qualifier("nakshatraUtil")
-	private NakshatraUtil nakshatraUtil;
+	NakshatraUtil nakshatraUtil;
 	
 	@Autowired
-	@Qualifier("planetUtil")
-	private PlanetUtil planetUtil;
+	PlanetUtil planetUtil;
 
 	@Autowired
-	@Qualifier("relationshipUtil")
-	private RelationshipUtil relationshipUtil;
+	RelationshipUtil relationshipUtil;
 
 	@Autowired
-	@Qualifier("birthChartUtil")
-	private BirthChartUtil birthChartUtil;
+	BirthChartUtil birthChartUtil;
 
 	@Autowired
-	@Qualifier("vimshotriDashaUtil")
-	private VimshotriDashaUtil vimshotriDashaUtil;
+	VimshotriDashaUtil vimshotriDashaUtil;
 	
 	@Autowired
-	@Qualifier("divChartUtil")
-	private DivChartUtil divChartUtil;
+	DivChartUtil divChartUtil;
 	
 	@Autowired
-	@Qualifier("ashtakvargaChartUtil")
-	private AshtakvargaChartUtil ashtakvargaChartUtil;
+	AshtakvargaChartUtil ashtakvargaChartUtil;
 	
-	@Resource
+	@Autowired
 	PlanetPositionsDataService planetPositionsDataService;
 
 	

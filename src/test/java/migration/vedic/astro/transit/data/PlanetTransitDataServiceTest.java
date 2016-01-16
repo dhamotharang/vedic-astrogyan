@@ -2,32 +2,31 @@ package migration.vedic.astro.transit.data;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.vedic.astro.domain.PlanetTransitData;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.repository.TransitInfoRepository;
 import com.vedic.astro.service.PlanetTransitDataService;
 import com.vedic.astro.util.TransitUtil;
- 
-@RunWith( SpringJUnit4ClassRunner.class )
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
-public class PlanetTransitDataServiceTest {
- 
-	@Resource
-	PlanetTransitDataService planetTransitDataService;
 
-	@Resource
-	TransitUtil transitUtil;
-	
-	@Resource
-	TransitInfoRepository transitInfoRepository;
-	
+import test.vedic.astro.data.BaseUtilTest;
+
+public class PlanetTransitDataServiceTest extends BaseUtilTest {
  
+	@Autowired
+	@Qualifier("planetTransitDataService")
+	private PlanetTransitDataService planetTransitDataService;
+
+	@Autowired
+	@Qualifier("transitUtil")
+	private TransitUtil transitUtil;
+
+	@Autowired
+	@Qualifier("transitInfoRepository")
+	private TransitInfoRepository transitInfoRepository;
+
 	//@Test
 	public void migrateTransitDataForSAT() {
 		System.out.println("Starting up for SAT...      [Ok]");

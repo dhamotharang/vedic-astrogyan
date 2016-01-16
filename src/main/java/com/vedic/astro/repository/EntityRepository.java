@@ -4,8 +4,6 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +11,6 @@ import com.vedic.astro.domain.EntityRefData;
 import com.vedic.astro.domain.HouseDetails;
 import com.vedic.astro.domain.PlanetDetails;
 import com.vedic.astro.domain.ZodiacDetails;
-import com.vedic.astro.enums.EntityType;
-import com.vedic.astro.enums.Zodiac;
 import com.vedic.astro.exception.SystemException;
 
 /**

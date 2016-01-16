@@ -1,11 +1,8 @@
 package test.vedic.astro.data;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vedic.astro.domain.EntityRefData;
 import com.vedic.astro.domain.HouseDetails;
@@ -15,6 +12,7 @@ import com.vedic.astro.enums.House;
 import com.vedic.astro.repository.EntityRepository;
 import com.vedic.astro.util.BaseEntityRefData;
 import com.vedic.astro.util.HouseUtil;
+import com.vedic.astro.util.PlanetUtil;
 
 /**
  * Test case for unit testing the Member repository.
@@ -22,9 +20,7 @@ import com.vedic.astro.util.HouseUtil;
  * @author Sumeer Saxena
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
-public class EntityRefDataRepositoryTest extends BaseEntityRefData{
+public class EntityRefDataRepositoryTest extends BaseUtilTest{
 
 	@Autowired
 	@Qualifier("entityRepository")
@@ -33,6 +29,10 @@ public class EntityRefDataRepositoryTest extends BaseEntityRefData{
 	@Autowired
 	@Qualifier("houseUtil")
 	private HouseUtil houseUtil;
+	
+	@Autowired
+	@Qualifier("planetUtil")
+	private PlanetUtil planetUtil;
 
 	/**
 	 * Tests the create member functionality.
@@ -42,7 +42,7 @@ public class EntityRefDataRepositoryTest extends BaseEntityRefData{
 	//@Test
 	public void testCreatePlanetRefData() throws Exception {
 
-		EntityRefData<PlanetDetails> planetData = super.createPlanetRefData();
+		EntityRefData<PlanetDetails> planetData = BaseEntityRefData.createPlanetRefData();
 		entityRepository.addPlanetRefData(planetData);
 
 	}
@@ -55,7 +55,7 @@ public class EntityRefDataRepositoryTest extends BaseEntityRefData{
 	//@Test
 	public void testCreateHouseRefData() throws Exception {
 
-		EntityRefData<HouseDetails> houseData = super.createHouseRefData();
+		EntityRefData<HouseDetails> houseData = BaseEntityRefData.createHouseRefData();
 		entityRepository.addHouseRefData(houseData);
 
 	}
@@ -68,7 +68,7 @@ public class EntityRefDataRepositoryTest extends BaseEntityRefData{
 	//@Test
 	public void testCreateZodiacRefData() throws Exception {
 
-		EntityRefData<ZodiacDetails> zodiacData = super.createZodiacRefData();
+		EntityRefData<ZodiacDetails> zodiacData = BaseEntityRefData.createZodiacRefData();
 		entityRepository.addZodiacRefData(zodiacData);
 
 	}

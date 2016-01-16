@@ -3,6 +3,12 @@ package test.vedic.astro.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.vedic.astro.VedicAstroBootApplication;
 import com.vedic.astro.domain.BirthChartData;
 import com.vedic.astro.domain.BirthPlanetaryPositions;
 import com.vedic.astro.enums.Gender;
@@ -14,6 +20,8 @@ import com.vedic.astro.vo.HousePlanetInput;
 import com.vedic.astro.vo.PersonalInfo;
 import com.vedic.astro.vo.PlanetPosition;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = VedicAstroBootApplication.class)
 public class BaseUtilTest {
 	
 
@@ -241,4 +249,7 @@ public class BaseUtilTest {
 		return chartData;
 	}
 
+	  @Test
+	  public void testJunit() throws Exception {
+	  }
 }

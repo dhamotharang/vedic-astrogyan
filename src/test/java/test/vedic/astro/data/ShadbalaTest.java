@@ -2,12 +2,8 @@ package test.vedic.astro.data;
 
 import org.apache.commons.chain.Context;
 import org.apache.commons.chain.impl.ContextBase;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vedic.astro.chain.shadbala.IshtaKashtaPhalaEvaluator;
 import com.vedic.astro.chain.shadbala.PlanetAspectualStrengthEvaluator;
@@ -20,9 +16,7 @@ import com.vedic.astro.constant.Constants;
 import com.vedic.astro.domain.BirthChartData;
 import com.vedic.astro.domain.PersonalBirthInfo;
 import com.vedic.astro.domain.SunriseSunsetData;
-import com.vedic.astro.enums.BirthChartType;
 import com.vedic.astro.enums.Planet;
-import com.vedic.astro.util.BaseEntityRefData;
 import com.vedic.astro.util.BirthChartUtil;
 import com.vedic.astro.util.DivChartUtil;
 import com.vedic.astro.util.HouseUtil;
@@ -31,60 +25,46 @@ import com.vedic.astro.util.RelationshipUtil;
 import com.vedic.astro.vo.AbsolutePlanetaryPositions;
 import com.vedic.astro.vo.PlanetAbsoluteLocation;
  
-@RunWith( SpringJUnit4ClassRunner.class )
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
-public class ShadbalaTest {
+public class ShadbalaTest extends BaseUtilTest{
  
 	@Autowired
-	@Qualifier("houseUtil")
-	private HouseUtil houseUtil;
+	HouseUtil houseUtil;
 	
 	@Autowired
-	@Qualifier("divChartUtil")
-	private DivChartUtil divChartUtil;
+	DivChartUtil divChartUtil;
 	
 	@Autowired
-	@Qualifier("planetUtil")
-	private PlanetUtil planetUtil;
+	PlanetUtil planetUtil;
 
 	@Autowired
-	@Qualifier("relationshipUtil")
-	private RelationshipUtil relationshipUtil;
+	RelationshipUtil relationshipUtil;
 
 	@Autowired
-	@Qualifier("birthChartUtil")
-	private BirthChartUtil birthChartUtil;
+	BirthChartUtil birthChartUtil;
 
 	@Autowired
-	@Qualifier("planetPositionalStrengthEvaluator")
-	private PlanetPositionalStrengthEvaluator planetPositionalStrengthEvaluator;
+	PlanetPositionalStrengthEvaluator planetPositionalStrengthEvaluator;
 
 	@Autowired
-	@Qualifier("planetDirectionalStrengthEvaluator")
-	private PlanetDirectionalStrengthEvaluator planetDirectionalStrengthEvaluator;
+	PlanetDirectionalStrengthEvaluator planetDirectionalStrengthEvaluator;
 
 	@Autowired
-	@Qualifier("planetMotionalStrengthEvaluator")
-	private PlanetMotionalStrengthEvaluator planetMotionalStrengthEvaluator;
+	PlanetMotionalStrengthEvaluator planetMotionalStrengthEvaluator;
 	
 	@Autowired
-	@Qualifier("planetAspectualStrengthEvaluator")
-	private PlanetAspectualStrengthEvaluator planetAspectualStrengthEvaluator;
+	PlanetAspectualStrengthEvaluator planetAspectualStrengthEvaluator;
 
 	@Autowired
-	@Qualifier("planetNaturalStrengthEvaluator")
-	private PlanetNaturalStrengthEvaluator planetNaturalStrengthEvaluator;
+	PlanetNaturalStrengthEvaluator planetNaturalStrengthEvaluator;
 
 	@Autowired
-	@Qualifier("planetTemporalStrengthEvaluator")
-	private PlanetTemporalStrengthEvaluator planetTemporalStrengthEvaluator;
+	PlanetTemporalStrengthEvaluator planetTemporalStrengthEvaluator;
 
 	@Autowired
-	@Qualifier("ishtaKashtaPhalaEvaluator")
-	private IshtaKashtaPhalaEvaluator ishtaKashtaPhalaEvaluator;
+	IshtaKashtaPhalaEvaluator ishtaKashtaPhalaEvaluator;
 
 
-	@Test
+	//@Test
 	public void testDivCharts() throws Exception {
 		System.out.println("Starting up...      [Ok]");
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = new AbsolutePlanetaryPositions();

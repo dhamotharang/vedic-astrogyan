@@ -1,6 +1,5 @@
 package test.vedic.astro.data;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -8,11 +7,8 @@ import java.util.Set;
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vedic.astro.domain.BirthChartData;
 import com.vedic.astro.enums.CharaKaraka;
@@ -41,8 +37,6 @@ import com.vedic.astro.vo.BirthChartCalcPrep;
  * @author Sumeer Saxena
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
 public class JaiminiAstrologyTest extends BaseUtilTest {
 
 	@Autowired
@@ -81,8 +75,9 @@ public class JaiminiAstrologyTest extends BaseUtilTest {
 	@Qualifier("ashtakvargaChartUtil")
 	private AshtakvargaChartUtil ashtakvargaChartUtil;
 
-	@Resource
-	PlanetPositionsDataService planetPositionsDataService;
+	@Autowired
+	@Qualifier("planetPositionsDataService")
+	private PlanetPositionsDataService planetPositionsDataService;
 
 	@Autowired
 	@Qualifier("charaKarakaUtil")

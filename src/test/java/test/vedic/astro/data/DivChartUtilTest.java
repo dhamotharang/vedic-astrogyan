@@ -6,11 +6,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vedic.astro.domain.BirthChartData;
 import com.vedic.astro.domain.BirthPlanetaryPositions;
@@ -36,8 +33,6 @@ import com.vedic.astro.vo.PlanetPosition;
  * @author Sumeer Saxena
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
 public class DivChartUtilTest extends BaseUtilTest {
 	
 	@Autowired
@@ -77,12 +72,13 @@ public class DivChartUtilTest extends BaseUtilTest {
 	@Qualifier("ashtakvargaChartUtil")
 	private AshtakvargaChartUtil ashtakvargaChartUtil;
 	
-	@Resource
-	PlanetPositionsDataService planetPositionsDataService;
+	@Autowired
+	@Qualifier("planetPositionsDataService")
+	private PlanetPositionsDataService planetPositionsDataService;
 
 	
     
-	@Test
+	//@Test
 	public void testGenerateD3Chart() throws Exception {
 
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = planetPositionsDataService
@@ -96,7 +92,7 @@ public class DivChartUtilTest extends BaseUtilTest {
 				d1Chart));
 	}
 	
-	@Test
+	//@Test
 	public void testGenerateD4Chart() throws Exception {
 
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = planetPositionsDataService
@@ -111,7 +107,7 @@ public class DivChartUtilTest extends BaseUtilTest {
 
 	}
 	
-	@Test
+	//@Test
 	public void testGenerateD7Chart() throws Exception {
 
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = planetPositionsDataService
@@ -128,7 +124,7 @@ public class DivChartUtilTest extends BaseUtilTest {
 
 	}
 	
-	@Test
+	//@Test
 	public void testGenerateD10Chart() throws Exception {
 
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = planetPositionsDataService
@@ -145,7 +141,7 @@ public class DivChartUtilTest extends BaseUtilTest {
 
 	}
 	
-	@Test
+	//@Test
 	public void testGenerateD9Chart() throws Exception {
 
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = planetPositionsDataService
@@ -161,7 +157,7 @@ public class DivChartUtilTest extends BaseUtilTest {
 				d1Chart));
 	}
 	
-	@Test
+	//@Test
 	public void testGenerateD12Chart() throws Exception {
 
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = planetPositionsDataService
@@ -177,7 +173,7 @@ public class DivChartUtilTest extends BaseUtilTest {
 				d1Chart));
 	}
 
-	@Test
+	//@Test
 	public void testGenerateD16Chart() throws Exception {
 
 	    	BirthPlanetaryPositions birthPlanetaryPositions = new BirthPlanetaryPositions();
@@ -208,7 +204,7 @@ public class DivChartUtilTest extends BaseUtilTest {
 				d1Chart));
 	}
 
-	@Test
+	//@Test
 	public void testGenerateD5Chart() throws Exception {
 
     	BirthPlanetaryPositions birthPlanetaryPositions = new BirthPlanetaryPositions();

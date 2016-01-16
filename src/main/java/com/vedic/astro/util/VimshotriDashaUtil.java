@@ -47,18 +47,6 @@ public class VimshotriDashaUtil {
 	@Qualifier("relationshipUtil")
 	private RelationshipUtil relationshipUtil;
 
-	@Value("${dasha.house.aspect.impact}")
-	protected double aspectWeight;
-
-	@Value("${dasha.house.karaka.impact}")
-	protected double karakaWeight;
-
-	@Value("${dasha.house.owner.impact}")
-	protected double ownerWeight;
-
-	@Value("${dasha.house.inhabitant.impact}")
-	protected double inhabitantWeight;
-
 	private static final int DAYS_IN_YEAR = 365;
 	private static final int TOTAL_DASHA_YEARS = 120;
 

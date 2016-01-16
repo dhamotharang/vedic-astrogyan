@@ -1,13 +1,7 @@
 package test.vedic.astro.data;
 
-import javax.annotation.Resource;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vedic.astro.domain.BirthChartData;
 import com.vedic.astro.service.PlanetPositionsDataService;
@@ -15,15 +9,16 @@ import com.vedic.astro.service.SunriseSunsetDataService;
 import com.vedic.astro.util.BirthChartUtil;
 import com.vedic.astro.vo.AbsolutePlanetaryPositions;
  
-@RunWith( SpringJUnit4ClassRunner.class )
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
-public class PlanetPositionsDataServiceTest {
+public class PlanetPositionsDataServiceTest extends BaseUtilTest{
  
-	@Resource
-	PlanetPositionsDataService planetPositionsDataService;
+	@Autowired
+	@Qualifier("planetPositionsDataService")
+	private PlanetPositionsDataService planetPositionsDataService;
 
-	@Resource
-	SunriseSunsetDataService sunriseSunsetDataService;
+
+	@Autowired
+	@Qualifier("sunriseSunsetDataService")
+	private SunriseSunsetDataService sunriseSunsetDataService;
 
 	@Autowired
 	@Qualifier("birthChartUtil")
@@ -55,7 +50,7 @@ public class PlanetPositionsDataServiceTest {
 		System.out.println("Finised ...          [Ok]");
 	}
 	
-	@Test
+	//@Test
 	public void testSunriseSunset() {
 		System.out.println("Starting up ...      [Ok]");
 		

@@ -1,43 +1,34 @@
 package com.vedic.astro.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vedic.astro.enums.Planet;
-import com.vedic.astro.enums.Signification;
 import com.vedic.astro.util.BirthChartUtil;
 import com.vedic.astro.util.HouseUtil;
 import com.vedic.astro.util.PlanetUtil;
 import com.vedic.astro.util.RelationshipUtil;
 import com.vedic.astro.util.ZodiacUtil;
 
-@Service("astroPredictiveService")
+@Service
 @Transactional
 public class AstroPredictiveService {
 
 	@Autowired
-	@Qualifier("planetUtil")
-	private PlanetUtil planetUtil;
+	PlanetUtil planetUtil;
 
 	@Autowired
-	@Qualifier("zodiacUtil")
-	private ZodiacUtil zodiacUtil;
+	ZodiacUtil zodiacUtil;
 
 	@Autowired
-	@Qualifier("houseUtil")
-	private HouseUtil houseUtil;
+	HouseUtil houseUtil;
 
 	@Autowired
-	@Qualifier("relationshipUtil")
-	private RelationshipUtil relationshipUtil;
+	RelationshipUtil relationshipUtil;
 
 	@Autowired
-	@Qualifier("birthChartUtil")
-	private BirthChartUtil birthChartUtil;
+	BirthChartUtil birthChartUtil;
 
 	/*
 	 * public BirthChartAnalysis predictChart(BirthChartData birthChartData) {

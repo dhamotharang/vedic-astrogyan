@@ -1,12 +1,8 @@
 package com.vedic.astro.domain;
 
-import java.util.List;
 import java.util.Map;
 
-import org.apache.poi.ss.formula.functions.T;
-
 import com.vedic.astro.enums.EntityRelationshipType;
-import com.vedic.astro.enums.EntityType;
 
 public class EntityRelationshipRefData {
 

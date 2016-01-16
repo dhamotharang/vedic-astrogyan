@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.service.AstroPredictiveService;
@@ -20,8 +17,7 @@ import com.vedic.astro.util.JsonUtil;
  * @author Sumeer Saxena
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
+
 public class AstroPredictiveServiceTest extends BaseUtilTest {
 
 	@Autowired
@@ -63,7 +59,7 @@ public class AstroPredictiveServiceTest extends BaseUtilTest {
 	}
 
     
-	@Test
+	//@Test
 	public void testInputJson() throws Exception {
 		System.out.println(JsonUtil.toJson(super
 				.preparePersonalInfo()));

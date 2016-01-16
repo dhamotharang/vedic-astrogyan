@@ -2,19 +2,14 @@ package test.vedic.astro.data;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vedic.astro.domain.BirthChartData;
-import com.vedic.astro.enums.CharaKaraka;
 import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.Nakshatra;
 import com.vedic.astro.enums.Planet;
@@ -23,7 +18,6 @@ import com.vedic.astro.service.PlanetPositionsDataService;
 import com.vedic.astro.util.AshtakvargaChartUtil;
 import com.vedic.astro.util.BirthChartUtil;
 import com.vedic.astro.util.CharaDashaUtil;
-import com.vedic.astro.util.DateUtil;
 import com.vedic.astro.util.DivChartUtil;
 import com.vedic.astro.util.HouseUtil;
 import com.vedic.astro.util.NakshatraUtil;
@@ -40,8 +34,6 @@ import com.vedic.astro.vo.BirthChartCalcPrep;
  * @author Sumeer Saxena
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
 public class TransitUtilTest extends BaseUtilTest {
 
 	@Autowired
@@ -80,14 +72,15 @@ public class TransitUtilTest extends BaseUtilTest {
 	@Qualifier("ashtakvargaChartUtil")
 	private AshtakvargaChartUtil ashtakvargaChartUtil;
 
-	@Resource
-	PlanetPositionsDataService planetPositionsDataService;
+	@Autowired
+	@Qualifier("planetPositionsDataService")
+	private PlanetPositionsDataService planetPositionsDataService;
 
 	@Autowired
 	@Qualifier("transitUtil")
 	private TransitUtil transitUtil;
 
-	@Test
+	//@Test
 	public void testPlanetTransits() throws Exception {
 
 		AbsolutePlanetaryPositions birthAbsolutePlanetaryPositions = planetPositionsDataService

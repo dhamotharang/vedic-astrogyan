@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.vedic.astro.domain.HouseDetails;
@@ -26,18 +25,6 @@ public class HouseUtil {
 	@Autowired
 	@Qualifier("relationshipUtil")
 	private RelationshipUtil relationshipUtil;
-
-	@Value("${score.zodiac.compatibility.weightage}")
-	protected float zodiacWeight;
-
-	@Value("${score.house.compatibility.weightage}")
-	protected float houseWeight;
-
-	@Value("${score.owner.compatibility.weightage}")
-	protected float ownerWeight;
-
-	@Value("${score.inhabitants.compatibility.weightage}")
-	protected float inhabitantsWeight;
 
 	private HouseUtil() {
 	}

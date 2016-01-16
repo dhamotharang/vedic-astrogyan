@@ -3,11 +3,8 @@ package test.vedic.astro.data;
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vedic.astro.domain.BirthChartData;
 import com.vedic.astro.domain.DashaPlanetRelationship;
@@ -16,12 +13,12 @@ import com.vedic.astro.service.DashaPredictService;
 import com.vedic.astro.service.PlanetPositionsDataService;
 import com.vedic.astro.util.AshtakvargaChartUtil;
 import com.vedic.astro.util.BirthChartUtil;
-import com.vedic.astro.util.VimshotriDashaUtil;
 import com.vedic.astro.util.DivChartUtil;
 import com.vedic.astro.util.HouseUtil;
 import com.vedic.astro.util.NakshatraUtil;
 import com.vedic.astro.util.PlanetUtil;
 import com.vedic.astro.util.RelationshipUtil;
+import com.vedic.astro.util.VimshotriDashaUtil;
 import com.vedic.astro.vo.AbsolutePlanetaryPositions;
 import com.vedic.astro.vo.BirthChartCalcPrep;
 
@@ -31,8 +28,6 @@ import com.vedic.astro.vo.BirthChartCalcPrep;
  * @author Sumeer Saxena
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml" })
 public class DashaPredictionServiceTest extends BaseUtilTest {
 	
 	@Autowired
@@ -67,22 +62,23 @@ public class DashaPredictionServiceTest extends BaseUtilTest {
 	@Qualifier("ashtakvargaChartUtil")
 	private AshtakvargaChartUtil ashtakvargaChartUtil;
 	
-	@Resource
-	PlanetPositionsDataService planetPositionsDataService;
+	@Autowired
+	@Qualifier("planetPositionsDataService")
+	private PlanetPositionsDataService planetPositionsDataService;
 
 
 	@Autowired
 	@Qualifier("dashaPredictService")
 	private DashaPredictService dashaPredictService;
 	
-    @Test
+    //@Test
 	public void testDashaPlanetWithService() throws Exception {
     
     	dashaPredictService.predictDashaPeriod(null, Planet.SAT, Planet.SAT, Planet.SAT);
 
     }
     
-    @Test
+    //@Test
   	public void testDashaPlanet() throws Exception {
           	
   		AbsolutePlanetaryPositions absolutePlanetaryPositions = 
