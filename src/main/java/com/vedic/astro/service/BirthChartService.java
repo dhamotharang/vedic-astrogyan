@@ -1,7 +1,5 @@
 package com.vedic.astro.service;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -21,14 +19,7 @@ public class BirthChartService {
     
 	public String addPersonalInfo(PersonalInfo personalInfo){
 		
-		String pid = this.personalInfoRepository.add(personalInfo);
+		String pid = this.personalInfoRepository.save(personalInfo).getPid();
 		return pid;
-				
-				
-		
-		
 	}
-
-
-
 }

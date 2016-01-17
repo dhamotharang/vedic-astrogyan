@@ -23,6 +23,19 @@ public class RestServiceResult <T> {
      * Response data. Set by the definition of the RestServiceResult.
      */
     private T responseData = null;
+    
+    public RestServiceResult(T responseData) {
+		super();
+		this.responseData = responseData;
+	}
+    
+    public RestServiceResult(RestServiceStatus responseStatus, RestServiceFailureReason failureReason) {
+		super();
+		this.responseStatus = responseStatus;
+		this.failureReason = failureReason;
+	}
+
+
 
 	public RestServiceStatus getResponseStatus() {
 		return responseStatus;

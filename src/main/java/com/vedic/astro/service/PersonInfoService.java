@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.repository.PersonalInfoRepository;
 import com.vedic.astro.vo.PersonalInfo;
 
@@ -16,17 +17,15 @@ public class PersonInfoService {
 	@Qualifier("personalInfoRepository")
 	private PersonalInfoRepository personalInfoRepository;
 
-	public String addPersonalInfo(PersonalInfo personalInfo){
-		
-		String pid = this.personalInfoRepository.add(personalInfo);
-
-		return pid;
+	public PersonalInfo addPersonalInfo(PersonalInfo personalInfo){
+		return this.personalInfoRepository.save(personalInfo);
 	}
 
-	public PersonalInfo getPersonalInfo(String pid){
-		
-		PersonalInfo personalInfo  = this.personalInfoRepository.findBy(pid);
-
+	public PersonalInfo getPersonalInfo(String id) throws BusinessException{
+		PersonalInfo personalInfo = this.personalInfoRepository.findOne(id);
+		if(personalInfo == null){
+			throw new BusinessException("personDoesNotExist","Person with this pid does not exist");
+		}
 		return personalInfo;
 	}
 

@@ -34,6 +34,8 @@ public class BaseUtilTest {
 		personalInfo.setLastName("Saxena");
 		personalInfo.setGender(Gender.Female);
 		personalInfo.setDob("10/07/1976");
+		personalInfo.setCityCode("DL");
+		personalInfo.setCountryCode("IND");
 		
 		return personalInfo;
 	}
