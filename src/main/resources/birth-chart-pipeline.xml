@@ -13,6 +13,7 @@
 	<int:gateway id="birthChartPipelineGateway" service-interface="com.vedic.astro.pipeline.service.BirthChartPipelineGateway" />
 
 	<!-- Declare the input channel in which Orders are placed for processing -->
+	<int:channel id="personalInfoChannel" />
 	<int:channel id="birthChartChannel" />
 
 	<int:logging-channel-adapter id="logger" logger-name="WIRETAP"
@@ -26,10 +27,15 @@
 		</int:interceptors>	
 	</int:channel>
 
-	<int:service-activator input-channel="birthChartChannel"
-		ref="divChartCalcService" method="calculateDivCharts" output-channel="divChartChannel" />
+	<beans:bean id="birthChartCalcService" class="com.vedic.astro.pipeline.service.BirthChartCalcService" />
+
+	<int:service-activator input-channel="personalInfoChannel"
+		ref="birthChartCalcService" method="calcBirthChart" output-channel="birthChartChannel" />
 
 	<beans:bean id="divChartCalcService" class="com.vedic.astro.pipeline.service.DivChartCalcService" />
+
+	<int:service-activator input-channel="birthChartChannel"
+		ref="divChartCalcService" method="calculateDivCharts" output-channel="divChartChannel" />
 
 	<!-- drink order items are aggregated in a call to the waiter -->
 	<int:channel id="divChartChannel" />

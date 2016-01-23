@@ -51,6 +51,9 @@ public class TransitUtil {
 	@Autowired
 	@Qualifier("nakshatraUtil")
 	private NakshatraUtil nakshatraUtil;
+	
+	private static Map<ZodiacDegreeRange, Planet> kakshaMap = BaseEntityRelationshipRefData
+			.getKakshaMapping();
 
 	private TransitUtil() {
 	}
@@ -197,8 +200,6 @@ public class TransitUtil {
 
 	public Planet getKaksha(Double degrees) {
 		Planet kakshaPlanet = null;
-		Map<ZodiacDegreeRange, Planet> kakshaMap = BaseEntityRelationshipRefData
-				.getKakshaMapping();
 
 		for (Map.Entry<ZodiacDegreeRange, Planet> kakshaMapEntry : kakshaMap
 				.entrySet()) {

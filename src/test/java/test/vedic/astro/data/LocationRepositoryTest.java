@@ -22,7 +22,7 @@ public class LocationRepositoryTest extends BaseUtilTest{
 	private LocationInfoRepository locationInfoRepository;
 	
 
-	//@Test
+	@Test
 	public void testCreateLocationInfo() throws Exception {
 		LocationInfo locationInfo = new LocationInfo("IND","DL", 10304);
 		LocationInfo savedLocationInfo = locationInfoRepository.save(locationInfo);
@@ -32,7 +32,8 @@ public class LocationRepositoryTest extends BaseUtilTest{
 	@Test
 	public void testfindLocationInfo() throws Exception {
 		
-		List<LocationInfo> locations = locationInfoRepository.getLocationByCountryAndCity("IND", "DL");
+		List<LocationInfo> locations = 
+				locationInfoRepository.getLocationByCountryAndCity("IND", "DL");
         System.out.println(locations);    		
 	}
 }

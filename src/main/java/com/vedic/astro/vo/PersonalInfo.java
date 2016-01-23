@@ -1,12 +1,15 @@
 package com.vedic.astro.vo;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.vedic.astro.enums.Gender;
 
-@Document(collection="personal_info")
+@Document(collection="persons")
+@TypeAlias("person")
 public class PersonalInfo {
+	
 	@Id
 	private String pid = null;
 	

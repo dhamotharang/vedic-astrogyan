@@ -24,13 +24,21 @@ public class PlanetUtil {
 	@Autowired
 	@Qualifier("relationshipUtil")
 	private RelationshipUtil relationshipUtil;
+	
+	private static Map<String, PlanetDetails> planetDetailsMap = 
+			BaseEntityRefData.createPlanetRefData().getData();
+	
+	private static Map<PlanetAge, List<Planet>> planetAgeMap = BaseEntityRefData
+			.createPlanetAgeToPlanetMatrix();
 
+	private static Map<Planet, Map<Integer, Double>> planetMotionMap = BaseEntityRefData
+			.getDailyMotionDegreesData();
+	
 	private PlanetUtil() {
 	}
 
 	public PlanetDetails getPlanetDetails(Planet planet) {
-		return BaseEntityRefData.createPlanetRefData().getData()
-				.get(planet.name());
+		return planetDetailsMap.get(planet.name());
 	}
 
 	public List<Integer> getAspects(Planet planet) {
@@ -87,10 +95,8 @@ public class PlanetUtil {
 	public Double evaluatePlanetsAgeMultiplierFactor(Planet planet,
 			PlanetAge age) {
 		double factor = age.getFactor();
-		Map<PlanetAge, List<Planet>> map = BaseEntityRefData
-				.createPlanetAgeToPlanetMatrix();
-
-		List<Planet> planets = map.get(age);
+	
+		List<Planet> planets = planetAgeMap.get(age);
 
 		if (planets != null) {
 
@@ -102,97 +108,6 @@ public class PlanetUtil {
 
 		return factor;
 	}
-
-	/*
-	 * public PlanetStrengthOutput evaluateOwnStrength(PlanetOwnStrengthInput
-	 * input) {
-	 * 
-	 * PlanetStrengthOutput output = new PlanetStrengthOutput(); Double
-	 * consolidatedScore = 0.0;
-	 * 
-	 * House house = input.getHouse(); Planet planet = input.getPlanet(); Zodiac
-	 * zodiac = input.getZodiac(); Planet ownerPlanet = input.getOwnerOfHouse();
-	 * List<Planet> otherPlanets = input.getOtherInhabitants();
-	 * 
-	 * Map<PlanetStrengthCriteria, PlanetStrengthResult> strengthMap = new
-	 * HashMap<PlanetStrengthCriteria, PlanetStrengthResult>();
-	 * 
-	 * EntityRelationshipValue housePlanetRelationshipValue = relationshipUtil
-	 * .evaluate(house, planet); PlanetStrengthResult planetHouseResult = new
-	 * PlanetStrengthResult(
-	 * housePlanetRelationshipValue.getHouseImpact().getScore(),
-	 * housePlanetRelationshipValue.getHouseImpact().name());
-	 * 
-	 * strengthMap.put(PlanetStrengthCriteria.HOUSE_COMPATIBILITY,
-	 * planetHouseResult);
-	 * 
-	 * EntityRelationshipValue zodiacPlanetRelationshipValue = relationshipUtil
-	 * .evaluate(zodiac, planet); PlanetStrengthResult planetZodiacResult = new
-	 * PlanetStrengthResult(
-	 * zodiacPlanetRelationshipValue.getZodiacImpact().getScore(),
-	 * zodiacPlanetRelationshipValue.getZodiacImpact().name());
-	 * 
-	 * strengthMap.put(PlanetStrengthCriteria.ZODIAC_COMPATIBILITY,
-	 * planetZodiacResult);
-	 * 
-	 * EntityRelationshipValue ownerPlanetRelationshipValue = relationshipUtil
-	 * .evaluate(ownerPlanet, planet);
-	 * 
-	 * PlanetStrengthResult planetOwnerResult = new PlanetStrengthResult(
-	 * ownerPlanetRelationshipValue.getPlanetImpact().getScore(),
-	 * ownerPlanetRelationshipValue.getPlanetImpact().name());
-	 * 
-	 * strengthMap.put(PlanetStrengthCriteria.OWNER_COMPATIBILITY,
-	 * planetOwnerResult);
-	 * 
-	 * Double degreeScoreValue = evaluatePlanetsAgeMultiplierFactor(planet,
-	 * input.getPlanetAge()); PlanetStrengthResult planetAgeResult = new
-	 * PlanetStrengthResult( degreeScoreValue, input.getPlanetAge().name());
-	 * 
-	 * strengthMap.put(PlanetStrengthCriteria.AGE_FACTOR, planetAgeResult);
-	 * 
-	 * Double inhabitantsScore = 0.0; int inhabitantCount = 0; Double
-	 * inhabitantsAvgScore = 0.0;
-	 * 
-	 * if ((otherPlanets != null) && !otherPlanets.isEmpty()) {
-	 * 
-	 * StringBuilder descBuilder = new StringBuilder(); for (Planet otherPlanet
-	 * : otherPlanets) { inhabitantCount++; EntityRelationshipValue
-	 * planetImpactValue = relationshipUtil .evaluate(otherPlanet, planet);
-	 * 
-	 * inhabitantsScore = inhabitantsScore +
-	 * planetImpactValue.getPlanetImpact().getScore();
-	 * descBuilder.append("planet=").append(otherPlanet) .append("relation=")
-	 * .append(planetImpactValue.getPlanetImpact().name()); }
-	 * 
-	 * inhabitantsAvgScore = inhabitantsScore / inhabitantCount;
-	 * 
-	 * PlanetStrengthResult planetPlanetResult = new PlanetStrengthResult(
-	 * inhabitantsAvgScore, descBuilder.toString());
-	 * 
-	 * strengthMap.put(PlanetStrengthCriteria.OTHERS_COMPATIBILITY,
-	 * planetPlanetResult);
-	 * 
-	 * }
-	 * 
-	 * if ((otherPlanets != null) && !otherPlanets.isEmpty()) {
-	 * consolidatedScore = (housePlanetRelationshipValue.getHouseImpact()
-	 * .getScore() houseWeight + zodiacPlanetRelationshipValue.getZodiacImpact()
-	 * .getScore() zodiacWeight +
-	 * ownerPlanetRelationshipValue.getPlanetImpact().getScore() ownerWeight +
-	 * inhabitantsAvgScore * inhabitantsWeight) / (houseWeight + zodiacWeight +
-	 * ownerWeight + inhabitantsWeight); } else { consolidatedScore =
-	 * (housePlanetRelationshipValue.getHouseImpact() .getScore() houseWeight +
-	 * zodiacPlanetRelationshipValue.getZodiacImpact() .getScore() *
-	 * zodiacWeight + ownerPlanetRelationshipValue .getPlanetImpact().getScore()
-	 * * ownerWeight) / (houseWeight + zodiacWeight + ownerWeight); }
-	 * 
-	 * output.setOverallScore(consolidatedScore * degreeScoreValue);
-	 * output.setStrengthMap(strengthMap);
-	 * output.setPlanetStrengthType(PlanetStrengthType.Individual);
-	 * 
-	 * return output; }
-	 */
 	public Double calcExaltationBasedStrength(Double degrees, Planet planet) {
 
 		Double score = -1.0;
@@ -253,9 +168,6 @@ public class PlanetUtil {
 		int hundredsValue = MathUtil.place(days, DecimalPlace.Hundreds);
 		int tensValue = MathUtil.place(days, DecimalPlace.Tens);
 		int unitValue = MathUtil.place(days, DecimalPlace.Unit);
-
-		Map<Planet, Map<Integer, Double>> planetMotionMap = BaseEntityRefData
-				.getDailyMotionDegreesData();
 
 		Double tenThousandsValueDeg = planetMotionMap.get(planet).get(
 				tenThousandsValue);

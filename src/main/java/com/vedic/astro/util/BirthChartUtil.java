@@ -62,6 +62,9 @@ public class BirthChartUtil {
 	@Autowired
 	@Qualifier("relationshipUtil")
 	private RelationshipUtil relationshipUtil;
+	
+	private static Map<Integer, Double> scoreMappingBasedOnPlanetCount = 
+			BaseEntityRelationshipRefData.getScoreMappingBasedOnPlanetCount();
 
 	public BirthChartData generateD1Chart(
 			BirthPlanetaryPositions birthPlanetaryPositions) {
@@ -641,8 +644,7 @@ public class BirthChartUtil {
 			}
 			zodiacStrengthMap.put(
 					zodiac,
-					BaseEntityRelationshipRefData
-							.getScoreMappingBasedOnPlanetCount().get(
+					scoreMappingBasedOnPlanetCount.get(
 									planetsInZodiac.size()));
 		}
 

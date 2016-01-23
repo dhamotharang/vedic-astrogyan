@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
+import com.vedic.astro.domain.EntityRefData;
 import com.vedic.astro.domain.ZodiacDetails;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.Zodiac;
@@ -20,10 +21,14 @@ public class ZodiacUtil {
 
 	private ZodiacUtil() {
 	}
+	
+	private static EntityRefData<ZodiacDetails> zodiacRefData = 
+			BaseEntityRefData.createZodiacRefData();
+	
+	private static Map<Zodiac, Planet> secondaryLords = BaseEntityRelationshipRefData.getSecondaryLords();
 
 	public ZodiacDetails getZodiacDetails(Zodiac zodiac) {
-		return BaseEntityRefData.createZodiacRefData().getData()
-				.get(zodiac.name());
+		return zodiacRefData.getData().get(zodiac.name());
 
 	}
 
@@ -167,6 +172,6 @@ public class ZodiacUtil {
 	}
 	
 	public Planet getSecondaryLord(Zodiac zodiac){
-		return BaseEntityRelationshipRefData.getSecondaryLords().get(zodiac);
+		return secondaryLords.get(zodiac);
 	}
 }

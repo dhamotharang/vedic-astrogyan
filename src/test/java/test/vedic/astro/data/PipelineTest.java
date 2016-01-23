@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vedic.astro.pipeline.msg.BirthChartMsg;
 import com.vedic.astro.pipeline.service.BirthChartPipelineGateway;
 
 /**
@@ -21,13 +20,8 @@ public class PipelineTest extends BaseUtilTest{
 	
 	@Test
 	public void testBirthChartPipeline() throws Exception {
-		
-		//Inject in Shop instance (Gateway)
-		
-		birthChartPipelineGateway.placeOrder(new BirthChartMsg("123", "jgggggg"));
-		
+		birthChartPipelineGateway.startBirthChartPipeline(super.preparePersonalInfo());
 	}
-
 }
 
 

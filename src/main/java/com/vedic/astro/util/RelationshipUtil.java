@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.vedic.astro.domain.EntityRelationshipRefData;
 import com.vedic.astro.domain.EntityRelationshipValue;
 import com.vedic.astro.enums.Arudha;
 import com.vedic.astro.enums.CharaKaraka;
@@ -46,23 +47,53 @@ public class RelationshipUtil {
 	@Qualifier("houseUtil")
 	private HouseUtil houseUtil;
 
+	private static EntityRelationshipRefData planetHouseRelRefData = 
+			BaseEntityRelationshipRefData.createPlanet_HouseRelRefData();
+	
+	private static EntityRelationshipRefData planetZodiacRelRefData = 
+			BaseEntityRelationshipRefData.createPlanet_ZodiacRelRefData();
+	
+	private static EntityRelationshipRefData planetPlanetRelRefData = 
+			BaseEntityRelationshipRefData.createPlanet_PlanetRelRefData();
+	
+	private static Map<Planet, Zodiac> exaltedPlanetZodiacMap = 
+			BaseEntityRelationshipRefData.getExaltedPlanetZodiacMap();
+	
+	private static Map<Planet, Zodiac> debilatedPlanetZodiacMap = 
+			BaseEntityRelationshipRefData.getDebilatedPlanetZodiacMap();
+	
+	private static Map<PlanetPlanetRelationshipInput, PlanetPlanetRelationshipResult> 
+		planetPlanetRelationshipMatrix = BaseEntityRelationshipRefData.getPlanetPlanetRelationshipMatrix();
+	
+	private static List<Integer> temporaryEnemyPlanetHouses = 
+			BaseEntityRelationshipRefData.getTemporaryEnemyPlanetHouses();
+	
+	private static List<Integer> temporaryFriendPlanetHouses = 
+			BaseEntityRelationshipRefData.getTemporaryFriendPlanetHouses();
+	
+	private static Map<HouseType, Double> kendraBalaScoreMap = 
+			BaseEntityRelationshipRefData.getKendraBalaScoreMap();
+	
+	private static Map<Planet, Map<Zodiac, Double>> planetOddEvenZodiacRelationshipMatrix = BaseEntityRelationshipRefData
+			.getPlanetOddEvenZodiacRelationshipMatrix();
+	
+	private static Map<Planet, House> directionalStrengthMapping = 
+			BaseEntityRelationshipRefData.getDirectionalStrengthMapping();
+	
 	private RelationshipUtil() {
 	}
 
 	public EntityRelationshipValue evaluate(House house, Planet planet) {
 
-		return BaseEntityRelationshipRefData.createPlanet_HouseRelRefData()
-				.getData().get(planet.name()).get(house.name());
+		return planetHouseRelRefData.getData().get(planet.name()).get(house.name());
 	}
 
 	public EntityRelationshipValue evaluate(Zodiac zodiac, Planet planet) {
-		return BaseEntityRelationshipRefData.createPlanet_ZodiacRelRefData()
-				.getData().get(planet.name()).get(zodiac.name());
+		return planetZodiacRelRefData.getData().get(planet.name()).get(zodiac.name());
 	}
 
 	public EntityRelationshipValue evaluate(Planet planet1, Planet planet2) {
-		return BaseEntityRelationshipRefData.createPlanet_PlanetRelRefData()
-				.getData().get(planet1.name()).get(planet2.name());
+		return planetPlanetRelRefData.getData().get(planet1.name()).get(planet2.name());
 	}
 
 	public BirthChartCalcPrep preparePlanetsForCalc(
@@ -228,27 +259,24 @@ public class RelationshipUtil {
 	}
 
 	public static boolean isExalted(Planet planet, Zodiac zodiac) {
-		return zodiac.equals(BaseEntityRelationshipRefData
-				.getExaltedPlanetZodiacMap().get(planet));
+		return zodiac.equals(exaltedPlanetZodiacMap.get(planet));
 	}
 
 	public static boolean isDelibilated(Planet planet, Zodiac zodiac) {
-		return zodiac.equals(BaseEntityRelationshipRefData
-				.getDebilatedPlanetZodiacMap().get(planet));
+		return zodiac.equals(debilatedPlanetZodiacMap.get(planet));
 	}
 
 	public static PlanetPlanetRelationshipResult evaluatePlanetRelationship(
 			PlanetPlanetRelationshipInput input) {
-		return BaseEntityRelationshipRefData
-				.getPlanetPlanetRelationshipMatrix().get(input);
+		return planetPlanetRelationshipMatrix.get(input);
 	}
 
 	public static List<Integer> findTemporaryEnemyPlanetHouses() {
-		return BaseEntityRelationshipRefData.getTemporaryEnemyPlanetHouses();
+		return temporaryEnemyPlanetHouses;
 	}
 
 	public static List<Integer> findTemporaryFriendPlanetHouses() {
-		return BaseEntityRelationshipRefData.getTemporaryFriendPlanetHouses();
+		return temporaryFriendPlanetHouses;
 	}
 
 	public Map<Planet, Map<Planet, PlanetPlanetRelationshipResult>> preparePlanetPlanetRelationships(
@@ -321,20 +349,16 @@ public class RelationshipUtil {
 	}
 
 	public Double getOddEvenPlacementScore(Planet planet, Zodiac zodiac) {
-		Map<Planet, Map<Zodiac, Double>> matrix = BaseEntityRelationshipRefData
-				.getPlanetOddEvenZodiacRelationshipMatrix();
-		return matrix.get(planet).get(zodiac);
+		return planetOddEvenZodiacRelationshipMatrix.get(planet).get(zodiac);
 	}
 
 	public Double getKendraBalaScore(HouseType houseType) {
-		return BaseEntityRelationshipRefData.getKendraBalaScoreMap().get(
-				houseType);
+		return kendraBalaScoreMap.get(houseType);
 	}
 
 	public Double getDirectionalWeakestPosition(Planet planet) {
 		Double weakestDirectionalPosition = 0.0;
-		House kendraHouse = BaseEntityRelationshipRefData
-				.getDirectionalStrengthMapping().get(planet);
+		House kendraHouse = directionalStrengthMapping.get(planet);
 		if (kendraHouse != null) {
 			weakestDirectionalPosition = houseUtil.getHouseDetails(kendraHouse)
 					.getKendraPowerlessPosition();

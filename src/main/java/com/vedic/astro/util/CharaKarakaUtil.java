@@ -12,21 +12,22 @@ import com.vedic.astro.enums.House;
 @Component("charaKarakaUtil")
 public class CharaKarakaUtil {
 
+	private static Map<CharaKaraka,List<House>> charaKarakaHouseMapping = 
+			BaseEntityRefData.getCharaKarakaHouseMapping();
+	
 	private CharaKarakaUtil() {
 	}
+	
 
 	public List<House> getImpactedHouses(CharaKaraka charaKaraka) {
-		List<House> impactedHouses = BaseEntityRefData
-				.getCharaKarakaHouseMapping().get(charaKaraka);
+		List<House> impactedHouses = charaKarakaHouseMapping.get(charaKaraka);
 		return impactedHouses;
 	}
 
 	public CharaKaraka getCharaKarakaForHouse(House house) {
 		CharaKaraka charaKaraka = null;
 
-		Map<CharaKaraka, List<House>> charaKarakaMap = BaseEntityRefData
-				.getCharaKarakaHouseMapping();
-		Set<Map.Entry<CharaKaraka, List<House>>> mapEntries = charaKarakaMap
+		Set<Map.Entry<CharaKaraka, List<House>>> mapEntries = charaKarakaHouseMapping
 				.entrySet();
 
 		for (Map.Entry<CharaKaraka, List<House>> mapEntry : mapEntries) {

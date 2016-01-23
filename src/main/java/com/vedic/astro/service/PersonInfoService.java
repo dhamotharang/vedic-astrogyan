@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vedic.astro.exception.BusinessException;
+import com.vedic.astro.pipeline.service.BirthChartPipelineGateway;
 import com.vedic.astro.repository.PersonalInfoRepository;
 import com.vedic.astro.vo.PersonalInfo;
 
@@ -17,14 +18,20 @@ public class PersonInfoService {
 	@Qualifier("personalInfoRepository")
 	private PersonalInfoRepository personalInfoRepository;
 
-	public PersonalInfo addPersonalInfo(PersonalInfo personalInfo){
-		return this.personalInfoRepository.save(personalInfo);
+	@Autowired
+	private BirthChartPipelineGateway birthChartPipelineGateway;
+
+	public PersonalInfo addPersonalInfo(PersonalInfo personalInfo) {
+		PersonalInfo savedPersonalInfo = this.personalInfoRepository.save(personalInfo);
+		birthChartPipelineGateway.startBirthChartPipeline(savedPersonalInfo);
+
+		return savedPersonalInfo;
 	}
 
-	public PersonalInfo getPersonalInfo(String id) throws BusinessException{
+	public PersonalInfo getPersonalInfo(String id) throws BusinessException {
 		PersonalInfo personalInfo = this.personalInfoRepository.findOne(id);
-		if(personalInfo == null){
-			throw new BusinessException("personDoesNotExist","Person with this pid does not exist");
+		if (personalInfo == null) {
+			throw new BusinessException("personDoesNotExist", "Person with this pid does not exist");
 		}
 		return personalInfo;
 	}

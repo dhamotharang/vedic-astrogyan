@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+import com.vedic.astro.domain.EntityRefData;
 import com.vedic.astro.domain.HouseDetails;
 import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.HouseType;
@@ -25,13 +26,14 @@ public class HouseUtil {
 	@Autowired
 	@Qualifier("relationshipUtil")
 	private RelationshipUtil relationshipUtil;
+	
+	private static EntityRefData<HouseDetails> houseRefData = BaseEntityRefData.createHouseRefData();
 
 	private HouseUtil() {
 	}
 
 	public HouseDetails getHouseDetails(House house) {
-		return BaseEntityRefData.createHouseRefData().getData()
-				.get(house.name());
+		return houseRefData.getData().get(house.name());
 
 	}
 
@@ -75,8 +77,7 @@ public class HouseUtil {
 	}
 
 	public List<House> getHousesOfType(HouseType houseType) {
-		Map<String, HouseDetails> map = BaseEntityRefData.createHouseRefData()
-				.getData();
+		Map<String, HouseDetails> map = houseRefData.getData();
 		List<House> resultHouses = new ArrayList<House>();
 
 		for (Map.Entry<String, HouseDetails> houseDetailsEntry : map.entrySet()) {

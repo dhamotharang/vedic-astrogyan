@@ -1,13 +1,20 @@
 package com.vedic.astro.domain;
 
-import java.io.Serializable;
 import java.util.List;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.vedic.astro.enums.BirthChartType;
 import com.vedic.astro.vo.ChartHouse;
 
-public class BirthChartData implements Serializable {
 
+@Document(collection="rashi_charts")
+public class BirthChartData{
+
+	@Id
+	private String id;
+	
 	private String pid;
 	
 	private BirthChartType birthChartType;

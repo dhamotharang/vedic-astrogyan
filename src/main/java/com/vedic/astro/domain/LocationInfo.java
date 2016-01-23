@@ -1,15 +1,24 @@
 package com.vedic.astro.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-@Document(collection="location_info")
+@Document(collection="locations")
+@TypeAlias("location")
 public class LocationInfo {
 	
 	@Id
 	private String id;
-	private String countryCode;
-	private String cityCode;
+	
+	@Field("ctyCd")
+	private String cityCode = null;
+	
+	@Field("cntyCd")
+	private String countryCode = null;
+	
+	@Field("locId")
 	private Integer locationId;
 
 	public LocationInfo(String countryCode, String cityCode, Integer locationId) {
