@@ -62,7 +62,7 @@ public class AstroPredictiveServiceTest extends BaseUtilTest {
 	//@Test
 	public void testInputJson() throws Exception {
 		System.out.println(JsonUtil.toJson(super
-				.preparePersonalInfo()));
+				.prepareMember()));
 
 	}
 

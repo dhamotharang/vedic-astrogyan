@@ -20,7 +20,7 @@ public class PipelineTest extends BaseUtilTest{
 	
 	@Test
 	public void testBirthChartPipeline() throws Exception {
-		birthChartPipelineGateway.startBirthChartPipeline(super.preparePersonalInfo());
+		birthChartPipelineGateway.startBirthChartPipeline(super.prepareMember());
 	}
 }
 

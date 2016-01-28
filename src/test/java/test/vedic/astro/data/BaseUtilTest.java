@@ -17,7 +17,7 @@ import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.Zodiac;
 import com.vedic.astro.vo.ChartHouse;
 import com.vedic.astro.vo.HousePlanetInput;
-import com.vedic.astro.vo.PersonalInfo;
+import com.vedic.astro.vo.Member;
 import com.vedic.astro.vo.PlanetPosition;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,18 +26,18 @@ public class BaseUtilTest {
 	
 
 	
-	public PersonalInfo preparePersonalInfo(){
-		PersonalInfo personalInfo = new PersonalInfo();
+	public Member prepareMember(){
+		Member member = new Member();
 		
-	//	personalInfo.setBirthPlanetaryPositions(this.prepareLagnaData());
-		personalInfo.setFirstName("Shailja");
-		personalInfo.setLastName("Saxena");
-		personalInfo.setGender(Gender.Female);
-		personalInfo.setDob("10/07/1976");
-		personalInfo.setCityCode("DL");
-		personalInfo.setCountryCode("IND");
+	//	member.setBirthPlanetaryPositions(this.prepareLagnaData());
+		member.setFirstName("Shailja");
+		member.setLastName("Saxena");
+		member.setGender(Gender.Female);
+		member.setDob("10/07/1976");
+		member.setCityCode("DL");
+		member.setCountryCode("IND");
 		
-		return personalInfo;
+		return member;
 	}
 	
 	
@@ -250,8 +250,4 @@ public class BaseUtilTest {
 
 		return chartData;
 	}
-
-	  @Test
-	  public void testJunit() throws Exception {
-	  }
 }

@@ -1,6 +1,7 @@
 package test.vedic.astro.data;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ public class LocationRepositoryTest extends BaseUtilTest{
 	@Test
 	public void testfindLocationInfo() throws Exception {
 		
-		List<LocationInfo> locations = 
+		Optional<List<LocationInfo>> locations = 
 				locationInfoRepository.getLocationByCountryAndCity("IND", "DL");
-        System.out.println(locations);    		
+        System.out.println(locations.get());    		
 	}
 }
