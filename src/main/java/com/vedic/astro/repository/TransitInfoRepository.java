@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vedic.astro.domain.PlanetTransitData;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.exception.SystemException;
-import com.vedic.astro.vo.PersonalInfo;
+import com.vedic.astro.vo.Member;
 
 /**
  * The Repository which does all basic CRUD operations on the

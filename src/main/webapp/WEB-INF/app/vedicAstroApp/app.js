@@ -1,31 +1,45 @@
-﻿(function () {
+(function () {
 
-    var app = angular.module('customersApp',
-        ['ngRoute', 'ngAnimate', 'wc.directives', 'ui.bootstrap', 'breeze.angular']);
+    var app = angular.module('vedicAstroApp',
+        ['ngRoute', 'ngAnimate']);
 
     app.config(['$routeProvider', function ($routeProvider) {
-        var viewBase = '/app/customersApp/views/';
+        var viewBase = '/app/vedicAstroApp/views/';
 
         $routeProvider
-            .when('/customers', {
-                controller: 'CustomersController',
-                templateUrl: viewBase + 'customers/customers.html',
+            .when('/pr-chart-analysis/:pid', {
+                controller: 'ChartAnalysisController',
+                templateUrl: viewBase + 'chart_analysis/pr_chart_analysis.html',
                 controllerAs: 'vm'
             })
-            .when('/customerorders/:customerId', {
-                controller: 'CustomerOrdersController',
-                templateUrl: viewBase + 'customers/customerOrders.html',
+            .when('/pr-house-analysis/:pid', {
+                controller: 'HouseAnalysisController',
+                templateUrl: viewBase + 'house_analysis/pr_house_analysis.html',
                 controllerAs: 'vm'
             })
-            .when('/customeredit/:customerId', {
-                controller: 'CustomerEditController',
-                templateUrl: viewBase + 'customers/customerEdit.html',
-                controllerAs: 'vm',
-                secure: true //This route requires an authenticated user
+           .when('/pr-varga-analysis/:pid', {
+                controller: 'VargaAnalysisController',
+                templateUrl: viewBase + 'varga_analysis/pr_varga_analysis.html',
+                controllerAs: 'vm'
             })
-            .when('/orders', {
-                controller: 'OrdersController',
-                templateUrl: viewBase + 'orders/orders.html',
+           .when('/pr-yogas/:pid', {
+                controller: 'YogaAnalysisController',
+                templateUrl: viewBase + 'yogas/pr_yoga_analysis.html',
+                controllerAs: 'vm'
+            })
+           .when('/pr-nak-dasha/:pid', {
+                controller: 'DashaAnalysisController',
+                templateUrl: viewBase + 'dashas/pr_dasha_analysis.html',
+                controllerAs: 'vm'
+            })
+           .when('/pr-transit/:pid', {
+                controller: 'TransitAnalysisController',
+                templateUrl: viewBase + 'transit/pr_transit_analysis.html',
+                controllerAs: 'vm'
+            })
+            .when('/pr-references/:pid', {
+                controller: 'ReferencesController',
+                templateUrl: viewBase + 'reference/pr_references.html',
                 controllerAs: 'vm'
             })
             .when('/about', {

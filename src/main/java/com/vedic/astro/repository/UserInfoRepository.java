@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.vedic.astro.domain.LocationInfo;
+import com.vedic.astro.domain.UserInfo;
 
 /**
  * The Repository which does all basic CRUD operations on the
@@ -18,9 +18,13 @@ import com.vedic.astro.domain.LocationInfo;
  * @author Sumeer Saxena
  * @param <T>
  */
-@Repository("locationInfoRepository")
-public interface LocationInfoRepository extends CrudRepository<LocationInfo, String>{
+@Repository("userInfoRepository")
+public interface UserInfoRepository extends CrudRepository<UserInfo, String>{
 
-	@Query(value="{'countryCode' : ?0, 'cityCode':?1}", fields="{_id : 0, locationId : 1}")
-	public Optional<List<LocationInfo>> getLocationByCountryAndCity(String countryCode, String cityCode);
+	@Query(value="{'email' : ?0, 'password':?1}", fields="{_id : 0, firstName : 1, lastName : 2, role : 3}")
+	public Optional<List<UserInfo>> getUserInfoByEmailAndPwd(String email, String password);
+	
+	@Query(value="{'email' : ?0}", fields="{_id : 0}")
+	public Optional<List<UserInfo>> checkUserExists(String email);
+
 }

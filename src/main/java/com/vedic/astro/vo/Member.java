@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.vedic.astro.enums.Gender;
 
-@Document(collection="persons")
-@TypeAlias("person")
-public class PersonalInfo {
+@Document(collection="members")
+@TypeAlias("member")
+public class Member {
 	
 	@Id
 	private String pid = null;

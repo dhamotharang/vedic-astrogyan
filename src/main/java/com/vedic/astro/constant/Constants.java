@@ -32,4 +32,7 @@ public class Constants {
 	public static final String AYANA_PLANET_STRENGTHS = "AyanaPlanetStrengths";
 	public static final String YUDDHA_PLANET_STRENGTHS = "YuddhaPlanetStrengths";
 	
+	public static final String USER_NOT_FOUND = "userNotFound";
+	public static final String MEMBER_NOT_FOUND = "memberNotFound";
+	
 }

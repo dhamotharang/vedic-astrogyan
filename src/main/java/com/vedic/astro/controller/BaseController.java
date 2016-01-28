@@ -39,7 +39,7 @@ public class BaseController {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	@ResponseBody
-	public RestServiceResult<String> processValidationError(
+	public RestServiceResponse<String> processValidationError(
 			MethodArgumentNotValidException ex) {
 		BindingResult result = ex.getBindingResult();
 		List<FieldError> fieldErrors = result.getFieldErrors();
@@ -54,7 +54,7 @@ public class BaseController {
 	 * @param fieldErrors
 	 * @return
 	 */
-	private RestServiceResult<String> processFieldError(
+	private RestServiceResponse<String> processFieldError(
 			List<FieldError> fieldErrors) {
 		RestServiceFailureReason reason = new RestServiceFailureReason();
 		reason.setErrorCode(ErrorConstants.INVALID_INPUT_CODE);
@@ -67,7 +67,7 @@ public class BaseController {
 					localizedErrorMessage));
 		}
 
-		return new RestServiceResult<String>(RestServiceStatus.FAILURE, reason);
+		return new RestServiceResponse<String>(RestServiceStatus.FAILURE, reason);
 	}
 
 	/**
@@ -94,13 +94,13 @@ public class BaseController {
 	@ExceptionHandler(BusinessException.class)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public RestServiceResult<String> processBusinessError(BusinessException ex) {
+	public RestServiceResponse<String> processBusinessError(BusinessException ex) {
 
 		RestServiceFailureReason reason = new RestServiceFailureReason();
 		reason.setErrorCode(ex.getErrorCode());
 		reason.setErrorMessage(ex.getErrorMessage());
 
-		return new RestServiceResult<String>(RestServiceStatus.FAILURE, reason);
+		return new RestServiceResponse<String>(RestServiceStatus.FAILURE, reason);
 
 	}
 
@@ -113,7 +113,7 @@ public class BaseController {
 	@ExceptionHandler(SystemException.class)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public RestServiceResult<String> processSystemError(SystemException ex) {
+	public RestServiceResponse<String> processSystemError(SystemException ex) {
 
 		RestServiceFailureReason reason = new RestServiceFailureReason();
 		reason.setErrorCode(ErrorConstants.SYSTEM_FAILURE_CODE);
@@ -122,7 +122,7 @@ public class BaseController {
 			reason.setErrorMessage(ex.getCause().getMessage());
 		}
 
-		return new RestServiceResult<String>(RestServiceStatus.FAILURE, reason);
+		return new RestServiceResponse<String>(RestServiceStatus.FAILURE, reason);
 
 	}
 
@@ -135,7 +135,7 @@ public class BaseController {
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
-	public RestServiceResult<String> processOtherError(Exception ex) {
+	public RestServiceResponse<String> processOtherError(Exception ex) {
 
 		RestServiceFailureReason reason = new RestServiceFailureReason();
 		reason.setErrorCode(ErrorConstants.SYSTEM_FAILURE_CODE);
@@ -144,6 +144,6 @@ public class BaseController {
 			reason.setErrorMessage(ex.getCause().getMessage());
 		}
 
-		return new RestServiceResult<String>(RestServiceStatus.FAILURE, reason);
+		return new RestServiceResponse<String>(RestServiceStatus.FAILURE, reason);
 	}
 }

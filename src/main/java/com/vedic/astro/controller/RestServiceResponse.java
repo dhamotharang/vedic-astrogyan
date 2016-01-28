@@ -7,7 +7,7 @@ package com.vedic.astro.controller;
  * 
  * @author Sumeer Saxena
  */
-public class RestServiceResult <T> {
+public class RestServiceResponse <T> {
 	
     /**
      * The status of the response. By default it is SUCCESS.
@@ -24,12 +24,12 @@ public class RestServiceResult <T> {
      */
     private T responseData = null;
     
-    public RestServiceResult(T responseData) {
+    public RestServiceResponse(T responseData) {
 		super();
 		this.responseData = responseData;
 	}
     
-    public RestServiceResult(RestServiceStatus responseStatus, RestServiceFailureReason failureReason) {
+    public RestServiceResponse(RestServiceStatus responseStatus, RestServiceFailureReason failureReason) {
 		super();
 		this.responseStatus = responseStatus;
 		this.failureReason = failureReason;

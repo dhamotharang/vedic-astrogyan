@@ -1,5 +1,5 @@
     <!DOCTYPE html>
-    <html lang="en">
+    <html lang="en" ng-app="vedicAstroApp">
 
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -40,9 +40,9 @@
     </head>
 
 
-    <body class="nav-md">
+    <body class="nav-md" ng-cloak>
 
-        <div class="container body">
+        <div class="container body" ng-controller="NavbarController as vm">
 
 
             <div class="main_container">
@@ -51,7 +51,7 @@
                     <div class="left_col scroll-view">
 
                         <div class="navbar nav_title" style="border: 0;">
-                            <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Vedic Astro</span></a>
+                            <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>{{ vm.appTitle }}</span></a>
                         </div>
                         <div class="clearfix"></div>
 
@@ -62,7 +62,7 @@
                             </div>
                             <div class="profile_info">
                                 <span>Welcome,</span>
-                                <h2>Sumeer Saxena</h2>
+                                <h2>{{ vm.user.fullName }}</h2>
                             </div>
                         </div>
                         <!-- /menu prile quick info -->
@@ -73,20 +73,51 @@
                         <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 
                             <div class="menu_section">
-                                <h3>Admin</h3>
+                                <h3>{{ vm.user.role }}</h3>
                                 <ul class="nav side-menu">
-                                    <li><a><i class="fa fa-home"></i> User Analysis <span class="fa fa-chevron-down"></span></a>
+                                    <li><a><i class="fa fa-home"></i> Prashari <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu" style="display: none">
-                                            <li><a id="chart">Chart</a>
+                                            <li><a href="#/pr-chart-analysis/:pid">Chart Analysis</a>
                                             </li>
-                                            <li><a href="house_analysis.html">Houses</a>
+                                            <li><a href="#/pr-house-analysis/:pid">House Analysis</a>
+                                            </li>
+                                            <li><a href="#/pr-varga-analysis/:pid">Varga Analysis</a>
+                                            </li>
+                                            <li><a href="#/pr-yogas/:pid">Yogas</a>
+                                            </li>
+                                            <li><a href="#/pr-div-chart/:pid">Div Charts</a>
+                                            </li>
+                                            <li><a href="#/pr-nak-dasha/:pid">Nakshatra Dashas</a>
+                                            </li>
+                                            <li><a href="#/pr-transit/:pid">Transit</a>
+                                            </li>
+                                            <li><a href="#/pr-event-pred/:pid">Event Prediction</a>
+                                            </li>
+                                            <li><a href="#/pr-references/:pid">References</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a><i class="fa fa-home"></i> Jaimini <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a id="chart">Chart Analysis</a>
+                                            </li>
+                                            <li><a href="house_analysis.html">House Analysis</a>
                                             </li>
                                             <li><a href="yogas.html">Yogas</a>
                                             </li>
-                                            <li><a href="lifestyle.html">Lifestyle</a>
-                                            </li>
-                                            </li>
                                             <li><a href="zodiac_dasha.html">Zodiac Dashas</a>
+                                            </li>
+                                            <li><a href="event_prediction.html">Event Prediction</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a><i class="fa fa-home"></i> Ashtavarga <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a id="chart">Chart Analysis</a>
+                                            </li>
+                                            <li><a href="house_analysis.html">House Analysis</a>
+                                            </li>
+                                            <li><a href="yogas.html">Yogas</a>
                                             </li>
                                             <li><a href="nak_dasha.html">Nakshatra Dashas</a>
                                             </li>
@@ -96,9 +127,41 @@
                                             </li>
                                             <li><a href="references.html">References</a>
                                             </li>
-
                                         </ul>
                                     </li>
+                                    <li><a><i class="fa fa-home"></i> Tajika/Varshaphala <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a id="chart">Chart Analysis</a>
+                                            </li>
+                                            <li><a href="house_analysis.html">House Analysis</a>
+                                            </li>
+                                            <li><a href="yogas.html">Yogas</a>
+                                            </li>
+                                            <li><a href="nak_dasha.html">Nakshatra Dashas</a>
+                                            </li>
+                                            <li><a href="transit.html">Transit</a>
+                                            </li>
+                                            <li><a href="event_prediction.html">Event Prediction</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li><a><i class="fa fa-home"></i> KP <span class="fa fa-chevron-down"></span></a>
+                                        <ul class="nav child_menu" style="display: none">
+                                            <li><a id="chart">Chart Analysis</a>
+                                            </li>
+                                            <li><a href="house_analysis.html">House Analysis</a>
+                                            </li>
+                                            <li><a href="yogas.html">Yogas</a>
+                                            </li>
+                                            <li><a href="nak_dasha.html">Nakshatra Dashas</a>
+                                            </li>
+                                            <li><a href="transit.html">Transit</a>
+                                            </li>
+                                            <li><a href="event_prediction.html">Event Prediction</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+
                                     <li><a><i class="fa fa-edit"></i> User Management <span class="fa fa-chevron-down"></span></a>
                                         <ul class="nav child_menu" style="display: none">
                                             <li><a href="new_user.html">Add User</a>
@@ -145,8 +208,6 @@
                                             </li>
                                         </ul>
                                     </li>
-
-
                             </ul>
                             </div>
                         </div>
@@ -185,7 +246,7 @@
 
                                 <li class="">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        <img src="images/img.jpg" alt="">Sumeer Saxena
+                                        <img src="images/img.jpg" alt="">{{ vm.user.fullName }}
                                         <span class=" fa fa-angle-down"></span>
                                     </a>
                                     <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
@@ -263,12 +324,9 @@
         <!-- /datepicker -->
         <!-- /footer content -->
          <script>
-            $(document).ready( function() {
-    
-           $("#page_content").load("includes/page_content_chart.html");
-        $('#datetimepicker1').datetimepicker();        
-    
-});
+        $(document).ready( function() {
+         $('#datetimepicker1').datetimepicker();        
+       });
              
 </script>
       
