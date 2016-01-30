@@ -1,5 +1,7 @@
 package com.vedic.astro.domain;
 
+import java.util.Date;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -12,7 +14,7 @@ import com.vedic.astro.enums.UserRole;
 public class UserInfo {
 	
 	@Id
-	private String pid = null;
+	private String id = null;
 	
 	private String firstName = null;
 	
@@ -26,13 +28,17 @@ public class UserInfo {
 	private UserRole role = null;
 	
 	private boolean loggedIn = false;
+	
+	private Date lastLoginTS = null;
+	
+	private String lastViewedPid = null;
 
-	public String getPid() {
-		return pid;
+	public String getId() {
+		return id;
 	}
 
-	public void setPid(String pid) {
-		this.pid = pid;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -83,9 +89,26 @@ public class UserInfo {
 		this.role = role;
 	}
 
+	public Date getLastLoginTS() {
+		return lastLoginTS;
+	}
+
+	public void setLastLoginTS(Date lastLoginTS) {
+		this.lastLoginTS = lastLoginTS;
+	}
+
+	public String getLastViewedPid() {
+		return lastViewedPid;
+	}
+
+	public void setLastViewedPid(String lastViewedPid) {
+		this.lastViewedPid = lastViewedPid;
+	}
+
 	@Override
 	public String toString() {
-		return "UserInfo [pid=" + pid + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", password=" + password + ", loggedIn=" + loggedIn + "]";
+		return "UserInfo [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", password=" + password + ", role=" + role + ", loggedIn=" + loggedIn + ", lastLoginTS="
+				+ lastLoginTS + ", lastViewedPid=" + lastViewedPid + "]";
 	}
 }

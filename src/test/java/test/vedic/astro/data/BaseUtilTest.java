@@ -23,76 +23,69 @@ import com.vedic.astro.vo.PlanetPosition;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = VedicAstroBootApplication.class)
 public class BaseUtilTest {
-	
 
-	
-	public Member prepareMember(){
+	public Member prepareMember() {
 		Member member = new Member();
-		
-	//	member.setBirthPlanetaryPositions(this.prepareLagnaData());
+
+		// member.setBirthPlanetaryPositions(this.prepareLagnaData());
 		member.setFirstName("Shailja");
 		member.setLastName("Saxena");
 		member.setGender(Gender.Female);
 		member.setDob("10/07/1976");
 		member.setCityCode("DL");
 		member.setCountryCode("IND");
-		
+
 		return member;
 	}
-	
-	
-/*	public BirthPlanetaryPositions prepareLagnaData(){
-		
-		BirthPlanetaryPositions birthPlanetaryPositions = new BirthPlanetaryPositions();
-		PlanetPosition lagna = new PlanetPosition();
-		lagna.setZodiac(Zodiac.GEM);
-		birthPlanetaryPositions.setLagna(lagna);
-		
-		List<PlanetPosition> planetPostions = new ArrayList<PlanetPosition>();
-		planetPostions.add(new PlanetPosition(5.13,Zodiac.SAG,Planet.SUN));
-		planetPostions.add(new PlanetPosition(6.20,Zodiac.GEM,Planet.MON));
-		planetPostions.add(new PlanetPosition(29.36,Zodiac.LIB,Planet.MAR));
-		planetPostions.add(new PlanetPosition(15.01,Zodiac.SCO,Planet.MER));
-		planetPostions.add(new PlanetPosition(21.40,Zodiac.SAG,Planet.JUP));
-		planetPostions.add(new PlanetPosition(8.38,Zodiac.SCO,Planet.VEN));
-		planetPostions.add(new PlanetPosition(22.41,Zodiac.TAU,Planet.SAT));
-		planetPostions.add(new PlanetPosition(23.18,Zodiac.SAG,Planet.RAH));
-		planetPostions.add(new PlanetPosition(23.18,Zodiac.GEM,Planet.KET));
-		
-		birthPlanetaryPositions.setPlanetPositions(planetPostions);
 
-		return birthPlanetaryPositions;
-	}
-*/	
-	
-	public BirthPlanetaryPositions prepareLagnaData(){
-		
+	/*
+	 * public BirthPlanetaryPositions prepareLagnaData(){
+	 * 
+	 * BirthPlanetaryPositions birthPlanetaryPositions = new
+	 * BirthPlanetaryPositions(); PlanetPosition lagna = new PlanetPosition();
+	 * lagna.setZodiac(Zodiac.GEM); birthPlanetaryPositions.setLagna(lagna);
+	 * 
+	 * List<PlanetPosition> planetPostions = new ArrayList<PlanetPosition>();
+	 * planetPostions.add(new PlanetPosition(5.13,Zodiac.SAG,Planet.SUN));
+	 * planetPostions.add(new PlanetPosition(6.20,Zodiac.GEM,Planet.MON));
+	 * planetPostions.add(new PlanetPosition(29.36,Zodiac.LIB,Planet.MAR));
+	 * planetPostions.add(new PlanetPosition(15.01,Zodiac.SCO,Planet.MER));
+	 * planetPostions.add(new PlanetPosition(21.40,Zodiac.SAG,Planet.JUP));
+	 * planetPostions.add(new PlanetPosition(8.38,Zodiac.SCO,Planet.VEN));
+	 * planetPostions.add(new PlanetPosition(22.41,Zodiac.TAU,Planet.SAT));
+	 * planetPostions.add(new PlanetPosition(23.18,Zodiac.SAG,Planet.RAH));
+	 * planetPostions.add(new PlanetPosition(23.18,Zodiac.GEM,Planet.KET));
+	 * 
+	 * birthPlanetaryPositions.setPlanetPositions(planetPostions);
+	 * 
+	 * return birthPlanetaryPositions; }
+	 */
+
+	public BirthPlanetaryPositions prepareLagnaData() {
+
 		BirthPlanetaryPositions birthPlanetaryPositions = new BirthPlanetaryPositions();
 		PlanetPosition lagna = new PlanetPosition();
 		lagna.setZodiac(Zodiac.VIR);
 		birthPlanetaryPositions.setLagna(lagna);
-		
+
 		List<PlanetPosition> planetPostions = new ArrayList<PlanetPosition>();
-		planetPostions.add(new PlanetPosition(20.18,Zodiac.VIR,Planet.SUN));
-		planetPostions.add(new PlanetPosition(7.03,Zodiac.PIS,Planet.MON));
-		planetPostions.add(new PlanetPosition(5.12,Zodiac.LIB,Planet.MAR));
-		planetPostions.add(new PlanetPosition(2.24,Zodiac.VIR,Planet.MER));
-		planetPostions.add(new PlanetPosition(7.10,Zodiac.TAU,Planet.JUP));
-		planetPostions.add(new PlanetPosition(19.42,Zodiac.LIB,Planet.VEN));
-		planetPostions.add(new PlanetPosition(20.58,Zodiac.CAN,Planet.SAT));
-		planetPostions.add(new PlanetPosition(10.01,Zodiac.LIB,Planet.RAH));
-		planetPostions.add(new PlanetPosition(10.01,Zodiac.ARE,Planet.KET));
-		
+		planetPostions.add(new PlanetPosition(20.18, Zodiac.VIR, Planet.SUN));
+		planetPostions.add(new PlanetPosition(7.03, Zodiac.PIS, Planet.MON));
+		planetPostions.add(new PlanetPosition(5.12, Zodiac.LIB, Planet.MAR));
+		planetPostions.add(new PlanetPosition(2.24, Zodiac.VIR, Planet.MER));
+		planetPostions.add(new PlanetPosition(7.10, Zodiac.TAU, Planet.JUP));
+		planetPostions.add(new PlanetPosition(19.42, Zodiac.LIB, Planet.VEN));
+		planetPostions.add(new PlanetPosition(20.58, Zodiac.CAN, Planet.SAT));
+		planetPostions.add(new PlanetPosition(10.01, Zodiac.LIB, Planet.RAH));
+		planetPostions.add(new PlanetPosition(10.01, Zodiac.ARE, Planet.KET));
+
 		birthPlanetaryPositions.setPlanetPositions(planetPostions);
 
 		return birthPlanetaryPositions;
 	}
-	
-	
-	
-	
-	public BirthChartData prepareData(){
-		
+
+	public BirthChartData prepareData() {
+
 		List<ChartHouse> houseInputRequestList = new ArrayList<ChartHouse>();
 
 		ChartHouse h1 = new ChartHouse();
@@ -104,7 +97,7 @@ public class BaseUtilTest {
 		HousePlanetInput h1p1 = new HousePlanetInput();
 		h1p1.setPlanet(Planet.VEN);
 		h1p1.setDegrees(10.0);
-		
+
 		HousePlanetInput h1p2 = new HousePlanetInput();
 		h1p2.setPlanet(Planet.MON);
 		h1p2.setDegrees(8.0);
@@ -144,7 +137,7 @@ public class BaseUtilTest {
 		HousePlanetInput h5p1 = new HousePlanetInput();
 		h5p1.setPlanet(Planet.SAT);
 		h5p1.setDegrees(27.0);
-		
+
 		HousePlanetInput h5p2 = new HousePlanetInput();
 		h5p2.setPlanet(Planet.RAH);
 		h5p2.setDegrees(16.0);
@@ -249,5 +242,9 @@ public class BaseUtilTest {
 		chartData.setChartHouses(houseInputRequestList);
 
 		return chartData;
+	}
+
+	@Test
+	public void testJunit() throws Exception {
 	}
 }

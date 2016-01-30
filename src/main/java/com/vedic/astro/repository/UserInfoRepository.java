@@ -21,7 +21,7 @@ import com.vedic.astro.domain.UserInfo;
 @Repository("userInfoRepository")
 public interface UserInfoRepository extends CrudRepository<UserInfo, String>{
 
-	@Query(value="{'email' : ?0, 'password':?1}", fields="{_id : 0, firstName : 1, lastName : 2, role : 3}")
+	@Query(value="{'email' : ?0, 'password':?1}")
 	public Optional<List<UserInfo>> getUserInfoByEmailAndPwd(String email, String password);
 	
 	@Query(value="{'email' : ?0}", fields="{_id : 0}")

@@ -14,7 +14,6 @@ import com.vedic.astro.dto.MemberDTO;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.SystemException;
 import com.vedic.astro.service.MemberService;
-import com.vedic.astro.vo.Member;
 
 /**
  * The Main controller which handles all the incoming GET and POST RESTFul web
