@@ -21,7 +21,7 @@ import com.vedic.astro.service.AuthService;
  * @author Sumeer Saxena
  */
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api")
 final public class LoginController extends BaseController {
 
 	@Autowired

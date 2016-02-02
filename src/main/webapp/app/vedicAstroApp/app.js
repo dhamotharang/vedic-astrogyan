@@ -1,15 +1,19 @@
 (function () {
+    'use strict';
 
-    var app = angular.module('vedicAstroApp',
-        ['ngRoute', 'ngAnimate']);
+    angular
+        .module('vedicAstroApp', ['ngRoute', 'ngCookies', 'ngAnimate'])
+        .config(config)
+        .run(run);
 
-    app.config(['$routeProvider', function ($routeProvider) {
-        var viewBase = '/app/vedicAstroApp/views/';
+    config.$inject = ['$routeProvider', '$locationProvider'];
+    function config($routeProvider, $locationProvider) {
+           var viewBase = '/app/vedicAstroApp/views/';
 
         $routeProvider
-            .when('/pr-chart-analysis/:pid', {
+            .when('/home', {
                 controller: 'ChartAnalysisController',
-                templateUrl: viewBase + 'chart_analysis/pr_chart_analysis.html',
+                templateUrl: viewBase + 'chart_analysis/pr_chart_main.html',
                 controllerAs: 'vm'
             })
             .when('/pr-house-analysis/:pid', {
@@ -47,31 +51,30 @@
                 templateUrl: viewBase + 'about.html',
                 controllerAs: 'vm'
             })
-            .when('/login/:redirect*?', {
+            .when('/login', {
                 controller: 'LoginController',
-                templateUrl: viewBase + 'login.html',
+                templateUrl: viewBase + 'login/login.html',
                 controllerAs: 'vm'
             })
-            .otherwise({ redirectTo: '/customers' });
+            .otherwise({ redirectTo: '/home' });
+    }
 
-    }]);
+    run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
+    function run($rootScope, $location, $cookieStore, $http) {
+        // keep user logged in after page refresh
+        $rootScope.globals = $cookieStore.get('globals') || {};
+        if ($rootScope.globals.currentUser) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
+        }
 
-    app.run(['$rootScope', '$location', 'authService',
-        function ($rootScope, $location, authService) {
-            
-            //Client-side security. Server-side framework MUST add it's 
-            //own security as well since client-based security is easily hacked
-            $rootScope.$on("$routeChangeStart", function (event, next, current) {
-                if (next && next.$$route && next.$$route.secure) {
-                    if (!authService.user.isAuthenticated) {
-                        $rootScope.$evalAsync(function () {
-                            authService.redirectToLogin();
-                        });
-                    }
-                }
-            });
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in and trying to access a restricted page
+            var restrictedPage = $.inArray($location.path(), ['/login', '/home']) === -1;
+            var loggedIn = $rootScope.globals.currentUser;
+            if (restrictedPage && !loggedIn) {
+                $location.path('/login');
+            }
+        });
+    }
 
-    }]);
-
-}());
-
+})();

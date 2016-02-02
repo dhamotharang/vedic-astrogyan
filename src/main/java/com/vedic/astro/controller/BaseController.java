@@ -12,8 +12,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.ErrorConstants;
@@ -39,8 +41,7 @@ public class BaseController {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	@ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
 	@ResponseBody
-	public RestServiceResponse<String> processValidationError(
-			MethodArgumentNotValidException ex) {
+	public RestServiceResponse<String> processValidationError(MethodArgumentNotValidException ex) {
 		BindingResult result = ex.getBindingResult();
 		List<FieldError> fieldErrors = result.getFieldErrors();
 
@@ -54,8 +55,7 @@ public class BaseController {
 	 * @param fieldErrors
 	 * @return
 	 */
-	private RestServiceResponse<String> processFieldError(
-			List<FieldError> fieldErrors) {
+	private RestServiceResponse<String> processFieldError(List<FieldError> fieldErrors) {
 		RestServiceFailureReason reason = new RestServiceFailureReason();
 		reason.setErrorCode(ErrorConstants.INVALID_INPUT_CODE);
 		reason.setErrorMessage(ErrorConstants.INVALID_INPUT_MESSAGE);
@@ -63,11 +63,10 @@ public class BaseController {
 		for (FieldError fieldError : fieldErrors) {
 
 			String localizedErrorMessage = resolveLocalizedErrorMessage(fieldError);
-			reason.addError(new AttributeError(fieldError.getField(),
-					localizedErrorMessage));
+			reason.addError(new AttributeError(fieldError.getField(), localizedErrorMessage));
 		}
 
-		return new RestServiceResponse<String>(RestServiceStatus.FAILURE, reason);
+		return new RestServiceResponse<String>(false, reason);
 	}
 
 	/**
@@ -79,8 +78,7 @@ public class BaseController {
 	private String resolveLocalizedErrorMessage(FieldError fieldError) {
 
 		Locale currentLocale = LocaleContextHolder.getLocale();
-		String localizedErrorMessage = messageSource.getMessage(fieldError,
-				currentLocale);
+		String localizedErrorMessage = messageSource.getMessage(fieldError, currentLocale);
 
 		return localizedErrorMessage;
 	}
@@ -100,7 +98,7 @@ public class BaseController {
 		reason.setErrorCode(ex.getErrorCode());
 		reason.setErrorMessage(ex.getErrorMessage());
 
-		return new RestServiceResponse<String>(RestServiceStatus.FAILURE, reason);
+		return new RestServiceResponse<String>(false, reason);
 
 	}
 
@@ -122,7 +120,7 @@ public class BaseController {
 			reason.setErrorMessage(ex.getCause().getMessage());
 		}
 
-		return new RestServiceResponse<String>(RestServiceStatus.FAILURE, reason);
+		return new RestServiceResponse<String>(false, reason);
 
 	}
 
@@ -140,10 +138,10 @@ public class BaseController {
 		RestServiceFailureReason reason = new RestServiceFailureReason();
 		reason.setErrorCode(ErrorConstants.SYSTEM_FAILURE_CODE);
 
-		if ((ex!=null) && (ex.getClass() != null)) {
+		if ((ex != null) && (ex.getClass() != null)) {
 			reason.setErrorMessage(ex.getCause().getMessage());
 		}
 
-		return new RestServiceResponse<String>(RestServiceStatus.FAILURE, reason);
+		return new RestServiceResponse<String>(false, reason);
 	}
 }

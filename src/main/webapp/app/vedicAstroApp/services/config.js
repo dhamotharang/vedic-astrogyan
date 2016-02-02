@@ -1,9 +1,10 @@
 ﻿(function () {
-
-    var value = {
+	'use strict';
+    
+	var value = {
         useBreeze: false
     };
 
-    angular.module('customersApp').value('config', value);
+    angular.module('vedicAstroApp').value('config', value);
 
 }());

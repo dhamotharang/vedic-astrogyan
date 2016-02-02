@@ -1,11 +1,11 @@
  .gauge_container {
-    width: 100px;
+    width: 120px;
     height: 80px; 
-    margin: 1px 1px 1px 1px;
+    margin: 0px 0px 0px 0px;
   }
 
   .gauge {
-    width: 100px;
+    width: 120px;
     height: 80px;
   }
 

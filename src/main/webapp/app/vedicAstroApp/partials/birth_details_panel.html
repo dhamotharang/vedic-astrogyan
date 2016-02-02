@@ -1,82 +1,78 @@
-                  <div class="x_panel">
-					
-                                <div class="x_title">
-                                    <div class="row">
-                                <div class="col-md-2 col-sm-12 col-xs-12">
-                                    <h2><i class="fa fa-bars"></i> Birth Details</h2>
-                                </div> 
-                                <div class="col-md-3 col-sm-5 col-xs-12 top_search">
-                                
-                                <div class="input-group">
-                                    <input type="text" placeholder="Switch user..." class="form-control">
-                                    <span class="input-group-btn">
-                            <button type="button" class="btn btn-default">Go!</button>
-                                </span>
-                                </div>
-                                </div>            
-                                <div class="col-md-5 col-sm-12 col-xs-12">        
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                                        </li>
-                                        <li><a class="close-link"><i class="fa fa-close"></i></a>
-                                        </li>
-                                    </ul>
-                                </div>    
-                                    <div class="clearfix"></div>
-                                </div>
-                          </div>                
-                            <div class="x_content">
+  
+   
+<div class="x_panel" ng-controller="BirthDetailsController as vm">
 
-                                <div class="row">
-                   
-                                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
-                                        <h5><b>Samarth Saxena</b>, Male</h5>
-                                    </div>
-                                    <div class="col-md-4 col-sm-12 col-xs-12 form-group">
-                                     <div class='input-group date' id='datetimepicker1'>
-                                        <input type='text' class="form-control" />
-                                            <span class="input-group-addon">
-                                            <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                    </div>
-                                    </div>
+	<div class="x_title">
+		<div class="row">
+			<div class="col-md-2 col-sm-12 col-xs-12">
+				<h2>
+					<i class="fa fa-bars"></i> {{vm.panelTitle}}
+				</h2>
+			</div>
+			<div class="col-md-3 col-sm-5 col-xs-12 top_search">
 
-                                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
+				<div class="input-group">
+					<input type="text" placeholder="Switch user..."
+						class="form-control"> <span class="input-group-btn">
+						<button type="button" class="btn btn-default">Go!</button>
+					</span>
+				</div>
+			</div>
+			<div class="col-md-5 col-sm-12 col-xs-12">
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+					</li>
+					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
+				</ul>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<div class="x_content">
 
-                                                    <select class="form-control">
-                                                        <option>India</option>
-                                                        <option>Option one</option>
-                                                        <option>Option two</option>
-                                                        <option>Option three</option>
-                                                        <option>Option four</option>
-                                                    </select>
+		<div class="row">
 
-                                    </div>
+			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+				<h5>
+					<b>{{vm.member.firstName}} {{vm.member.lastName}} </b>,
+					{{vm.member.gender}}
+				</h5>
+			</div>
+			<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+				<div class='input-group date' id='datetimepicker1'>
+					<input type='text' class="form-control" ng-model="vm.member.dtob" />
+					<span class="input-group-addon"> <span
+						class="glyphicon glyphicon-calendar"></span>
+					</span>
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+				<select class="form-control" ng-model="vm.member.country"
+					ng-options="country.name for country in vm.countries track by country.code">
+				</select>
+			</div>
+			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+				<select class="form-control" ng-model="vm.member.city"
+					ng-options="city.name for city in vm.cities track by city.code">
+				</select>
+			</div>
 
-                                    <div class="col-md-2 col-sm-12 col-xs-12 form-group">
-                                                    <select class="form-control">
-                                                        <option>Delhi</option>
-                                                        <option>Option one</option>
-                                                        <option>Option two</option>
-                                                        <option>Option three</option>
-                                                        <option>Option four</option>
-                                                    </select>
-                                    </div>
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<button class="btn btn-round btn-primary" type="button">Rectify</button>
+			</div>
+		</div>
 
-                                    <div class="col-md-1 col-sm-12 col-xs-12 form-group">
-                                        <button class="btn btn-round btn-primary" type="button">Rectify</button>
-                                    </div>
-                                </div>
+	</div>
+</div>
+</div>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
-                            </div>
-                        </div>
-                    </div>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
-    
-         <script>
-            $(document).ready( function() {
-        $('#datetimepicker1').datetimepicker();        
-    
-        });            
-        </script>
-            <script src="js/custom.js"></script>
+<script>
+	$(document).ready(function() {
+		$('#datetimepicker1').datetimepicker();
+
+	});
+</script>
+
+
