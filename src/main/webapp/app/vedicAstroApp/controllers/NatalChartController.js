@@ -9,7 +9,7 @@
 	function NatalChartController($location, $scope, AuthService, FlashService) {
 		var vm = this;
 
-		vm.panelTitle = 'Rashi Chart';
+		vm.panelTitle = ' < Rashi Chart >';
 		vm.zodiacMap = d3.scale.ordinal().domain(
 				[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]).range(
 				[ "ARE", "TAU", "GEM", "CAN", "LEO", "VIR", "LIB", "SCO",

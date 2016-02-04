@@ -9,8 +9,11 @@
 	function PlanetaryStrengthsController($location, $scope, AuthService, FlashService) {
 		var vm = this;
 
-		vm.panelTitle = 'Planetary Strengths';
+		vm.panelTitle = '< Planetary Strengths >';
 		vm.gauges = [];
+		vm.selectedPlanetIndex = 0;
+		vm.getPlanetSelected = getPlanetSelected;
+		vm.setPlanetSelected = setPlanetSelected;
 		vm.planetaryStrengths = [{
 			id : 'sun_gauge',
 			age : 'Infant',
@@ -47,7 +50,62 @@
 			planet : 'SAT',
 			score : 27.0
 		} ];
-		(function initController() {
+		vm.planetSignificances = {
+				headers : [ 'Planet','Body', 'Mind', 'Karmic', 'Age'],
+				significances : [ {
+					planet : 'SUN',
+					body : 'SUN body',
+					mind : 'SUN mind',
+					karmic : 'SUN karmic',
+					age : 'SUN age impact'
+				}, {
+					planet : 'MON',
+					body : 'MON body',
+					mind : 'MON mind',
+					karmic : 'MON karmic',
+					age : 'MON age impact'
+				}, {
+					planet : 'MER',
+					body : 'MER body',
+					mind : 'MER mind',
+					karmic : 'MER karmic',
+					age : 'MER age impact'
+				}, {
+					planet : 'VEN',
+					body : 'VEN body',
+					mind : 'VEN mind',
+					karmic : 'VEN karmic',
+					age : 'VEN age impact'
+				}, {
+					planet : 'MAR',
+					body : 'MAR body',
+					mind : 'MAR mind',
+					karmic : 'MAR karmic',
+					age : 'MAR age impact'
+				}, {
+					planet : 'JUP',
+					body : 'JUP body',
+					mind : 'JUP mind',
+					karmic : 'JUP karmic',
+					age : 'JUP age impact'
+				}, {
+					planet : 'SAT',
+					body : 'SAT body',
+					mind : 'SAT mind',
+					karmic : 'SAT karmic',
+					age : 'SAT age impact'
+				}]
+			};
+
+		function setPlanetSelected(index){
+			vm.selectedPlanetIndex = index;
+		};
+		
+		function getPlanetSelected(){
+			return vm.planetSignificances.significances[vm.selectedPlanetIndex];
+		};
+
+		(function init() {
 			constructGauges(vm.planetaryStrengths);
 		})();
 
@@ -93,4 +151,5 @@
 		      });
 		    console.log(gauge);
 		};
+
 })();

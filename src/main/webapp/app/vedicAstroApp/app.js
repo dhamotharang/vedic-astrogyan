@@ -12,7 +12,7 @@
 
         $routeProvider
             .when('/home', {
-                controller: 'ChartAnalysisController',
+                controller: 'ChartController',
                 templateUrl: viewBase + 'chart_analysis/pr_chart_main.html',
                 controllerAs: 'vm'
             })
