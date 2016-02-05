@@ -46,23 +46,22 @@
 		<div class="col-xs-2">
 			<p></p>
 		</div>
-
 		<div class="col-xs-1">
-			<a href="" ng-click="vm.setPlanetSelected(0)">
+			<a href="" uib-popover-template="vm.popupTemplateUrl" popover-title="{{vm.getPlanetSelected().planet}} Significance" ng-click="vm.setPlanetSelected(0)" >
 				<div class="gauge_container">
 					<div id="sun_gauge" class="gauge"></div>
 				</div>
 			</a>
 		</div>
 		<div class="col-xs-1">
-			<a href="" ng-click="vm.setPlanetSelected(1)">
+			<a href="" uib-popover-template="vm.popupTemplateUrl" popover-title="{{vm.getPlanetSelected().planet}} Significance" ng-click="vm.setPlanetSelected(1)">
 				<div class="gauge_container">
 					<div id="mon_gauge" class="gauge"></div>
 				</div>
 			</a>
 		</div>
 		<div class="col-xs-1">
-			<a href="" ng-click="vm.setPlanetSelected(2)">
+			<a href="" uib-popover-template="vm.popupTemplateUrl" popover-title="{{vm.getPlanetSelected().planet}} Significance" ng-click="vm.setPlanetSelected(2)">
 				<div class="gauge_container">
 					<div id="mer_gauge" class="gauge"></div>
 				</div>
@@ -70,28 +69,28 @@
 		</div>
 
 		<div class="col-xs-1">
-			<a href="" ng-click="vm.setPlanetSelected(3)">
+			<a href="" uib-popover-template="vm.popupTemplateUrl" popover-title="{{vm.getPlanetSelected().planet}} Significance" ng-click="vm.setPlanetSelected(3)">
 				<div class="gauge_container">
 					<div id="ven_gauge" class="gauge"></div>
 				</div>
 			</a>
 		</div>
 		<div class="col-xs-1">
-			<a href="" ng-click="vm.setPlanetSelected(4)">
+			<a href="" uib-popover-template="vm.popupTemplateUrl" popover-title="{{vm.getPlanetSelected().planet}} Significance" ng-click="vm.setPlanetSelected(4)">
 				<div class="gauge_container">
 					<div id="mar_gauge" class="gauge"></div>
 				</div>
 			</a>
 		</div>
 		<div class="col-xs-1">
-			<a href="" ng-click="vm.setPlanetSelected(5)">
+			<a href="" uib-popover-template="vm.popupTemplateUrl" popover-title="{{vm.getPlanetSelected().planet}} Significance" ng-click="vm.setPlanetSelected(5)">
 				<div class="gauge_container">
 					<div id="jup_gauge" class="gauge"></div>
 				</div>
 			</a>
 		</div>
 		<div class="col-xs-1">
-			<a href="" ng-click="vm.setPlanetSelected(6)">
+			<a href="" uib-popover-template="vm.popupTemplateUrl" popover-title="{{vm.getPlanetSelected().planet}} Significance" ng-click="vm.setPlanetSelected(6)">
 				<div class="gauge_container">
 					<div id="sat_gauge" class="gauge"></div>
 				</div>
@@ -100,24 +99,6 @@
 		<div class="col-xs-3">
 			<p></p>
 		</div>
-		<table
-			class="table table-striped responsive-utilities jambo_table bulk_action">
-			<thead>
-				<tr class="headings">
-					<th class="column-title"
-						ng-repeat="header in vm.planetSignificances.headers">{{header}}</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr class="even pointer">
-					<td class=" ">{{vm.getPlanetSelected().planet}}</td>
-					<td class=" ">{{vm.getPlanetSelected().body}}</td>
-					<td class=" ">{{vm.getPlanetSelected().mind}}</td>
-					<td class=" ">{{vm.getPlanetSelected().karmic}}</td>
-					<td class=" ">{{vm.getPlanetSelected().age}}</td>
-				</tr>
-			</tbody>
-		</table>
 		<div class="clearfix"></div>
 	</div>
 </div>

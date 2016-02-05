@@ -1,10 +1,16 @@
 (function () {
 
-    var injectParams = ['$scope', '$location', 'AuthService'];
+	'use strict';
 
-    var BirthDetailsController = function ($scope, $location, AuthService) {
+	angular.module('vedicAstroApp').controller('BirthDetailsController',
+			BirthDetailsController);
+
+	BirthDetailsController.$inject = [ '$scope', '$location', 'AuthService', '$uibModal', '$log'];
+
+	function BirthDetailsController($scope, $location, AuthService, $uibModal, $log) {
         var vm = this;
         vm.panelTitle = "< Birth Details >";
+        vm.items = ['item1', 'item2', 'item3'];
         vm.member = {firstName:"Tejas", lastName:"Saxena", dtob :"08/16/2004 09:16 AM", gender:"Male", country:{name: 'India', code: 'IN'}, city:{code:"DL",name:"Delhi"}};
         vm.countries = [ 
                         {name: 'Afghanistan', code: 'AF'}, 
@@ -265,10 +271,45 @@
         	code: 'CH',
             name: 'Chennai'
         }];
+        
+        vm.openSwitchMemberModal = openSwitchMemberModal;
+        
+        function openSwitchMemberModal(){
+            var modalInstance = $uibModal.open({
+      	      animation: true,
+      	      templateUrl: 'app/vedicAstroApp/modals/switch_member.html',
+      	      controller: 'SwitchMemberController',
+      	      controllerAs: 'vm',
+              resolve: {
+      	        items: function () {
+      	          return vm.items;
+      	        }
+      	      }
+      	    });
+
+      	    modalInstance.result.then(function (selectedItem) {
+      	      $scope.selected = selectedItem;
+      	    }, function () {
+      	      $log.info('Modal dismissed at: ' + new Date());
+      	    });
+
+        };
     };
+    
+	angular.module('vedicAstroApp').controller('SwitchMemberController', function ($scope, $uibModalInstance, items) {
 
-    BirthDetailsController.$inject = injectParams;
+		  $scope.items = items;
+		  $scope.selected = {
+		    item: $scope.items[0]
+		  };
 
-    angular.module('vedicAstroApp').controller('BirthDetailsController', BirthDetailsController);
+		  $scope.ok = function () {
+		    $uibModalInstance.close($scope.selected.item);
+		  };
+
+		  $scope.cancel = function () {
+		    $uibModalInstance.dismiss('cancel');
+		  };
+		});
 
 }());

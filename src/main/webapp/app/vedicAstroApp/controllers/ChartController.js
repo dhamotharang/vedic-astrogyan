@@ -1,5 +1,6 @@
 ﻿(function () {
 
+	
     var injectParams = ['$scope', '$location', 'AuthService'];
     var ChartController = function ($scope, $location, AuthService) {
         var vm = this;

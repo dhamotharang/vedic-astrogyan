@@ -2,7 +2,7 @@
     'use strict';
 
     angular
-        .module('vedicAstroApp', ['ngRoute', 'ngCookies', 'ngAnimate'])
+        .module('vedicAstroApp', ['ngRoute', 'ngCookies', 'ngAnimate','ui.bootstrap'])
         .config(config)
         .run(run);
 
@@ -15,6 +15,10 @@
                 controller: 'ChartController',
                 templateUrl: viewBase + 'chart_analysis/pr_chart_main.html',
                 controllerAs: 'vm'
+            })
+            .when('/experiment', {
+                controller: 'PopoverDemoCtrl',
+                templateUrl: viewBase + 'experiment/experiment.html',
             })
             .when('/pr-house-analysis/:pid', {
                 controller: 'HouseAnalysisController',
@@ -69,7 +73,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/home']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

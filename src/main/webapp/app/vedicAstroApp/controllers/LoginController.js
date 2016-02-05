@@ -11,7 +11,7 @@
 
         vm.login = login;
 
-        (function initController() {
+        (function init() {
             // reset login status
         	AuthService.clearCredentials();
         })();

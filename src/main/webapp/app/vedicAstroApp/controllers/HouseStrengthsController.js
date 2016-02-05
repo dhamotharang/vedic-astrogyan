@@ -12,6 +12,7 @@
 
 		vm.panelTitle = '< House Strengths >';
 		vm.selectedHouseIndex = 0;
+		vm.popupTemplateUrl = 'app/vedicAstroApp/modals/house_strength_pop_up.html';
 		vm.getHouseSelected = getHouseSelected;
 		vm.setHouseSelected = setHouseSelected;
 		vm.houseStrengths = [ {

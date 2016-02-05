@@ -1,25 +1,41 @@
 <div class="x_panel" ng-controller="PersonChartAnalysisController as vm">
 	<div class="x_title">
-		<h2>
-			<i class="fa fa-bars"></i> {{vm.panelTitle}}
-		</h2>
-		<ul class="nav navbar-right panel_toolbox">
-			<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-			</li>
-			<li><a class="close-link"><i class="fa fa-close"></i></a></li>
-		</ul>
-		<div class="clearfix"></div>
+		<div class="row">
+			<div class="col-md-5 col-sm-12 col-xs-12">
+				<h2>
+					<i class="fa fa-bars"></i> {{vm.panelTitle}}
+				</h2>
+			</div>
+			<div class="col-md-5 col-sm-5 col-xs-12 top_search">
+				<div class="input-group">
+					<input type="text" ng-model="search" placeholder="Search ..."
+						class="form-control">
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12 col-xs-12">
+				<ul class="nav navbar-right panel_toolbox">
+					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+					</li>
+					<li><a class="close-link"><i class="fa fa-close"></i></a></li>
+				</ul>
+			</div>
+			<div class="clearfix"></div>
+		</div>
 	</div>
+
 	<div class="x_content">
 		<div data-example-id="togglable-tabs" role="tabpanel" class="">
 			<ul role="tablist" class="nav nav-tabs bar_tabs" id="myTab">
-				<li ng-class="{active: vm.isActiveTab(aspect.id)}" role="presentation"  ng-repeat="aspect in vm.aspects"><a aria-expanded="vm.isActiveTab(aspect.id)"
-					data-toggle="tab" id="{{aspect.id}}" role="tab" href="" ng-click="vm.changeActiveTab(aspect.id)">{{aspect.title}}</a>
-				</li>
+				<li ng-class="{active: vm.isActiveTab(aspect.id)}"
+					role="presentation" ng-repeat="aspect in vm.aspects"><a
+					aria-expanded="vm.isActiveTab(aspect.id)" data-toggle="tab"
+					id="{{aspect.id}}" role="tab" href=""
+					ng-click="vm.changeActiveTab(aspect.id)">{{aspect.title}}</a></li>
 			</ul>
 			<div class="tab-content" id="myTabContent">
 				<div aria-labelledby="{{aspect.id}}" id="{{aspect.tabId}}"
-					ng-show="vm.isActiveTab(aspect.id)" role="tabpanel" ng-repeat="aspect in vm.aspects">
+					ng-show="vm.isActiveTab(aspect.id)" role="tabpanel"
+					ng-repeat="aspect in vm.aspects">
 					<table
 						class="table table-striped responsive-utilities jambo_table bulk_action">
 						<thead>
@@ -28,8 +44,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-class="['even pointer', 'odd pointer'][$index %2]" ng-repeat="tableData in aspect.data">
-    
+							<tr ng-class="['even pointer', 'odd pointer'][$index %2]"
+								ng-repeat="tableData in aspect.data| filter:search">
+
 								<td class=" ">{{tableData.entityType}}</td>
 								<td class=" ">{{tableData.name}}</td>
 								<td class=" ">{{tableData.source}}</td>

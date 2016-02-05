@@ -11,6 +11,7 @@
 
 		vm.panelTitle = '< Planetary Strengths >';
 		vm.gauges = [];
+		vm.popupTemplateUrl = 'app/vedicAstroApp/modals/planet_strength_pop_up.html';
 		vm.selectedPlanetIndex = 0;
 		vm.getPlanetSelected = getPlanetSelected;
 		vm.setPlanetSelected = setPlanetSelected;
