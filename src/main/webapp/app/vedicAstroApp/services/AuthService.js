@@ -25,16 +25,21 @@
 
         }
 
-        function setCredentials(username, password) {
+        function setCredentials(username, password, responseData) {
             var authdata = Base64.encode(username + ':' + password);
 
             $rootScope.globals = {
                 currentUser: {
                     username: username,
-                    authdata: authdata
+                    authdata: authdata,
+                    firstName: responseData.firstName,
+                    lastName: responseData.lastName,
+                    role: responseData.role,
+                    memberId: responseData.lastViewedPid
                 }
             };
 
+            console.log($rootScope.globals);
             $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
             $cookieStore.put('globals', $rootScope.globals);
         }

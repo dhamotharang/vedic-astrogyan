@@ -1,5 +1,7 @@
 package com.vedic.astro.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +24,33 @@ import com.vedic.astro.service.MemberService;
  * @author Sumeer Saxena
  */
 @RestController
-@RequestMapping("/api/member")
+@RequestMapping("/api")
 final public class MemberController extends BaseController {
 
 	@Autowired
 	@Qualifier("memberService")
 	private MemberService memberService;
 
-	@RequestMapping(value = "/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/add", method = RequestMethod.POST)
 	public RestServiceResponse<String> add(@RequestBody @Valid MemberDTO memberDTO) {
 		
 		String pid = memberService.addMember(memberDTO);
 		return new RestServiceResponse<String>(pid);
 	}
 
-	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/member/get/{id}", method = RequestMethod.GET)
 	public RestServiceResponse<MemberDTO> get(@PathVariable String id)
 			throws BusinessException, SystemException {
 		
 		MemberDTO memberDTO = memberService.getMember(id);
 		return new RestServiceResponse<MemberDTO>(memberDTO);
+	}
+	
+	@RequestMapping(value = "/members/all", method = RequestMethod.GET)
+	public RestServiceResponse<List<MemberDTO>> getAll()
+			throws BusinessException, SystemException {
+		
+		List<MemberDTO> memberDTOList = memberService.getAllMembers();
+		return new RestServiceResponse<List<MemberDTO>>(memberDTOList);
 	}
 }

@@ -1,4 +1,6 @@
-package com.vedic.astro.vo;
+package com.vedic.astro.domain;
+
+import java.util.Date;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
@@ -19,9 +21,7 @@ public class Member {
 	
 	private Gender gender = null;
 	
-	private String dob = null;
-	
-	private String tob = null;
+	private Date dateOfBirth = null;
 	
 	private String cityCode = null;
 	
@@ -59,22 +59,6 @@ public class Member {
 		this.gender = gender;
 	}
 
-	public String getDob() {
-		return dob;
-	}
-
-	public void setDob(String dob) {
-		this.dob = dob;
-	}
-
-	public String getTob() {
-		return tob;
-	}
-
-	public void setTob(String tob) {
-		this.tob = tob;
-	}
-
 	public String getCityCode() {
 		return cityCode;
 	}
@@ -91,11 +75,17 @@ public class Member {
 		this.countryCode = countryCode;
 	}
 
+	public Date getDateOfBirth() {
+		return dateOfBirth;
+	}
+
+	public void setDateOfBirth(Date dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+
 	@Override
 	public String toString() {
-		return "PersonalInfo [pid=" + pid + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", gender=" + gender + ", dob="
-				+ dob + ", tob=" + tob + ", cityCode=" + cityCode
-				+ ", countryCode=" + countryCode + "]";
+		return "Member [pid=" + pid + ", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
+				+ ", dateOfBirth=" + dateOfBirth + ", cityCode=" + cityCode + ", countryCode=" + countryCode + "]";
 	}
 }

@@ -12,11 +12,11 @@ public class MemberDTO {
 	
 	private String dob = null;
 	
-	private String tob = null;
+	private ReferenceDataDTO city = null;
 	
-	private String cityCode = null;
+	private ReferenceDataDTO country = null;
 	
-	private String countryCode = null;
+	private String email = null;
 
 	public String getFirstName() {
 		return firstName;
@@ -42,6 +42,30 @@ public class MemberDTO {
 		this.gender = gender;
 	}
 
+	public ReferenceDataDTO getCity() {
+		return city;
+	}
+
+	public void setCity(ReferenceDataDTO city) {
+		this.city = city;
+	}
+
+	public ReferenceDataDTO getCountry() {
+		return country;
+	}
+
+	public void setCountry(ReferenceDataDTO country) {
+		this.country = country;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	public String getDob() {
 		return dob;
 	}
@@ -50,33 +74,9 @@ public class MemberDTO {
 		this.dob = dob;
 	}
 
-	public String getTob() {
-		return tob;
-	}
-
-	public void setTob(String tob) {
-		this.tob = tob;
-	}
-
-	public String getCityCode() {
-		return cityCode;
-	}
-
-	public void setCityCode(String cityCode) {
-		this.cityCode = cityCode;
-	}
-
-	public String getCountryCode() {
-		return countryCode;
-	}
-
-	public void setCountryCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
-
 	@Override
 	public String toString() {
 		return "MemberDTO [firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender + ", dob=" + dob
-				+ ", tob=" + tob + ", cityCode=" + cityCode + ", countryCode=" + countryCode + "]";
+				+ ", city=" + city + ", country=" + country + ", email=" + email + "]";
 	}
 }

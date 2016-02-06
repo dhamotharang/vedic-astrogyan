@@ -12,10 +12,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vedic.astro.domain.Member;
 import com.vedic.astro.domain.PlanetTransitData;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.exception.SystemException;
-import com.vedic.astro.vo.Member;
 
 /**
  * The Repository which does all basic CRUD operations on the

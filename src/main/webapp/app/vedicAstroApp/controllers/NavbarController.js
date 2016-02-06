@@ -5,18 +5,13 @@
 	angular.module('vedicAstroApp').controller('NavbarController',
 			NavbarController);
 
-	NavbarController.$inject = [ '$scope', '$location', 'AuthService' ];
+	NavbarController.$inject = [ '$scope', '$location', 'AuthService', '$rootScope'];
 
-	function NavbarController($scope, $location, AuthService) {
+	function NavbarController($scope, $location, AuthService, $rootScope) {
 		var vm = this;
 
 		vm.menuTitle = 'Vedic Astro';
-		vm.memberPid = '1234';
-		vm.user = {
-			firstName : "Sumeer",
-			lastName : "Saxena",
-			role : "ADMIN"
-		};
+		vm.user = $rootScope.globals.currentUser;
 		vm.menuItems = [ {
 			menuTitle : 'Prashari',
 			subItems : [ {

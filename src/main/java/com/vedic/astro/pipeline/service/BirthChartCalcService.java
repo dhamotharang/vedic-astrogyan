@@ -9,12 +9,13 @@ import org.springframework.scheduling.annotation.Async;
 
 import com.vedic.astro.domain.BirthChartData;
 import com.vedic.astro.domain.LocationInfo;
+import com.vedic.astro.domain.Member;
 import com.vedic.astro.repository.BirthChartRepository;
 import com.vedic.astro.repository.LocationInfoRepository;
 import com.vedic.astro.service.PlanetPositionsDataService;
 import com.vedic.astro.util.BirthChartUtil;
+import com.vedic.astro.util.DateUtil;
 import com.vedic.astro.vo.AbsolutePlanetaryPositions;
-import com.vedic.astro.vo.Member;
 
 public class BirthChartCalcService {
 	
@@ -50,8 +51,8 @@ public class BirthChartCalcService {
 		
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = 
 				planetPositionsDataService.getPlanetPositionsData(
-						personalInfo.getDob(), 
-						personalInfo.getTob(), 
+						DateUtil.fromDate(personalInfo.getDateOfBirth(), "dd/MM/yyyy"), 
+						DateUtil.fromDate(personalInfo.getDateOfBirth(), "kk:mm:ss"), 
 						locationId);
 		
 		System.out.println("absolutePlanetaryPositions =" + absolutePlanetaryPositions);

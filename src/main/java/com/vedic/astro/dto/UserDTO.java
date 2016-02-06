@@ -10,9 +10,7 @@ public class UserDTO {
 	
 	private UserRole role = null;
 	
-	private String id = null;
-	
-	private Boolean loggedIn = false;
+	private String lastViewedPid = null;
 
 	public String getFirstName() {
 		return firstName;
@@ -38,25 +36,17 @@ public class UserDTO {
 		this.role = role;
 	}
 
-	public String getId() {
-		return id;
+	public String getLastViewedPid() {
+		return lastViewedPid;
 	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public Boolean getLoggedIn() {
-		return loggedIn;
-	}
-
-	public void setLoggedIn(Boolean loggedIn) {
-		this.loggedIn = loggedIn;
+	public void setLastViewedPid(String lastViewedPid) {
+		this.lastViewedPid = lastViewedPid;
 	}
 
 	@Override
 	public String toString() {
-		return "UserDTO [firstName=" + firstName + ", lastName=" + lastName + ", role=" + role + ", id=" + id
-				+ ", loggedIn=" + loggedIn + "]";
+		return "UserDTO [firstName=" + firstName + ", lastName=" + lastName + ", role=" + role + ", lastViewedPid="
+				+ lastViewedPid + "]";
 	}
 }

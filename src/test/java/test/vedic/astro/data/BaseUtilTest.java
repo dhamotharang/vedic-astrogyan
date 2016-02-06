@@ -11,13 +11,14 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.vedic.astro.VedicAstroBootApplication;
 import com.vedic.astro.domain.BirthChartData;
 import com.vedic.astro.domain.BirthPlanetaryPositions;
+import com.vedic.astro.domain.Member;
 import com.vedic.astro.enums.Gender;
 import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.Zodiac;
+import com.vedic.astro.util.DateUtil;
 import com.vedic.astro.vo.ChartHouse;
 import com.vedic.astro.vo.HousePlanetInput;
-import com.vedic.astro.vo.Member;
 import com.vedic.astro.vo.PlanetPosition;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,7 +32,7 @@ public class BaseUtilTest {
 		member.setFirstName("Shailja");
 		member.setLastName("Saxena");
 		member.setGender(Gender.Female);
-		member.setDob("10/07/1976");
+		member.setDateOfBirth(DateUtil.toDate("10/07/1976", "MM/dd/yyyy"));
 		member.setCityCode("DL");
 		member.setCountryCode("IND");
 

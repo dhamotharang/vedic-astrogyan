@@ -19,10 +19,10 @@
         function login() {
             vm.dataLoading = true;
             AuthService.login(vm.username, vm.password, function (response) {
-            	console.log(response.success);
+            	
                 if (response.success) {
-                	
-                    AuthService.setCredentials(vm.username, vm.password);
+                	console.log("Response :" + response.responseData);
+                    AuthService.setCredentials(vm.username, vm.password, response.responseData);
                     $location.path('/');
                 } else {
                 	

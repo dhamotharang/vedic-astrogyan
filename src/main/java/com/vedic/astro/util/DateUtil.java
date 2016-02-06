@@ -204,7 +204,7 @@ public class DateUtil {
 		//System.out.println(calcMidDay("11/23/2015","06:05", "18:28"));
 		//System.out.println(calcMidNight("11/23/2015","06:05", "18:28"));
 	
-		Date dob = toDate("09/12/1981", "MM/dd/yyyy");
+	/*	Date dob = toDate("09/12/1981", "MM/dd/yyyy");
 		Date start = toDate("01/01/1952", "MM/dd/yyyy");
 		
 		Calendar calendar = Calendar.getInstance();
@@ -217,5 +217,11 @@ public class DateUtil {
 	     System.out.println("First Day of Month: " + sdf.format(firstDayOfMonth));
 	     
 	     System.out.println("days elapsed =" + (daysBetween(start, dob)+175));
+	   */
+		
+		Date dob = toDate("08/16/2004 09:16 AM", "MM/dd/yyyy hh:mm a");
+		System.out.println("dob = " + dob);
+		String date = fromDate(dob, "kk:mm:ss");
+		System.out.println("date = " + date);
 	}
 }

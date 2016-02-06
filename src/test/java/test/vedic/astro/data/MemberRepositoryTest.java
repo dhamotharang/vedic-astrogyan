@@ -4,8 +4,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.vedic.astro.domain.Member;
 import com.vedic.astro.repository.MemberRepository;
-import com.vedic.astro.vo.Member;
 
 /**
  * Test case for unit testing the Member repository.
