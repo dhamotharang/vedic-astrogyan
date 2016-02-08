@@ -17,7 +17,7 @@
         return service;
 
         function getAll() {
-            return $http.get('/api/users').then(handleGetSuccess, handleError('Error getting all users'));
+            return $http.get('/api/members/all').then(handleGetSuccess, handleError('Error getting all users'));
         }
 
         function getById() {
@@ -25,11 +25,11 @@
         }
 
         function create(member) {
-            return $http.post('/api/users', member).then(handleSubmitSuccess, handleError('Error creating user'));
+            return $http.post('/api/member/add', member).then(handleSubmitSuccess, handleError('Error creating user'));
         }
 
         function update(member) {
-            return $http.put('/api/users/' + $rootScope.globals.currentUser.memberId, member).then(handleSubmitSuccess, handleError('Error updating user'));
+            return $http.put('/api/member/update' + $rootScope.globals.currentUser.memberId, member).then(handleSubmitSuccess, handleError('Error updating user'));
         }
 
         function handleGetSuccess(res) {

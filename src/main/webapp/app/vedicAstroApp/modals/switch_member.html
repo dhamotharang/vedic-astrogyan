@@ -3,13 +3,10 @@
 	<h4 class="modal-title">Switch Member</h4>
 </div>
   <div class="modal-body">
-            <ul>
-                <li ng-repeat="item in items">
-                    <a href="#" ng-click="$event.preventDefault(); selected.item = item">{{ item }}</a>
-                </li>
-            </ul>
-            Selected: <b>{{ selected.item }}</b>
-        </div>
+   
+    <p><b> {{selected.name}} {{selected.dob}} </b></p>
+    <input type="text" ng-model="selected" uib-typeahead="member as member.name for member in members | filter:$viewValue | limitTo:8" class="form-control">
+        
 <div class="modal-footer">
 	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
 	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>

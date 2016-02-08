@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vedic.astro.constant.Constants;
 import com.vedic.astro.domain.Member;
 import com.vedic.astro.dto.MemberDTO;
+import com.vedic.astro.dto.MemberSummaryDTO;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.pipeline.service.BirthChartPipelineGateway;
 import com.vedic.astro.repository.MemberRepository;
@@ -56,6 +57,23 @@ public class MemberService {
 
 		for (Member member : members) {
 			memberList.add(convertToDTO(member));
+		}
+
+		return memberList;
+	}
+	
+	public List<MemberSummaryDTO> getAllMembersSummary() throws BusinessException {
+		Iterable<Member> members = this.memberRepository.findAll();
+		List<MemberSummaryDTO> memberList = new ArrayList<MemberSummaryDTO>();
+
+		for (Member member : members) {
+			
+			MemberSummaryDTO memberSummaryDTO = new MemberSummaryDTO();
+			memberSummaryDTO.setName(member.getFirstName() + " " + member.getLastName());
+			memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
+			memberSummaryDTO.setId(member.getPid());
+			
+			memberList.add(memberSummaryDTO);
 		}
 
 		return memberList;

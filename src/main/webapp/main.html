@@ -49,22 +49,16 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 
-
 <!-- skycons -->
 <script src="js/skycons/skycons.js"></script>
 <script src="js/custom.js"></script>
-
-
-
 </head>
-
 
 <body class="nav-md" ng-cloak>
 	<div class="slide-animation-container">
 		<div
 			ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }"
 			ng-if="flash" ng-bind="flash.message"></div>
-
 		<div ng-view id="ng-view" class="slide-animation"></div>
 	</div>
 
@@ -99,7 +93,6 @@
 		src="app/vedicAstroApp/controllers/ChartProfileController.js"></script>
 	<script src="app/vedicAstroApp/controllers/LoginController.js"></script>
 	<script src="app/vedicAstroApp/controllers/ExperimentController.js"></script>
-	
 </body>
 
 </html>

@@ -19,7 +19,6 @@
 
             $http.post('/api/login', { email: username, password: password })
                 .success(function (response) {
-                	
                     callback(response);
            });
 

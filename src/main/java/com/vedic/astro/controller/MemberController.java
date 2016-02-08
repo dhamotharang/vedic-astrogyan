@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vedic.astro.dto.MemberDTO;
+import com.vedic.astro.dto.MemberSummaryDTO;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.SystemException;
 import com.vedic.astro.service.MemberService;
@@ -47,10 +48,10 @@ final public class MemberController extends BaseController {
 	}
 	
 	@RequestMapping(value = "/members/all", method = RequestMethod.GET)
-	public RestServiceResponse<List<MemberDTO>> getAll()
+	public RestServiceResponse<List<MemberSummaryDTO>> getAll()
 			throws BusinessException, SystemException {
 		
-		List<MemberDTO> memberDTOList = memberService.getAllMembers();
-		return new RestServiceResponse<List<MemberDTO>>(memberDTOList);
+		List<MemberSummaryDTO> memberDTOList = memberService.getAllMembersSummary();
+		return new RestServiceResponse<List<MemberSummaryDTO>>(memberDTOList);
 	}
 }

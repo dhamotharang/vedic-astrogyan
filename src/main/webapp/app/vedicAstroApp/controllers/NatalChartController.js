@@ -4,16 +4,28 @@
 	angular.module('vedicAstroApp').controller('NatalChartController',
 			NatalChartController);
 
-	NatalChartController.$inject = [ 'ChartService' ];
-	function NatalChartController(ChartService) {
+	NatalChartController.$inject = [ 'ChartService', '$document' ];
+	function NatalChartController(ChartService, $document) {
 		var vm = this;
 
 		vm.panelTitle = ' < Rashi Chart >';
 		vm.chartType = 'D1';
+		
+		vm.showNak = false;
+		vm.showLongs = false;
+		vm.showLord = false;
+		vm.showArudha = false;
+		vm.showZod = true;
+		vm.showPlanets = true;
+		vm.hideOrShow = hideOrShow;
 		vm.zodiacMap = d3.scale.ordinal().domain(
 				[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]).range(
 				[ "ARE", "TAU", "GEM", "CAN", "LEO", "VIR", "LIB", "SCO",
 						"SAG", "CAP", "AQU", "PIS" ]);
+		vm.arudhaMap = d3.scale.ordinal().domain(
+				[ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]).range(
+				[ "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8",
+						"A9", "A10", "A11", "A12" ]);
 
 		vm.nakMap = d3.scale.ordinal().domain(
 				[ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,
@@ -152,6 +164,15 @@
 			prepareChart(vm.chartType);
 		})();
 
+		function hideOrShow(value, className){
+			if(value){
+			angular.element(document.getElementsByClassName(className)).show();
+			}
+			else{
+				angular.element(document.getElementsByClassName(className)).hide();	
+			}
+		};
+		
 		function prepareChart(chartType) {
 
 			ChartService.getChartData(chartType).then(function(resChartData) {
@@ -166,6 +187,12 @@
 				}
 				console.log("js =" + vm.chartData);
 				renderChart(vm.chartData);
+				hideOrShow(vm.showNak,'nakshatra');
+				hideOrShow(vm.showPlanets,'planet');
+				hideOrShow(vm.showZod,'zodiac');
+				hideOrShow(vm.showLord,'lord');
+				hideOrShow(vm.showArudha,'arudha');
+				hideOrShow(vm.showLongs,'longitudes');
 			});
 		};
 	
@@ -183,27 +210,44 @@
 					}); // x,y points
 
 			var houseText = svg.selectAll("g").data(vm.chartData).enter().append(
-					"g").append("text").attr("y", function(d) {
-				return d.layout.text.y;
-			}) // set y position of bottom of text
-			.append("tspan").attr("x", function(d) {
+			"g").append("text").attr("y", function(d) {
+		return d.layout.text.y;});
+			
+			houseText.append("tspan").attr("x", function(d) {
 				return d.layout.text.x;
 			}).attr("class", "zodiac").text(function(d) {
 				return vm.zodiacMap(d.content.zod);
-			}) // define the text to display
-			.append("tspan").attr("x", function(d) {
+			}); // define the text to display
+			houseText.append("tspan").attr("class", "lord").text(function(d) {
+				return "[" + d.content.lord + "]";
+			}); // define the text to display
+			houseText.append("tspan").attr("class", "arudha").text(function(d) {
+				return "<" + vm.arudhaMap(d.content.arudha)+ ">";
+			}); // define the text to display
+
+			houseText.append("tspan").attr("x", function(d) {
 				return d.layout.text.x;
 			}).attr("dy", 15).attr("dx", -10).attr("class", "planet").text(
 					function(d) {
 						return d.content.planets;
-					}) // define the text to display
-			.append("tspan").attr("x", function(d) {
+					}); // define the text to display
+			houseText.append("tspan").attr("x", function(d) {
 				return d.layout.text.x;
 			}).attr("dy", 15).attr("dx", -10).attr("class", "nakshatra").text(
 					function(d) {
-						return vm.nakMap(d.content.nak);
+						var naks = d.content.naks;
+						var nakNames = [];
+						for (var j = 0; j < naks.length; j++) {
+							 nakNames.push(vm.nakMap(naks[j]));
+						}
+						return nakNames;
 					});
-		}
-		;
+			houseText.append("tspan").attr("x", function(d) {
+				return d.layout.text.x;
+			}).attr("dy", 15).attr("dx", -10).attr("class", "longitudes").text(
+					function(d) {
+						return d.content.longitudes;
+					});
+		};
 	}
 })();

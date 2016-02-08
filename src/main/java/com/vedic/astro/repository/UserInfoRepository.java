@@ -24,7 +24,7 @@ public interface UserInfoRepository extends CrudRepository<UserInfo, String>{
 	@Query(value="{'email' : ?0, 'password':?1}")
 	public Optional<List<UserInfo>> getUserInfoByEmailAndPwd(String email, String password);
 	
-	@Query(value="{'email' : ?0}", fields="{_id : 0}")
+	@Query(value="{'email' : ?0}")
 	public Optional<List<UserInfo>> checkUserExists(String email);
 
 }

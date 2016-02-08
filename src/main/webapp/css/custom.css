@@ -373,9 +373,9 @@ body {
     background: #2A3F54;
     /*#ECF0F1; #FCFCFC*/
     
-    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+    font-family: Arial,"Helvetica Neue", Roboto,  "Droid Sans", sans-serif;
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.471;
 }
 

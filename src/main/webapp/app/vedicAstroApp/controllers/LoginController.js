@@ -24,6 +24,7 @@
                 	console.log("Response :" + response.responseData);
                     AuthService.setCredentials(vm.username, vm.password, response.responseData);
                     $location.path('/');
+                    
                 } else {
                 	
                     FlashService.error(response.failureReason.errorMessage);

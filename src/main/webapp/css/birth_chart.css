@@ -7,10 +7,23 @@ svg{
     fill: blue;
 }
 .planet{
-    fill: red;
+    fill: green;
 }
 .nakshatra{
-    fill: green;
+    fill: magenta;
+    font-size: 10px;
+}
+.arudha{
+    fill: purple;
+    
+}
+.longitudes{
+    fill: black;
+    font-size: 10px;
+}
+.lord{
+    fill: red;
+    
 }
 polygon {
     stroke: black;

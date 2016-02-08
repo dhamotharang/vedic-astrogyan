@@ -12,7 +12,6 @@
 			ReferenceDataService) {
 		var vm = this;
 		vm.panelTitle = "< Birth Details >";
-		vm.items = [ 'item1', 'item2', 'item3' ];
 		vm.countries = [];
 		vm.member = {};
 		vm.cities = [];
@@ -20,50 +19,40 @@
 		vm.openSwitchMemberModal = openSwitchMemberModal;
 
 		(function init() {
-            // reset login status
+			// reset login status
 			loadAllCountries();
 			loadAllCities();
 			loadCurrentMember();
-        })();
-		
+		})();
+
 		function loadAllCountries() {
-			ReferenceDataService.getAllCountries()
-               .then(function (countries) {
-                   vm.countries = countries;
-               });
-		};
-		
+			ReferenceDataService.getAllCountries().then(function(countries) {
+				vm.countries = countries;
+			});
+		}
+		;
+
 		function loadAllCities() {
-			ReferenceDataService.getAllCities()
-               .then(function (cities) {
-                   vm.cities = cities;
-               });
-		};
+			ReferenceDataService.getAllCities().then(function(cities) {
+				vm.cities = cities;
+			});
+		}
+		;
 
 		function loadCurrentMember() {
-			MemberService.getById()
-               .then(function (member) {
-                   vm.member = member;
-               });
-		};
+			MemberService.getById().then(function(member) {
+				vm.member = member;
+			});
+		}
+		;
 
 		function openSwitchMemberModal() {
 			var modalInstance = $uibModal.open({
 				animation : true,
 				templateUrl : 'app/vedicAstroApp/modals/switch_member.html',
 				controller : 'SwitchMemberController',
+				size: 'sm',
 				controllerAs : 'vm',
-				resolve : {
-					items : function() {
-						return vm.items;
-					}
-				}
-			});
-
-			modalInstance.result.then(function(selectedItem) {
-				$scope.selected = selectedItem;
-			}, function() {
-				$log.info('Modal dismissed at: ' + new Date());
 			});
 
 		}
@@ -72,20 +61,41 @@
 	;
 
 	angular.module('vedicAstroApp').controller('SwitchMemberController',
-			function($scope, $uibModalInstance, items) {
+			SwitchMemberController);
 
-				$scope.items = items;
-				$scope.selected = {
-					item : $scope.items[0]
-				};
+	SwitchMemberController.$inject = [ '$rootScope', '$cookieStore', '$route', '$scope', '$uibModalInstance',
+			'MemberService' ];
 
-				$scope.ok = function() {
-					$uibModalInstance.close($scope.selected.item);
-				};
+	function SwitchMemberController($rootScope, $cookieStore, $route, $scope, $uibModalInstance, MemberService) {
 
-				$scope.cancel = function() {
-					$uibModalInstance.dismiss('cancel');
-				};
+		$scope.members = [];
+		$scope.selected = undefined;
+
+		(function init() {
+			loadMembers();
+		})();
+	
+		function loadMembers() {
+			MemberService.getAll().then(function(members) {
+				$scope.members = members;
 			});
+		}
+		;
+
+		$scope.ok = function() {
+			var user = $rootScope.globals;
+			user.currentUser.memberId = $scope.selected.id;
+			$rootScope.globals = user;
+			$cookieStore.remove('globals');
+			$cookieStore.put('globals', $rootScope.globals);
+			$uibModalInstance.close($scope.selected);
+			$route.reload();
+		};
+
+		$scope.cancel = function() {
+			$uibModalInstance.dismiss('cancel');
+		};
+	}
+	;
 
 }());

@@ -19,21 +19,20 @@
 		</div>
 		<div class="row">
 			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked"> Nak
+				<label> <input type="checkbox" ng-model="vm.showNak" ng-click="vm.hideOrShow(vm.showNak,'nakshatra')" > Nak
+				</label>
+			</div>
+		    <div class="col-md-3 col-sm-12 col-xs-12">
+				<label> <input type="checkbox" ng-model="vm.showLongs" ng-click="vm.hideOrShow(vm.showLongs,'longitudes')">Long
 				</label>
 			</div>
 			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked">
-					Zodiac
-				</label>
-			</div>
-			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked">
+				<label> <input type="checkbox" ng-model="vm.showPlanets" ng-click="vm.hideOrShow(vm.showPlanets,'planet')">
 					Planets
 				</label>
 			</div>
 			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked"> Lord
+				<label> <input type="checkbox" ng-model="vm.showLord" ng-click="vm.hideOrShow(vm.showLord,'lord')"> Lord
 				</label>
 			</div>
 		</div>
@@ -44,7 +43,7 @@
 				</label>
 			</div>
 			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked">
+				<label> <input type="checkbox" ng-model="vm.showArudha" ng-click="vm.hideOrShow(vm.showArudha,'arudha')">
 					Arudha
 				</label>
 			</div>
@@ -57,25 +56,6 @@
 				</label>
 			</div>
 		</div>
-
-		<div class="row">
-			<div class="col-md-4 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked">
-					Planet aspects
-				</label>
-			</div>
-			<div class="col-md-4 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked">
-					Zodiac aspects
-				</label>
-			</div>
-			<div class="col-md-4 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked">Long
-				</label>
-			</div>
-
-		</div>
-
 	</div>
 </div>
 
