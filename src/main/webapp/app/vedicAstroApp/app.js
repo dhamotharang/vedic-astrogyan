@@ -17,7 +17,7 @@
                 controllerAs: 'vm'
             })
             .when('/experiment', {
-                controller: 'PopoverDemoCtrl',
+                controller: 'AccordionDemoCtrl',
                 templateUrl: viewBase + 'experiment/experiment.html',
             })
             .when('/pr-house-analysis/:pid', {

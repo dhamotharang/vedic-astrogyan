@@ -1,0 +1,19 @@
+
+<table
+	class="table table-striped responsive-utilities jambo_table bulk_action">
+	<thead>
+		<tr class="headings">
+			<th class="column-title" ng-repeat="field in leaf.fields">{{field}}</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-class="['even pointer', 'odd pointer'][$index %2]"
+			ng-repeat="data in leaf.data">
+
+			<td class=" ">{{data.entityType}}</td>
+			<td class=" ">{{data.name}}</td>
+			<td class=" ">{{data.source}}</td>
+			<td class=" ">{{data.impact}}</td>
+		</tr>
+	</tbody>
+</table>
