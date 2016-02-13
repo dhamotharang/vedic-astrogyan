@@ -9,16 +9,11 @@
     function ReferenceDataService($http) {
         var service = {};
 
-        service.getAllCountries = getAllCountries;
-        service.getAllCities = getAllCities;
+        service.getData = getData;
         return service;
 
-        function getAllCountries() {
-            return $http.get('/api/lookup/countries').then(handleGetSuccess, handleError('Error getting all users'));
-        }
-
-        function getAllCities() {
-            return $http.get('/api/lookup/cities').then(handleGetSuccess, handleError('Error getting all users'));
+        function getData(entity) {
+            return $http.get('/api/lookup/' + entity).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
         function handleGetSuccess(res) {

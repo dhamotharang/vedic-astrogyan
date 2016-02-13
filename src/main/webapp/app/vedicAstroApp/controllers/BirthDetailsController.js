@@ -26,14 +26,14 @@
 		})();
 
 		function loadAllCountries() {
-			ReferenceDataService.getAllCountries().then(function(countries) {
+			ReferenceDataService.getData('countries').then(function(countries) {
 				vm.countries = countries;
 			});
 		}
 		;
 
 		function loadAllCities() {
-			ReferenceDataService.getAllCities().then(function(cities) {
+			ReferenceDataService.getData('cities').then(function(cities) {
 				vm.cities = cities;
 			});
 		}

@@ -39,53 +39,43 @@
 				title : 'References',
 				href : '#/pr-references/'
 			} ]
-		},
+		},		
 		{
-			menuTitle : 'Jaimini',
+			menuTitle : 'General Settings',
 			subItems : [ {
-				title : 'Chart Analysis',
-				href : '#/jm-chart-analysis/'
+				title : 'Person Profile',
+				href : '#/profile-settings/'
 			}, {
-				title : 'House Analysis',
-				href : '#/jm-house-analysis/'
-			}, {
-				title : 'Yogas',
-				href : '#/jm-yogas/'
-			}, {
-				title : 'Zodiac Dashas',
-				href : '#/jm-zod-dashas/'
-			}, {
-				title : 'Event Prediction',
-				href : '#/jm-event-prediction/'
-			}, {
-				title : 'References',
-				href : '#/jm-references/'
+				title : 'Analysis',
+				href : '#/analysis-setting/'
 			} ]
-		},
-		{
-			menuTitle : 'Ashtavarga',
+		},{
+			menuTitle : 'Prediction Mappings',
 			subItems : [ {
-				title : 'Chart Analysis',
-				href : '#/av-chart-analysis/'
+				title : 'Planet',
+				href : '#/planet-mapping/'
 			}, {
-				title : 'House Analysis',
-				href : '#/av-house-analysis/'
+				title : 'House',
+				href : '#/house-mapping/'
+			}, {
+				title : 'Zodiac',
+				href : '#/zodiac-mapping/'
+			}, {
+				title : 'Nakshatra',
+				href : '#/nak-mapping/'
 			}, {
 				title : 'Yogas',
-				href : '#/av-yogas/'
+				href : '#/yoga-mapping/'
 			}, {
-				title : 'Nakshatra Dashas',
-				href : '#/av-nak-dashas/'
+				title : 'Vargas',
+				href : '#/varga-mapping/'
+			}, {
+				title : 'Dashas',
+				href : '#/dasha-mapping/'
 			}, {
 				title : 'Transits',
-				href : '#/av-transits/'
-			}, {
-				title : 'Event Prediction',
-				href : '#/av-event-prediction/'
-			}, {
-				title : 'References',
-				href : '#/av-references/'
-			} ]
+				href : '#/transit-mapping/'
+			}]
 		}];
 	}
 	;

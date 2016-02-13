@@ -50,9 +50,14 @@
                 templateUrl: viewBase + 'reference/pr_references.html',
                 controllerAs: 'vm'
             })
-            .when('/about', {
-                controller: 'AboutController',
-                templateUrl: viewBase + 'about.html',
+            .when('/profile-settings', {
+                controller: 'ChartController',
+                templateUrl: viewBase + 'settings/profile_settings.html',
+                controllerAs: 'vm'
+            })
+            .when('/planet-mapping', {
+                controller: 'ChartController',
+                templateUrl: viewBase + 'settings/planet_mapping.html',
                 controllerAs: 'vm'
             })
             .when('/login', {
@@ -73,7 +78,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/planet-mapping']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

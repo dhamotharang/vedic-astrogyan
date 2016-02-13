@@ -89,11 +89,20 @@
 				} ]
 			} ]
 		} ];
+		
+		$scope.aspects = [];
+
 	
 		(function init() {
-//			loadChartProfile();
+			loadProfileAspects();
 		})();
 
+		function loadProfileAspects() {
+			ProfileService.getProfileHierarchy().then(function(aspects) {
+				$scope.aspects = aspects;
+			});
+		}
+		;
 	};
 
 }());
