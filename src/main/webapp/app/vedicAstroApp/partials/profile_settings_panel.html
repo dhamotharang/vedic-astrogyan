@@ -141,13 +141,25 @@
 		</div>
 		<br>
 		<div class="row">
-			<div class="col-md-2 col-sm-12 col-xs-12">
-				<h2>
-					{{vm.panelPreviewTitle}}
-				</h2>
+			<div class="col-md-6 col-sm-12 col-xs-12">
+				<h2>{{vm.panelPreviewTitle1}}</h2>
+				<div class="clearfix"></div>
 			</div>
-			<div class="col-md-8 col-sm-12 col-xs-12 form-group">
+			<div class="col-md-6 col-sm-12 col-xs-12">
+				<h2>{{vm.panelPreviewTitle2}}</h2>
+				<div class="clearfix"></div>
+			</div>
+			<div class="col-md-6 col-sm-12 col-xs-12 form-group">
 				<node-list ng-model="aspects" kids="children" heading-field="name"></node-list>
+			</div>
+			<div class="col-md-6 col-sm-12 col-xs-12 form-group">
+				<table class="table table-striped table-bordered">
+					<tbody>
+						<tr ng-repeat="aspect in vm.flatProfile">
+							<td scope="row">{{aspect.path}}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<div class="clearfix"></div>
 		</div>

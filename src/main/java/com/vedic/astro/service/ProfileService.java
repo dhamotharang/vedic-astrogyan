@@ -14,15 +14,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vedic.astro.domain.EntityProfileMapping;
 import com.vedic.astro.domain.ProfileAspect;
 import com.vedic.astro.dto.ChartImpactDTO;
 import com.vedic.astro.dto.ChartProfileDTO;
-import com.vedic.astro.dto.EntityAspectMappingDTO;
 import com.vedic.astro.dto.LevelProfileAspectDTO;
+import com.vedic.astro.dto.PathProfileAspectDTO;
 import com.vedic.astro.dto.ProfileAspectDTO;
 import com.vedic.astro.enums.PredictionSystem;
-import com.vedic.astro.repository.EntityAspectObservationRepository;
 import com.vedic.astro.repository.ProfileAspectRepository;
 
 @Service("profileService")
@@ -33,9 +31,6 @@ public class ProfileService {
 	@Qualifier("profileAspectRepository")
 	private ProfileAspectRepository profileAspectRepository;
 
-	@Autowired
-	@Qualifier("entityAspectObservationRepository")
-	private EntityAspectObservationRepository entityAspectObservationRepository;
 
 	public ChartProfileDTO getChartProfile(String memberId) {
 
@@ -115,27 +110,20 @@ public class ProfileService {
 		return children;
 	}
 
-	public List<ProfileAspectDTO> getProfileHierachy(PredictionSystem model) {
+	public List<ProfileAspectDTO> getProfileHierachyTree(PredictionSystem model) {
 		Iterable<ProfileAspect> profileAspects = profileAspectRepository.findAll();
 		return constructTree(profileAspects, model);
+	}
+	
+	public List<PathProfileAspectDTO> getProfileHierachyFlat(PredictionSystem model) {
+		Iterable<ProfileAspect> profileAspects = profileAspectRepository.findAll();
+		return constructFlat(profileAspects, model);
 	}
 
 	public List<ProfileAspectDTO> getProfileHierachyForEntity(PredictionSystem model, String entityType,
 			String entityName) {
 		Iterable<ProfileAspect> profileAspects = profileAspectRepository.findAll();
 		return constructTree(profileAspects, model);
-	}
-
-	public void mapEntityToAspect(List<EntityAspectMappingDTO> entityAspectMappingDTOList) {
-
-		List<EntityProfileMapping> entityMapping = new ArrayList<EntityProfileMapping>();
-
-		for (EntityAspectMappingDTO entityAspectMappingDTO : entityAspectMappingDTOList) {
-			entityMapping.add(new EntityProfileMapping(entityAspectMappingDTO.getAspectCode(),
-					entityAspectMappingDTO.getEntityType(), entityAspectMappingDTO.getEntityName()));
-		}
-		entityAspectObservationRepository.save(entityMapping);
-
 	}
 
 	private List<ProfileAspectDTO> constructTree(Iterable<ProfileAspect> profileHierachy, PredictionSystem model) {
@@ -168,6 +156,7 @@ public class ProfileService {
 		return profileHierachyDTO;
 	}
 
+
 	private ProfileAspectDTO populateChildren(ProfileAspectDTO parent, Map<String, Set<ProfileAspect>> parentMap,
 			PredictionSystem model) {
 
@@ -191,12 +180,70 @@ public class ProfileService {
 		return parent;
 	}
 
+
 	private void populateChildInfo(ProfileAspectDTO child, PredictionSystem model) {
-		Optional<List<EntityProfileMapping>> entityAspectObs = entityAspectObservationRepository
+/*		Optional<List<EntityProfileMapping>> entityAspectObs = entityAspectObservationRepository
 				.getAllMappedEntities(child.getCode());
 		for (EntityProfileMapping entityAspectObservation : entityAspectObs.get()) {
 			child.addMappedEntity(entityAspectObservation.getEntityName());
 		}
+*/		
+	}
+
+
+	private List<PathProfileAspectDTO> constructFlat(Iterable<ProfileAspect> profileHierachy, PredictionSystem model) {
+		List<PathProfileAspectDTO> profileHierachyDTO = 
+				new ArrayList<PathProfileAspectDTO>();
+
+		Map<String, ProfileAspect> codeToObjectMap = 
+				new HashMap<String, ProfileAspect>();
+		
+		for (ProfileAspect profileAspect : profileHierachy) {
+			codeToObjectMap.put(profileAspect.getCode(), profileAspect);
+		}
+
+		for (ProfileAspect profileAspect : profileHierachy) {
+			PathProfileAspectDTO pathProfileAspectDTO = new PathProfileAspectDTO();
+
+			pathProfileAspectDTO.addToPath(profileAspect.getName());
+			pathProfileAspectDTO.setCode(profileAspect.getCode());
+			
+			if(profileAspect.getParentCode()!=null){
+				ProfileAspect parentAspect = 
+						codeToObjectMap.get(profileAspect.getParentCode());
+				pathProfileAspectDTO.addToPath(parentAspect.getName());
+				
+				if(parentAspect.getParentCode()!=null){
+					ProfileAspect parentParentAspect = 
+							codeToObjectMap.get(parentAspect.getParentCode());
+					pathProfileAspectDTO.addToPath(parentParentAspect.getName());
+			
+				}
+			}
+	
+			profileHierachyDTO.add(pathProfileAspectDTO);
+		}
+		return profileHierachyDTO;
+	}
+	private List<PathProfileAspectDTO> populateChildren(PathProfileAspectDTO parent,
+			Map<String, Set<ProfileAspect>> parentMap, PredictionSystem model, List<PathProfileAspectDTO> profileHierachyDTO) {
+
+		Set<ProfileAspect> children = parentMap.get(parent.getCode());
+
+		if (children != null) {
+			for (ProfileAspect profileAspect : children) {
+
+				PathProfileAspectDTO child = new PathProfileAspectDTO();
+				child.addToPath(profileAspect.getName());
+				child.setCode(profileAspect.getCode());
+				profileHierachyDTO.add(parent);
+				
+				if (parentMap.get(profileAspect.getCode()) != null) {
+					populateChildren(child, parentMap, model, profileHierachyDTO);
+				} 
+			}
+		}
+		return profileHierachyDTO;
 	}
 
 }

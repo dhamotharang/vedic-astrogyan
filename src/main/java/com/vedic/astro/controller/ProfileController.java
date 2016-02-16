@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vedic.astro.dto.ChartProfileDTO;
 import com.vedic.astro.dto.LevelProfileAspectDTO;
+import com.vedic.astro.dto.PathProfileAspectDTO;
 import com.vedic.astro.dto.ProfileAspectDTO;
 import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.exception.BusinessException;
@@ -43,13 +44,22 @@ final public class ProfileController extends BaseController {
 		return new RestServiceResponse<ChartProfileDTO>(chartProfileDTO);
 	}
 
-	@RequestMapping(value = "/profile/heirarchy", method = RequestMethod.GET)
+	@RequestMapping(value = "/profile/tree", method = RequestMethod.GET)
 	public RestServiceResponse<List<ProfileAspectDTO>> getProfileHeirarchy() throws BusinessException, SystemException {
 
-		List<ProfileAspectDTO> profileHeirarchy = profileService.getProfileHierachy(PredictionSystem.Prashara);
+		List<ProfileAspectDTO> profileHeirarchy = profileService.getProfileHierachyTree(PredictionSystem.Prashara);
 
 		return new RestServiceResponse<List<ProfileAspectDTO>>(profileHeirarchy);
 	}
+	
+	@RequestMapping(value = "/profile/flat", method = RequestMethod.GET)
+	public RestServiceResponse<List<PathProfileAspectDTO>> getProfileHeirarchyFlat() throws BusinessException, SystemException {
+
+		List<PathProfileAspectDTO> profileHeirarchy = profileService.getProfileHierachyFlat(PredictionSystem.Prashara);
+
+		return new RestServiceResponse<List<PathProfileAspectDTO>>(profileHeirarchy);
+	}
+
 
 	@RequestMapping(value = "/profile/parents", method = RequestMethod.GET)
 	public RestServiceResponse<List<LevelProfileAspectDTO>> getAllParents() throws BusinessException, SystemException {

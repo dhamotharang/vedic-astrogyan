@@ -41,40 +41,31 @@
 			} ]
 		},		
 		{
-			menuTitle : 'General Settings',
-			subItems : [ {
-				title : 'Person Profile',
-				href : '#/profile-settings/'
-			}, {
-				title : 'Analysis',
-				href : '#/analysis-setting/'
-			} ]
-		},{
 			menuTitle : 'Prediction Mappings',
 			subItems : [ {
-				title : 'Planet',
-				href : '#/planet-mapping/'
+				title : 'Person Setup',
+				href : '#/profile-settings/'
 			}, {
-				title : 'House',
-				href : '#/house-mapping/'
+				title : 'Aspect Group',
+				href : '#/aspect-group-setting/'
 			}, {
-				title : 'Zodiac',
-				href : '#/zodiac-mapping/'
+				title : 'Prediction Group',
+				href : '#/prediction-group-setting/'
 			}, {
-				title : 'Nakshatra',
-				href : '#/nak-mapping/'
+				title : 'Analysis component',
+				href : '#/analysis-component-setting/'
 			}, {
-				title : 'Yogas',
-				href : '#/yoga-mapping/'
+				title : 'Final profile',
+				href : '#/final-profile/'
+			} ]
+		},{
+			menuTitle : 'User Management',
+			subItems : [ {
+				title : 'Add User',
+				href : '#/add-user/'
 			}, {
-				title : 'Vargas',
-				href : '#/varga-mapping/'
-			}, {
-				title : 'Dashas',
-				href : '#/dasha-mapping/'
-			}, {
-				title : 'Transits',
-				href : '#/transit-mapping/'
+				title : 'Edit User',
+				href : '#/edit-user/'
 			}]
 		}];
 	}

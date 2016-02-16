@@ -55,9 +55,24 @@
                 templateUrl: viewBase + 'settings/profile_settings.html',
                 controllerAs: 'vm'
             })
-            .when('/planet-mapping', {
+            .when('/aspect-group-setting', {
                 controller: 'ChartController',
-                templateUrl: viewBase + 'settings/planet_mapping.html',
+                templateUrl: viewBase + 'settings/aspect_group_setting.html',
+                controllerAs: 'vm'
+            })
+            .when('/prediction-group-setting', {
+                controller: 'ChartController',
+                templateUrl: viewBase + 'settings/prediction_group_setting.html',
+                controllerAs: 'vm'
+            })
+            .when('/analysis-component-setting', {
+                controller: 'ChartController',
+                templateUrl: viewBase + 'settings/analysis_component_setting.html',
+                controllerAs: 'vm'
+            })
+            .when('/final-profile', {
+                controller: 'ChartController',
+                templateUrl: viewBase + 'settings/final_profile.html',
                 controllerAs: 'vm'
             })
             .when('/login', {
@@ -78,7 +93,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/planet-mapping']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/planet-mapping','/aspect-group-setting']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

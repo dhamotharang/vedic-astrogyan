@@ -11,7 +11,8 @@
 
         service.getChartProfile = getChartProfile;
         service.getHouseProfile = getHouseProfile;
-        service.getProfileHierarchy = getProfileHierarchy;
+        service.getProfileTree = getProfileTree;
+        service.getProfileFlat = getProfileFlat;
         service.getAllParents = getAllParents;
         service.getImmediateChildren = getImmediateChildren;
         service.saveAspect = saveAspect;
@@ -27,8 +28,12 @@
             return $http.get('/api/profile/house/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
-        function getProfileHierarchy() {
-            return $http.get('/api/profile/heirarchy').then(handleGetSuccess, handleError('Error getting profile hierarchy'));
+        function getProfileTree() {
+            return $http.get('/api/profile/tree').then(handleGetSuccess, handleError('Error getting profile hierarchy'));
+        }
+
+        function getProfileFlat() {
+            return $http.get('/api/profile/flat').then(handleGetSuccess, handleError('Error getting profile hierarchy'));
         }
 
         function getAllParents() {

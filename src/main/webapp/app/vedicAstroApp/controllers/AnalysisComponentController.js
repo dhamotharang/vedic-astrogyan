@@ -2,13 +2,13 @@
 
 	'use strict';
 
-	angular.module('vedicAstroApp').controller('ProfileSettingsController',
-			ProfileSettingsController);
+	angular.module('vedicAstroApp').controller('AnalysisComponentController',
+			AnalysisComponentController);
 
-	ProfileSettingsController.$inject = [ '$rootScope', '$scope', 'ProfileService' ];
+	AnalysisComponentController.$inject = ['ProfileService' ];
 
-	function ProfileSettingsController($rootScope, $scope, ProfileService) {
-		$scope.aspects = [];
+	function AnalysisComponentController(ProfileService) {
+		
 		var vm = this;
 		vm.panelTitle = "< Profile setup >";
 		vm.panelPreviewTitle1 = "Tree Preview";
@@ -37,7 +37,6 @@
 		
 		(function init() {
 			loadAllParents();
-			loadProfileTree();
 			loadProfileFlat();
 		})();
 
@@ -48,11 +47,6 @@
 			});
 		};
 		
-		function loadProfileTree() {
-			ProfileService.getProfileTree().then(function(aspects) {
-				$scope.aspects = aspects;
-			});
-		};
 		
 		function loadProfileFlat() {
 			ProfileService.getProfileFlat().then(function(flatProfile) {

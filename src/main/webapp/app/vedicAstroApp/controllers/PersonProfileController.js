@@ -98,7 +98,7 @@
 		})();
 
 		function loadProfileAspects() {
-			ProfileService.getProfileHierarchy().then(function(aspects) {
+			ProfileService.getProfileTree().then(function(aspects) {
 				$scope.aspects = aspects;
 			});
 		}

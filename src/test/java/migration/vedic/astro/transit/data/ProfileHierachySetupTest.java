@@ -8,17 +8,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.vedic.astro.domain.ProfileAspect;
+import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.repository.ProfileAspectRepository;
+import com.vedic.astro.service.ProfileService;
 
 import test.vedic.astro.data.BaseUtilTest;
 
 public class ProfileHierachySetupTest extends BaseUtilTest {
- 
+
 	@Autowired
 	@Qualifier("profileAspectRepository")
 	private ProfileAspectRepository profileAspectRepository;
 
-	@Test
+	@Autowired
+	@Qualifier("profileService")
+	private ProfileService profileService;
+
+	// @Test
 	public void setupProfileData() {
 		List<ProfileAspect> profileHierachy = new ArrayList<ProfileAspect>();
 
@@ -68,5 +74,9 @@ public class ProfileHierachySetupTest extends BaseUtilTest {
 
 		profileAspectRepository.save(profileHierachy);
 	}
-	
+
+	@Test
+	public void getFlatTree() {
+		System.out.println("Flat structure = " + profileService.getProfileHierachyFlat(PredictionSystem.Prashara));
 	}
+}

@@ -6,7 +6,8 @@ import java.util.List;
 public class ProfileAspectDTO extends LevelProfileAspectDTO{
 	
 	private List<ProfileAspectDTO> children = new ArrayList<ProfileAspectDTO>();
-	private List<String> mappedEntities = new ArrayList<String>();
+	private List<String> mappedTemplates = new ArrayList<String>();
+	
 	
 	public List<ProfileAspectDTO> getChildren() {
 		return children;
@@ -20,21 +21,16 @@ public class ProfileAspectDTO extends LevelProfileAspectDTO{
 		this.children.add(profileAspectDTO);
 	}
 
-	
-	public List<String> getMappedEntities() {
-		return mappedEntities;
+	public List<String> getMappedTemplates() {
+		return mappedTemplates;
 	}
 
-	public void setMappedEntities(List<String> mappedEntities) {
-		this.mappedEntities = mappedEntities;
-	}
-
-	public void addMappedEntity(String entityName){
-		this.mappedEntities.add(entityName);
+	public void setMappedTemplates(List<String> mappedTemplates) {
+		this.mappedTemplates = mappedTemplates;
 	}
 
 	@Override
 	public String toString() {
-		return "ProfileAspectDTO [children=" + children + ", mappedEntities=" + mappedEntities + "]";
+		return "ProfileAspectDTO [children=" + children + ", mappedTemplates=" + mappedTemplates + "]";
 	}
 }
