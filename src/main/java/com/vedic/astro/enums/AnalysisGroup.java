@@ -1,6 +1,6 @@
 package com.vedic.astro.enums;
 
-public enum ObservationSource {
+public enum AnalysisGroup {
 
 	ChartAnalysis, HouseAnalysis, YogasAnalysis, VargaAnalysis, TransitAnalysis
 }
