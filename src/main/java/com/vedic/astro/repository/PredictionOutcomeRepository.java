@@ -24,4 +24,7 @@ public interface PredictionOutcomeRepository extends CrudRepository<PredictionOu
 	@Query(value="{'templateCode' : ?0}")
 	public Optional<List<PredictionOutcome>> getOutcomesForTemplate(String templateCode);
 
+	@Query(value="{'code' : ?0}")
+	public Optional<PredictionOutcome> findByCode(String code);
+
 }

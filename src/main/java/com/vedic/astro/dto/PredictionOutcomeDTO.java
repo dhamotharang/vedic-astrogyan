@@ -8,6 +8,7 @@ public class PredictionOutcomeDTO {
 	private String code = null;
 	private String name = null;
 	private String templateCode = null;
+	
 	private List<PredictionObservationDTO> observations = 
 			new ArrayList<PredictionObservationDTO>();
 	

@@ -8,6 +8,7 @@ public class PredictionObservationDTO {
 	private boolean timeDependent;
 	private ObservationNature nature;
 	private String aspectCode;
+	private String aspectPath;
 	
 	public String getObservation() {
 		return observation;
@@ -33,9 +34,15 @@ public class PredictionObservationDTO {
 	public void setAspectCode(String aspectCode) {
 		this.aspectCode = aspectCode;
 	}
+	public String getAspectPath() {
+		return aspectPath;
+	}
+	public void setAspectPath(String aspectPath) {
+		this.aspectPath = aspectPath;
+	}
 	@Override
 	public String toString() {
 		return "PredictionObservationDTO [observation=" + observation + ", timeDependent=" + timeDependent + ", nature="
-				+ nature + ", aspectCode=" + aspectCode + "]";
+				+ nature + ", aspectCode=" + aspectCode + ", aspectPath=" + aspectPath + "]";
 	}
 }

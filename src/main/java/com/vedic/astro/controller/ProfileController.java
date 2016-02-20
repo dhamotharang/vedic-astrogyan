@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.vedic.astro.dto.ChartProfileDTO;
 import com.vedic.astro.dto.LevelProfileAspectDTO;
 import com.vedic.astro.dto.PathProfileAspectDTO;
+import com.vedic.astro.dto.PredictionOutcomeDTO;
 import com.vedic.astro.dto.PredictionTemplateDTO;
 import com.vedic.astro.dto.ProfileAspectDTO;
+import com.vedic.astro.dto.TemplateAspectDTO;
 import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.SystemException;
@@ -102,13 +104,63 @@ final public class ProfileController extends BaseController {
 		String returnValue = "Template saved successfully";
 		return new RestServiceResponse<String>(returnValue);
 	}
-	
-	@RequestMapping(value = "/templates/all", method = RequestMethod.GET)
-	public RestServiceResponse<List<LevelProfileAspectDTO>> getAllTemplates() throws BusinessException, SystemException {
 
-		List<LevelProfileAspectDTO> parentsList = profileService.getAllParents();
+	@RequestMapping(value = "/template/delete", method = RequestMethod.POST)
+	public RestServiceResponse<String> deleteTemplate(@RequestBody @Valid PredictionTemplateDTO predictionTemplateDTO) throws BusinessException, SystemException {
 
-		return new RestServiceResponse<List<LevelProfileAspectDTO>>(parentsList);
+		profileService.deleteTemplate(predictionTemplateDTO);
+		String returnValue = "Template deleted successfully";
+		return new RestServiceResponse<String>(returnValue);
 	}
 
+	@RequestMapping(value = "/templates/all", method = RequestMethod.GET)
+	public RestServiceResponse<List<PredictionTemplateDTO>> getAllTemplates() throws BusinessException, SystemException {
+
+		List<PredictionTemplateDTO> predictionTemplateDTOList = 
+				profileService.getAll();
+		return new RestServiceResponse<List<PredictionTemplateDTO>>(
+				predictionTemplateDTOList);
+	}
+	
+	@RequestMapping(value = "/template/aspects/{templateCode}", method = RequestMethod.GET)
+	public RestServiceResponse<List<TemplateAspectDTO>> getTemplateAspects(@PathVariable String templateCode) throws BusinessException, SystemException {
+
+		List<TemplateAspectDTO> templateAspectDTOList = 
+				profileService.getAllAspects(templateCode);
+		return new RestServiceResponse<List<TemplateAspectDTO>>(
+				templateAspectDTOList);
+	}
+	
+	@RequestMapping(value = "/outcome/save", method = RequestMethod.POST)
+	public RestServiceResponse<String> saveOutcome(@RequestBody @Valid PredictionOutcomeDTO predictionOutcomeDTO) throws BusinessException, SystemException {
+
+		profileService.savePredictionOutcome(predictionOutcomeDTO);
+		String returnValue = "Outcome saved successfully";
+		return new RestServiceResponse<String>(returnValue);
+	}
+
+	@RequestMapping(value = "/outcome/create", method = RequestMethod.POST)
+	public RestServiceResponse<String> createOutcome(@RequestBody @Valid PredictionOutcomeDTO predictionOutcomeDTO) throws BusinessException, SystemException {
+
+		profileService.createPredictionOutcome(predictionOutcomeDTO);
+		String returnValue = "Outcome created successfully";
+		return new RestServiceResponse<String>(returnValue);
+	}
+
+	@RequestMapping(value = "/outcome/delete", method = RequestMethod.POST)
+	public RestServiceResponse<String> deleteOutcome(@RequestBody @Valid PredictionOutcomeDTO predictionOutcomeDTO) throws BusinessException, SystemException {
+
+		profileService.deleteOutcome(predictionOutcomeDTO);
+		String returnValue = "Outcome deleted successfully";
+		return new RestServiceResponse<String>(returnValue);
+	}
+
+	@RequestMapping(value = "/outcomes/{templateCode}", method = RequestMethod.GET)
+	public RestServiceResponse<List<PredictionOutcomeDTO>> getOutcomes(@PathVariable String templateCode) throws BusinessException, SystemException {
+
+		List<PredictionOutcomeDTO> predictionOutcomeDTOList = 
+				profileService.getOutcomes(templateCode);
+		return new RestServiceResponse<List<PredictionOutcomeDTO>>(
+				predictionOutcomeDTOList);
+	}
 }

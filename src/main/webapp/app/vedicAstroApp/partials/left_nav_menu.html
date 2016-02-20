@@ -1,7 +1,7 @@
 <div class="left_col scroll-view" ng-controller="NavbarController as vm">
 
 	<div class="navbar nav_title" style="border: 0;">
-		<a href="index.html" class="site_title"><i class="fa fa-paw"></i>
+		<a href="main.html" class="site_title"><i class="fa {{vm.appIcon}}"></i>
 			<span>{{ vm.menuTitle }}</span></a>
 	</div>
 	<div class="clearfix"></div>
@@ -23,7 +23,7 @@
 		<div class="menu_section">
 			<h3>{{ vm.user.role }}</h3>
 			<ul class="nav side-menu">
-				<li ng-repeat="menuItem in vm.menuItems"><a><i class="fa fa-home"></i> {{menuItem.menuTitle}} <span
+				<li ng-repeat="menuItem in vm.menuItems"><a><i class="fa {{menuItem.icon}}"></i> {{menuItem.menuTitle}} <span
 						class="fa fa-chevron-down"></span></a>
 					<ul class="nav child_menu" style="display: none">
 						<li ng-repeat="subItem in menuItem.subItems"><a ng-href="{{subItem.href}}">{{subItem.title}}</a></li>

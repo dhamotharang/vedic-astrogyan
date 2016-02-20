@@ -14,7 +14,7 @@
 		vm.groupPanelTitle = '< Manage Prediction groups >';
 		vm.aspectsSelected = [];
 		vm.predictionTemplate = {code:'', name:'', aspects:[]};
-		vm.predictionTemplates = [{code:'temp1', name:'Template1'},{code:'temp2', name:'Template2'},{code:'temp3', name:'Template3'}];
+		vm.predictionTemplates = [];
 		vm.templateSelected = {};
 		vm.gotoNext = gotoNext;
 		vm.gotoPrevious = gotoPrevious;
@@ -24,7 +24,7 @@
 		vm.previousButton = 'buttonDisabled';
 		vm.finishButton = 'buttonDisabled';
 		vm.currentStep = {};
-		vm.addTemplate = addTemplate;
+		vm.saveTemplate = saveTemplate;
 		
 		vm.step1 = {
 			name : 'Step 1',
@@ -51,7 +51,9 @@
 			
 		})();
 
-		function addTemplate(template)
+		function saveTemplate(template){
+			
+		}
 		function loadProfileFlat() {
 			ProfileService.getProfileFlat().then(function(flatProfile) {
 				vm.aspectsSelected = flatProfile;

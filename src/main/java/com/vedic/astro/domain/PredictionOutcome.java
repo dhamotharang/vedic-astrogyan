@@ -19,6 +19,7 @@ public class PredictionOutcome {
 	
 	private Map<String, PredictionObservation> predictionObservations = 
 			new HashMap<String, PredictionObservation>();
+	
 	public String getId() {
 		return id;
 	}

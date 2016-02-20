@@ -17,6 +17,14 @@
         service.getImmediateChildren = getImmediateChildren;
         service.saveAspect = saveAspect;
         service.deleteAspect = deleteAspect;
+        service.saveTemplate = saveTemplate;
+        service.getAllTemplates = getAllTemplates;
+        service.deleteTemplate = deleteTemplate;
+        service.getTemplateAspects = getTemplateAspects;
+        service.saveOutcome = saveOutcome;
+        service.createOutcome = createOutcome;
+        service.deleteOutcome = deleteOutcome;
+        service.getOutcomes = getOutcomes;
         
         return service;
 
@@ -50,6 +58,38 @@
         
         function deleteAspect(id) {
             return $http.post('/api/profile/delete/'+ id).then(handleSubmitSuccess, handleError('Error adding aspect'));
+        }
+        
+        function saveTemplate(template) {
+            return $http.post('/api/template/save', template).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
+        
+        function deleteTemplate(template) {
+            return $http.post('/api/template/delete', template).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
+
+        function getAllTemplates() {
+            return $http.get('/api/templates/all').then(handleGetSuccess, handleError('Error getting template list'));
+        }
+ 
+        function getTemplateAspects(templateCode) {
+            return $http.get('/api/template/aspects/' + templateCode).then(handleGetSuccess, handleError('Error getting all users'));
+        }
+
+        function createOutcome(outcome) {
+            return $http.post('/api/outcome/create', outcome).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
+        
+        function saveOutcome(outcome) {
+            return $http.post('/api/outcome/save', outcome).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
+        
+        function deleteOutcome(outcome) {
+            return $http.post('/api/outcome/delete', outcome).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
+
+        function getOutcomes(templateCode) {
+            return $http.get('/api/outcomes/' + templateCode).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
         function handleGetSuccess(res) {

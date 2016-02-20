@@ -74,7 +74,7 @@ if ($(".js-switch")[0]) {
 }
 /** ******  /switcher  *********************** **/
 /** ******  scrollview  *********************** **/
-$(document).ready(function () {
+$(document).ready(function() {
   
             $(".scroll-view").niceScroll({
                 touchbehavior: true,

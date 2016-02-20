@@ -55,14 +55,14 @@
                 templateUrl: viewBase + 'settings/profile_settings.html',
                 controllerAs: 'vm'
             })
-            .when('/aspect-group-setting', {
+            .when('/prediction-templates', {
                 controller: 'ChartController',
-                templateUrl: viewBase + 'settings/aspect_group_setting.html',
+                templateUrl: viewBase + 'settings/prediction_template_settings.html',
                 controllerAs: 'vm'
             })
-            .when('/prediction-group-setting', {
+            .when('/prediction-outcomes', {
                 controller: 'ChartController',
-                templateUrl: viewBase + 'settings/prediction_group_setting.html',
+                templateUrl: viewBase + 'settings/prediction_outcome_settings.html',
                 controllerAs: 'vm'
             })
             .when('/analysis-component-setting', {

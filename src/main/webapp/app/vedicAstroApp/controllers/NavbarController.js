@@ -11,9 +11,11 @@
 		var vm = this;
 
 		vm.menuTitle = 'Vedic Astro';
+		vm.appIcon = 'fa-eye';
 		vm.user = $rootScope.globals.currentUser;
 		vm.menuItems = [ {
 			menuTitle : 'Prashari',
+			icon : 'fa-laptop',
 			subItems : [ {
 				title : 'Chart Analysis',
 				href : '#/pr-chart-analysis/'
@@ -41,25 +43,27 @@
 			} ]
 		},		
 		{
-			menuTitle : 'Prediction Mappings',
+			menuTitle : 'Settings',
+			icon : 'fa-wrench',
 			subItems : [ {
-				title : 'Person Setup',
+				title : 'Profile Setup',
 				href : '#/profile-settings/'
 			}, {
-				title : 'Aspect Group',
-				href : '#/aspect-group-setting/'
+				title : 'Prediction Templates',
+				href : '#/prediction-templates/'
 			}, {
-				title : 'Prediction Group',
-				href : '#/prediction-group-setting/'
+				title : 'Prediction Outcomes',
+				href : '#/prediction-outcomes/'
 			}, {
-				title : 'Analysis component',
-				href : '#/analysis-component-setting/'
+				title : 'Analysis Components',
+				href : '#/analysis-components/'
 			}, {
 				title : 'Final profile',
 				href : '#/final-profile/'
 			} ]
 		},{
 			menuTitle : 'User Management',
+			icon : 'fa-user',
 			subItems : [ {
 				title : 'Add User',
 				href : '#/add-user/'

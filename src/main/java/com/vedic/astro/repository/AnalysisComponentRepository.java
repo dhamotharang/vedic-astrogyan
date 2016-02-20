@@ -18,10 +18,13 @@ import com.vedic.astro.domain.AnalysisComponent;
  * @author Sumeer Saxena
  * @param <T>
  */
-@Repository("predictionOutcomeRepository")
+@Repository("analysisComponentRepository")
 public interface AnalysisComponentRepository extends CrudRepository<AnalysisComponent, String>{
 
 	@Query(value="{'predictionTemplateCode' : ?0}")
-	public Optional<List<AnalysisComponent>> getComponentsByTemplate(String predictionTemplateCode);
+	public Optional<List<AnalysisComponent>> findByTemplate(String predictionTemplateCode);
+
+	@Query(value="{'code' : ?0}")
+	public Optional<AnalysisComponent> findByCode(String code);
 
 }
