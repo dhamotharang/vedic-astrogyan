@@ -1,4 +1,4 @@
-<div class="x_panel" ng-controller="PersonProfileController">
+<div class="x_panel" ng-controller="FinalProfileController as vm">
 
 	<div class="x_title">
 		<div class="row">
@@ -19,8 +19,36 @@
 	</div>
 	<div class="x_content">
 		<div class="row">
+			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+				<h4>Templates</h4>
+			</div>
+			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+				<h4>Analysis Groups</h4>
+			</div>
+			<div class="col-md-6 col-sm-12 col-xs-12 form-group"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+				<select class="form-control" ng-model="vm.templateSelected"
+				    ng-change="vm.filterByTemplate(vm.templateSelected.code)"
+					ng-options="template.name for template in vm.predictionTemplates track by template.code">
+				</select>
+			</div>
+			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+				<select class="form-control" ng-model="vm.analysisGroupSelected"
+					ng-change="vm.filterByAnalysisGroup(vm.analysisGroupSelected.code)"
+					ng-options="analysisGroup.name for analysisGroup in vm.analysisGroups track by analysisGroup.code">
+				</select>
+			</div>
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+			<button class="btn btn-round btn-primary" type="button" ng-click="vm.loadProfileAspects()">Clear</button>
+			</div>
+			
+		</div>
+		<br>
+		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12 form-group">
-			<node-list ng-model="aspects" kids="children" heading-field="name" ></node-list>
+				<node-list ng-model="aspects" kids="children" heading-field="name"></node-list>
 			</div>
 		</div>
 	</div>

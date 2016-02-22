@@ -9,11 +9,12 @@ public class ComponentInfoDTO {
 	
 	private AnalysisGroup analysisGroup = null; 
 	private String name = null;
+	private String code = null;
 	private String conditionChecked = null;
-	private String predictionTemplateName = null;
+	private PredictionTemplateDTO predictionTemplate = null;
+	private List<PredictionOutcomeDTO> predictionOutcomes = new ArrayList<PredictionOutcomeDTO>();
 	private Boolean enabled = true;
-	private List<String> predictionOutcomeNames = new ArrayList<String>();
-	
+
 	public AnalysisGroup getAnalysisGroup() {
 		return analysisGroup;
 	}
@@ -32,31 +33,34 @@ public class ComponentInfoDTO {
 	public void setConditionChecked(String conditionChecked) {
 		this.conditionChecked = conditionChecked;
 	}
-	public String getPredictionTemplateName() {
-		return predictionTemplateName;
-	}
-	public void setPredictionTemplateName(String predictionTemplateName) {
-		this.predictionTemplateName = predictionTemplateName;
-	}
 	public Boolean getEnabled() {
 		return enabled;
 	}
 	public void setEnabled(Boolean enabled) {
 		this.enabled = enabled;
 	}
-	public List<String> getPredictionOutcomeNames() {
-		return predictionOutcomeNames;
+	public String getCode() {
+		return code;
 	}
-	public void setPredictionOutcomeNames(List<String> predictionOutcomeNames) {
-		this.predictionOutcomeNames = predictionOutcomeNames;
+	public void setCode(String code) {
+		this.code = code;
 	}
-	public void addPredictionOutcomeName(String predictionOutcomeName) {
-		this.predictionOutcomeNames.add(predictionOutcomeName);
+	public PredictionTemplateDTO getPredictionTemplate() {
+		return predictionTemplate;
+	}
+	public void setPredictionTemplate(PredictionTemplateDTO predictionTemplate) {
+		this.predictionTemplate = predictionTemplate;
+	}
+	public List<PredictionOutcomeDTO> getPredictionOutcomes() {
+		return predictionOutcomes;
+	}
+	public void setPredictionOutcomes(List<PredictionOutcomeDTO> predictionOutcomes) {
+		this.predictionOutcomes = predictionOutcomes;
 	}
 	@Override
 	public String toString() {
-		return "ComponentInfoDTO [analysisGroup=" + analysisGroup + ", name=" + name + ", conditionChecked="
-				+ conditionChecked + ", predictionTemplateName=" + predictionTemplateName + ", enabled=" + enabled
-				+ ", predictionOutcomeNames=" + predictionOutcomeNames + "]";
+		return "ComponentInfoDTO [analysisGroup=" + analysisGroup + ", name=" + name + ", code=" + code
+				+ ", conditionChecked=" + conditionChecked + ", predictionTemplate=" + predictionTemplate
+				+ ", predictionOutcomes=" + predictionOutcomes + ", enabled=" + enabled + "]";
 	}
 }

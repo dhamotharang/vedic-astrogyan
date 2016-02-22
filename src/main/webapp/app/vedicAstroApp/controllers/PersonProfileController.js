@@ -5,7 +5,7 @@
 	var node = {
 		name : '',
 		children : [],
-		data : ''
+		predictions : ''
 	};
 	angular.module('vedicAstroApp').controller('PersonProfileController',
 			PersonProfileController);
@@ -21,39 +21,42 @@
 					name : 'Looks',
 					children : [ {
 						name : 'Child 1.1.1.1',
-						fields :['Source','Condition','Time dependence','Impact', 'Nature'],
-					      data : [{source:'Zod',condition :'Asc',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Nak',condition :'Sun Nak',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Planet',condition :'Sun',timeDependence :'No', impact:'Weak',nature:'Malefic'}]
+						headings :['Source','Component','Condition','Outcome','Time dependence','Impact', 'Nature'],
+					      predictions : [{analysisGroup:'Zod',componentName :'Asc',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Nak',componentName :'Sun Nak',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Planet',componentName :'Sun',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Malefic'}],
+					      mappedTemplates : '[A, B]'        
 					
 					}, {
 						name : 'Child 1.1.1.2',
-						fields :['Source','Condition','Time dependence','Impact', 'Nature'],
-					      data : [{source:'Zod',condition :'Asc',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Nak',condition :'Sun Nak',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Planet',condition :'Sun',timeDependence :'No', impact:'Weak',nature:'Malefic'}]
+						headings :['Source','Component','Condition','Outcome','Time dependence','Impact', 'Nature'],
+					      predictions : [{analysisGroup:'Zod',componentName :'Asc',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Nak',componentName :'Sun Nak',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Planet',componentName :'Sun',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Malefic'}],
+					    mappedTemplates : '[A, B]'       
 					} ]
 				}, {
 					name : 'Sub 1.1.2',
 					children : [ {
 						name : 'Child 1.1.2.1',
-						fields :['Source','Condition','Time dependence','Impact', 'Nature'],
-					      data : [{source:'Zod',condition :'Asc',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Nak',condition :'Sun Nak',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Planet',condition :'Sun',timeDependence :'No', impact:'Weak',nature:'Malefic'}]    	
+						headings :['Source','Component','Condition','Outcome','Time dependence','Impact', 'Nature'],
+					      predictions : [{analysisGroup:'Zod',componentName :'Asc',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Nak',componentName :'Sun Nak',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Planet',componentName :'Sun',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Malefic'}],
+					      mappedTemplates : '[A, B]'        
 					}, {
 						name : 'Child 1.1.2.2',
-						fields :['Source','Condition','Time dependence','Impact', 'Nature'],
-					      data : [{source:'Zod',condition :'Asc',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Nak',condition :'Sun Nak',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Planet',condition :'Sun',timeDependence :'No', impact:'Weak',nature:'Malefic'}]
+						headings :['Source','Component','Condition','Outcome','Time dependence','Impact', 'Nature'],
+					      predictions : [{analysisGroup:'Zod',componentName :'Asc',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Nak',componentName :'Sun Nak',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Planet',componentName :'Sun',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Malefic'}]
 					
 					}, {
 						name : 'Child 1.1.2.3',
-						fields :['Source','Condition','Time dependence','Impact', 'Nature'],
-					      data : [{source:'Zod',condition :'Asc',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Nak',condition :'Sun Nak',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-					              {source:'Planet',condition :'Sun',timeDependence :'No', impact:'Weak',nature:'Malefic'}]
+						headings :['Source','Component','Condition','Outcome','Time dependence','Impact', 'Nature'],
+					      predictions : [{analysisGroup:'Zod',componentName :'Asc',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Nak',componentName :'Sun Nak',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+					              {analysisGroup:'Planet',componentName :'Sun',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Malefic'}]
 					    	
 					} ]
 				} ]
@@ -61,17 +64,17 @@
 				name : 'Sub 1.2',
 				children : [ {
 					name : 'Physical stature',
-					fields :['Source','Condition','Time dependence','Impact', 'Nature'],
-				      data : [{source:'Zod',condition :'Asc',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-				              {source:'Nak',condition :'Sun Nak',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-				              {source:'Planet',condition :'Sun',timeDependence :'No', impact:'Weak',nature:'Malefic'}]
+					headings :['Source','Component','Condition','Outcome','Time dependence','Impact', 'Nature'],
+				      predictions : [{analysisGroup:'Zod',componentName :'Asc',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+				              {analysisGroup:'Nak',componentName :'Sun Nak',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+				              {analysisGroup:'Planet',componentName :'Sun',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Malefic'}]
 				    	
 				}, {
 					name : 'Height',
-					fields :['Source','Condition','Time dependence','Impact', 'Nature'],
-				      data : [{source:'Zod',condition :'Asc',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-				              {source:'Nak',condition :'Sun Nak',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-				              {source:'Planet',condition :'Sun',timeDependence :'No', impact:'Weak',nature:'Malefic'}]
+					headings :['Source','Component','Condition','Outcome','Time dependence','Impact', 'Nature'],
+				      predictions : [{analysisGroup:'Zod',componentName :'Asc',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+				              {analysisGroup:'Nak',componentName :'Sun Nak',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+				              {analysisGroup:'Planet',componentName :'Sun',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Malefic'}]
 				    	
 				} ]
 			} ]
@@ -81,10 +84,10 @@
 				name : 'Aggression',
 				children : [ {
 					name : 'Anger',
-				      fields :['Source','Condition','Time dependence','Impact', 'Nature'],
-				      data : [{source:'Zod',condition :'Asc',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-				              {source:'Nak',condition :'Sun Nak',timeDependence :'No', impact:'Strong',nature:'Benefic'},
-				              {source:'Planet',condition :'Sun',timeDependence :'No', impact:'Weak',nature:'Malefic'}]
+					headings :['Source','Component','Condition','Outcome','Time dependence','Impact', 'Nature'],
+				      predictions : [{analysisGroup:'Zod',condition :'Asc',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+				              {analysisGroup:'Nak',condition :'Sun Nak',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Benefic'},
+				              {analysisGroup:'Planet',condition :'Sun',conditionChecked :'No', outcome:'XYZ', timeDependent : true, observation:'Strong',nature:'Malefic'}]
 				    	
 				} ]
 			} ]

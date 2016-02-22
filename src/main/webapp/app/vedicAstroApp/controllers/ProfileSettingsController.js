@@ -22,7 +22,9 @@
 		vm.furtherChildren = [];
 		vm.furtherChildSelected = {};
 		vm.loadChildren = loadChildren;
-		
+		vm.newParent = {};
+		vm.newImmediateChild = {};
+		vm.newFurtherChild = {};
 		vm.addParentAspect = addParentAspect;
 		vm.addImmediateChildAspect = addImmediateChildAspect;
 		vm.addFurtherChildAspect = addFurtherChildAspect;
@@ -63,6 +65,7 @@
 		function addParentAspect(code, name) {
 			var aspect = {code: code, name : name};
 			ProfileService.saveAspect(aspect).then(function(response) {
+				vm.newParent = {};
 				loadAllParents();
 				loadProfileTree();
 				loadProfileFlat();
@@ -73,6 +76,7 @@
 		function addImmediateChildAspect(code, name, parentCode) {
 			var aspect = {code: code, name : name, parentCode : parentCode};
 			ProfileService.saveAspect(aspect).then(function(response) {
+				vm.newImmediateChild = {};
 				loadChildren(parentCode, 1);
 				loadProfileTree();
 				loadProfileFlat();
@@ -83,6 +87,7 @@
 		function addFurtherChildAspect(code, name, parentCode) {
 			var aspect = {code: code, name : name, parentCode : parentCode};
 			ProfileService.saveAspect(aspect).then(function(response) {
+				vm.newFurtherChild = {};
 				loadChildren(parentCode, 2);
 				loadProfileTree();
 				loadProfileFlat();

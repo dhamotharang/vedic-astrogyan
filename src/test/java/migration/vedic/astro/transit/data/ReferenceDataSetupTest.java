@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.vedic.astro.domain.ReferenceData;
 import com.vedic.astro.dto.ReferenceDataDTO;
+import com.vedic.astro.enums.AnalysisGroup;
 import com.vedic.astro.enums.BirthChartType;
 import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.Nakshatra;
@@ -115,7 +116,7 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 		referenceDataRepository.save(referenceData);
 	}
 
-	@Test
+	//@Test
 	public void setupZodiacData() {
 		ReferenceData referenceData = new ReferenceData();
 		referenceData.setName("zodiacs");
@@ -126,6 +127,24 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
 			referenceDataDTO.setCode(zodiac.name());
 			referenceDataDTO.setName(zodiac.getEnglishName());
+
+			referenceDataList.add(referenceDataDTO);
+		}
+		referenceData.setData(referenceDataList);
+		referenceDataRepository.save(referenceData);
+	}
+	
+	@Test
+	public void setupComponentData() {
+		ReferenceData referenceData = new ReferenceData();
+		referenceData.setName("analysis_sources");
+
+		List<ReferenceDataDTO> referenceDataList = new ArrayList<ReferenceDataDTO>();
+		for (AnalysisGroup analysisGroup : AnalysisGroup.values()) {
+
+			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
+			referenceDataDTO.setCode(analysisGroup.name());
+			referenceDataDTO.setName(analysisGroup.getDesc());
 
 			referenceDataList.add(referenceDataDTO);
 		}

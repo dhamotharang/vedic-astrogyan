@@ -42,21 +42,23 @@
 
 		<div class="row">
 
-			<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
 				<select class="form-control" size=5 ng-model="vm.parentSelected"
 					ng-selected="vm.parentSelected.code"
 					ng-change="vm.loadChildren(vm.parentSelected.code,1)"
 					ng-options="parent.name for parent in vm.parents track by parent.code">
 				</select>
 			</div>
-			<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
 				<select class="form-control" size=5
 					ng-model="vm.immediateChildSelected"
 					ng-change="vm.loadChildren(vm.immediateChildSelected.code,2)"
 					ng-options="immediateChild.name for immediateChild in vm.immediateChildren track by immediateChild.code">
 				</select>
 			</div>
-			<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
 				<select class="form-control" size=5
 					ng-model="vm.furtherChildSelected"
 					ng-options="furtherChild.name for furtherChild in vm.furtherChildren track by furtherChild.code">
@@ -66,10 +68,75 @@
 		</div>
 		<div class="row">
 
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<input type="text" name="cat1" id="cat1" class="form-control"
+						ng-model="vm.newParent.code" required placeholder="Code" />
+				</div>
+			</div>
 			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
 				<div class="form-group">
 					<input type="text" name="cat1" id="cat1" class="form-control"
-						ng-model="vm.parentSelected.code" required placeholder="Aspect" />
+						ng-model="vm.newParent.name" required placeholder="Name" />
+				</div>
+			</div>
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<a href=""
+						ng-click="vm.addParentAspect(vm.newParent.code, vm.newParent.name)"><i
+						class="fa fa-plus-square fa-2x"></i></a>
+				</div>
+			</div>
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<input type="text" name="cat1" id="cat1" class="form-control"
+						ng-model="vm.newImmediateChild.code" required placeholder="Code" />
+				</div>
+			</div>
+
+			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<input type="text" name="cat1" id="cat1" class="form-control"
+						ng-model="vm.newImmediateChild.name" required placeholder="Name" />
+				</div>
+			</div>
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<a href=""
+						ng-click="vm.addImmediateChildAspect(vm.newImmediateChild.code, vm.newImmediateChild.name, vm.parentSelected.code)"><i
+						class="fa fa-plus-square fa-2x"></i></a>
+				</div>
+			</div>
+
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<input type="text" name="cat1" id="cat1" class="form-control"
+						ng-model="vm.newFurtherChild.code" required placeholder="Code" />
+				</div>
+			</div>
+			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<input type="text" name="cat1" id="cat1" class="form-control"
+						ng-model="vm.newFurtherChild.name" required placeholder="Name" />
+				</div>
+			</div>
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<a href=""
+						ng-click="vm.addFurtherChildAspect(vm.newFurtherChild.code, vm.newFurtherChild.name, vm.immediateChildSelected.code)"><i
+						class="fa fa-plus-square fa-2x"></i></a>
+				</div>
+			</div>
+
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+		</div>
+
+		<div class="row">
+
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<input type="text" name="cat1" id="cat1" class="form-control"
+						ng-model="vm.parentSelected.code" required readonly placeholder="Aspect" />
 				</div>
 			</div>
 			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
@@ -78,11 +145,18 @@
 						ng-model="vm.parentSelected.name" required placeholder="Aspect" />
 				</div>
 			</div>
-
-			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<a href="" ng-click="vm.updateParentAspect(vm.parentSelected.code, vm.parentSelected.name, vm.parentSelected.id)"><i
+						class="fa fa-check-square fa-2x"></i></a> <a href=""
+						ng-click="vm.deleteParentAspect(vm.parentSelected.id)"><i
+						class="fa fa-minus-square fa-2x"></i></a>
+				</div>
+			</div>
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
 				<div class="form-group">
 					<input type="text" name="cat1" id="cat1" class="form-control"
-						ng-model="vm.immediateChildSelected.code" required
+						ng-model="vm.immediateChildSelected.code" required readonly
 						placeholder="Aspect" />
 				</div>
 			</div>
@@ -94,10 +168,18 @@
 						placeholder="Aspect" />
 				</div>
 			</div>
-			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<a href="" ng-click="vm.updateImmediateChildAspect(vm.immediateChildSelected.code, vm.immediateChildSelected.name, vm.parentSelected.code, vm.immediateChildSelected.id)"><i
+						class="fa fa-check-square fa-2x"></i></a> <a href=""
+						ng-click="vm.deleteImmediateChildAspect(vm.immediateChildSelected.id, vm.parentSelected.code)"><i
+						class="fa fa-minus-square fa-2x"></i></a>
+				</div>
+			</div>
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
 				<div class="form-group">
 					<input type="text" name="cat1" id="cat1" class="form-control"
-						ng-model="vm.furtherChildSelected.code" required
+						ng-model="vm.furtherChildSelected.code" required readonly
 						placeholder="Aspect" />
 				</div>
 			</div>
@@ -108,36 +190,14 @@
 						placeholder="Aspect" />
 				</div>
 			</div>
-			<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
-		</div>
-		<div class="row">
-			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
-				<button class="btn btn-round btn-primary" type="button"
-					ng-click="vm.addParentAspect(vm.parentSelected.code, vm.parentSelected.name)">Add</button>
-				<button class="btn btn-round btn-primary" type="button"
-					ng-click="vm.updateParentAspect(vm.parentSelected.code, vm.parentSelected.name, vm.parentSelected.id)">Update</button>
-				<button class="btn btn-round btn-primary" type="button"
-					ng-click="vm.deleteParentAspect(vm.parentSelected.id)">Delete</button>
+			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+				<div class="form-group">
+					<a href="" ng-click="vm.updateFurtherChildAspect(vm.furtherChildSelected.code, vm.furtherChildSelected.name, vm.immediateChildSelected.code, vm.furtherChildSelected.id)"><i
+						class="fa fa-check-square fa-2x"></i></a> <a href=""
+						ng-click="vm.deleteFurtherChildAspect(vm.furtherChildSelected.id, vm.immediateChildSelected.code)"><i
+						class="fa fa-minus-square fa-2x"></i></a>
+				</div>
 			</div>
-			<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
-			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
-				<button class="btn btn-round btn-primary" type="button"
-					ng-click="vm.addImmediateChildAspect(vm.immediateChildSelected.code, vm.immediateChildSelected.name, vm.parentSelected.code)">Add</button>
-				<button class="btn btn-round btn-primary" type="button"
-					ng-click="vm.updateImmediateChildAspect(vm.immediateChildSelected.code, vm.immediateChildSelected.name, vm.parentSelected.code, vm.immediateChildSelected.id)">Update</button>
-				<button class="btn btn-round btn-primary" type="button"
-					ng-click="vm.deleteImmediateChildAspect(vm.immediateChildSelected.id, vm.parentSelected.code)">Delete</button>
-			</div>
-			<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
-			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
-				<button class="btn btn-round btn-primary" type="button"
-					ng-click="vm.addFurtherChildAspect(vm.furtherChildSelected.code, vm.furtherChildSelected.name, vm.immediateChildSelected.code)">Add</button>
-				<button class="btn btn-round btn-primary" type="button"
-					ng-click="vm.updateFurtherChildAspect(vm.furtherChildSelected.code, vm.furtherChildSelected.name, vm.immediateChildSelected.code, vm.furtherChildSelected.id)">Update</button>
-				<button class="btn btn-round btn-primary" type="button"
-					ng-click="vm.deleteFurtherChildAspect(vm.furtherChildSelected.id, vm.immediateChildSelected.code)">Delete</button>
-			</div>
-			<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
 		</div>
 		<br>
 		<div class="row">

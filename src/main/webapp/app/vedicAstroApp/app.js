@@ -65,7 +65,7 @@
                 templateUrl: viewBase + 'settings/prediction_outcome_settings.html',
                 controllerAs: 'vm'
             })
-            .when('/analysis-component-setting', {
+            .when('/analysis-components', {
                 controller: 'ChartController',
                 templateUrl: viewBase + 'settings/analysis_component_setting.html',
                 controllerAs: 'vm'
@@ -93,7 +93,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/planet-mapping','/aspect-group-setting']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/prediction-templates','/prediction-outcomes','/analysis-components','/final-profile']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

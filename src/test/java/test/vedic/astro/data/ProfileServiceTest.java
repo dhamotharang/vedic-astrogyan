@@ -2,15 +2,21 @@ package test.vedic.astro.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.vedic.astro.domain.PredictionTemplate;
+import com.vedic.astro.dto.ComponentDTO;
 import com.vedic.astro.dto.PredictionObservationDTO;
 import com.vedic.astro.dto.PredictionOutcomeDTO;
 import com.vedic.astro.dto.PredictionTemplateDTO;
+import com.vedic.astro.enums.AnalysisGroup;
 import com.vedic.astro.enums.ObservationNature;
+import com.vedic.astro.repository.PredictionTemplateRepository;
+import com.vedic.astro.service.AnalysisComponentService;
 import com.vedic.astro.service.ProfileService;
 
 /**
@@ -24,6 +30,14 @@ public class ProfileServiceTest extends BaseUtilTest{
 	@Autowired
 	@Qualifier("profileService")
 	private ProfileService profileService;
+	
+	@Autowired
+	@Qualifier("analysisComponentService")
+	private AnalysisComponentService analysisComponentService;
+	
+	@Autowired
+	@Qualifier("predictionTemplateRepository")
+	private PredictionTemplateRepository predictionTemplateRepository;
 	
 	//@Test
 	public void testCreatePredictionTemplate() throws Exception {
@@ -98,7 +112,7 @@ public class ProfileServiceTest extends BaseUtilTest{
 			profileService.savePredictionOutcome(predictionOutcomeDTO);
 	 	}
 		
-		@Test
+		//@Test
 		public void testCreatePredictionOutcome() throws Exception {
 			
 			PredictionOutcomeDTO predictionOutcomeDTO = new PredictionOutcomeDTO();
@@ -109,4 +123,28 @@ public class ProfileServiceTest extends BaseUtilTest{
 			
 			profileService.createPredictionOutcome(predictionOutcomeDTO);
 	 	}
+		
+		//@Test
+		public void testCreateAnalysisComponent() throws Exception {
+			
+			ComponentDTO componentDTO = new ComponentDTO();
+			componentDTO.setCode("HA-ANL-1");
+			componentDTO.setName("Component 1");
+			
+			componentDTO.setAnalysisGroup(AnalysisGroup.HouseAnalysis);
+			
+			analysisComponentService.save(componentDTO);
+	 	}
+		@Test
+		public void testGetTemplateByAspectCode() throws Exception {
+			List<String> templates = new ArrayList<String>();
+			Optional<List<PredictionTemplate>> predictionTemplateList = predictionTemplateRepository
+					.findByAspectCode("1-PA");
+			if (predictionTemplateList.isPresent()) {
+				for (PredictionTemplate predictionTemplate : predictionTemplateList.get()) {
+					templates.add(predictionTemplate.getName());
+				}
+			}
+			System.out.println(templates.toString());
+		}
 }

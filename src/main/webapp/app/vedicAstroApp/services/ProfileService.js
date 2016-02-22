@@ -25,6 +25,12 @@
         service.createOutcome = createOutcome;
         service.deleteOutcome = deleteOutcome;
         service.getOutcomes = getOutcomes;
+        service.saveComponent = saveComponent;
+        service.deleteComponent = deleteComponent;
+        service.getComponents = getComponents;
+        service.saveComponents = saveComponents;
+        service.getProfileInfo = getProfileInfo;
+        service.getFilteredProfile = getFilteredProfile;
         
         return service;
 
@@ -91,13 +97,41 @@
         function getOutcomes(templateCode) {
             return $http.get('/api/outcomes/' + templateCode).then(handleGetSuccess, handleError('Error getting all users'));
         }
+        
+        function saveComponent(component) {
+            return $http.post('/api/component/save', component).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
+        
+        function deleteComponent(component) {
+            return $http.post('/api/component/delete', component).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
 
+        function getComponents(analysisGroup) {
+            return $http.get('/api/components/' + analysisGroup).then(handleGetSuccess, handleError('Error getting all users'));
+        }
+
+        function saveComponents(components) {
+            return $http.post('/api/components/save', components).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
+        
+        function getProfileInfo() {
+            return $http.get('/api/profile/info').then(handleGetSuccess, handleError('Error getting profile hierarchy'));
+        }
+        
+        function getFilteredProfile(filter) {
+            return $http.post('/api/profile/filter', filter).then(handleSubmitWithResponse, handleError('Error adding aspect'));
+        }
+        
         function handleGetSuccess(res) {
             return res.data.responseData;
         }
 
         function handleSubmitSuccess(res) {
             return res.data;
+        }
+        
+        function handleSubmitWithResponse(res) {
+            return res.data.responseData;
         }
 
         function handleError(error) {

@@ -29,8 +29,8 @@ angular.module('vedicAstroApp')
             headingField: '@'
         },
         link: function ($scope, $element, $attrs) {
-            if (angular.isArray($scope.node[$scope.childs]) && $scope.node[$scope.childs].length > 0) {
-                $element.append('<uib-accordion-group heading="{{node[headingField]}}" ><node-list ng-model="node[childs]" kids="{{childs}}" heading-field="{{headingField}}"></node-list></uib-accordion-group>');
+            if (angular.isObject($scope.node) && angular.isArray($scope.node[$scope.childs]) && $scope.node[$scope.childs].length > 0) {
+                $element.append('<uib-accordion-group heading="{{node[headingField]}}" ><node-leaf ng-model="node"></node-leaf><node-list ng-model="node[childs]" kids="{{childs}}" heading-field="{{headingField}}"></node-list></uib-accordion-group>');
             } else {
             	$element.append('<uib-accordion-group heading="{{node[headingField]}}" ><node-leaf ng-model="node"></node-leaf></uib-accordion-group>');
             }

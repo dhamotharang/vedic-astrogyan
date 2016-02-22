@@ -28,7 +28,11 @@ import com.vedic.astro.dto.PredictionObservationDTO;
 import com.vedic.astro.dto.PredictionOutcomeDTO;
 import com.vedic.astro.dto.PredictionTemplateDTO;
 import com.vedic.astro.dto.ProfileAspectDTO;
+import com.vedic.astro.dto.ProfileFilterDTO;
+import com.vedic.astro.dto.ProfileFilterTypeDTO;
+import com.vedic.astro.dto.ProfilePredictionDTO;
 import com.vedic.astro.dto.TemplateAspectDTO;
+import com.vedic.astro.enums.AnalysisGroup;
 import com.vedic.astro.enums.ObservationNature;
 import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.repository.AnalysisComponentRepository;
@@ -139,32 +143,28 @@ public class ProfileService {
 		return children;
 	}
 
-	public List<ProfileAspectDTO> getProfileHierachyTree(PredictionSystem model) {
+	public List<ProfileAspectDTO> getProfileHierachyTree(PredictionSystem model, boolean populateInfo,
+			ProfileFilterDTO profileFilterDTO) {
 		Iterable<ProfileAspect> profileAspects = profileAspectRepository.findAll();
-		return constructTree(profileAspects, model);
+		return constructTree(profileAspects, model, populateInfo, profileFilterDTO);
 	}
 
 	public List<PathProfileAspectDTO> getProfileHierachyFlat(PredictionSystem model) {
 		Iterable<ProfileAspect> profileAspects = profileAspectRepository.findAll();
 		return constructFlat(profileAspects);
 	}
-	
+
 	private Map<String, String> getCodeToPathMap(PredictionSystem model) {
 		List<PathProfileAspectDTO> dtoList = getProfileHierachyFlat(model);
 		Map<String, String> codeToPathMap = new HashMap<String, String>();
-		for(PathProfileAspectDTO pathProfileAspectDTO : dtoList){
-			codeToPathMap.put(pathProfileAspectDTO.getCode(), pathProfileAspectDTO.getPath());     	
+		for (PathProfileAspectDTO pathProfileAspectDTO : dtoList) {
+			codeToPathMap.put(pathProfileAspectDTO.getCode(), pathProfileAspectDTO.getPath());
 		}
 		return codeToPathMap;
 	}
 
-	public List<ProfileAspectDTO> getProfileHierachyForEntity(PredictionSystem model, String entityType,
-			String entityName) {
-		Iterable<ProfileAspect> profileAspects = profileAspectRepository.findAll();
-		return constructTree(profileAspects, model);
-	}
-
-	private List<ProfileAspectDTO> constructTree(Iterable<ProfileAspect> profileHierachy, PredictionSystem model) {
+	private List<ProfileAspectDTO> constructTree(Iterable<ProfileAspect> profileHierachy, PredictionSystem model,
+			boolean populateInfo, ProfileFilterDTO profileFilterDTO) {
 		List<ProfileAspectDTO> profileHierachyDTO = new ArrayList<ProfileAspectDTO>();
 
 		Map<String, Set<ProfileAspect>> parentMap = new HashMap<String, Set<ProfileAspect>>();
@@ -188,14 +188,18 @@ public class ProfileService {
 
 			BeanUtils.copyProperties(parentAspect, parent);
 
-			parent = populateChildren(parent, parentMap, model);
+			if (populateInfo) {
+				populateInfo(parent, profileFilterDTO);
+			}
+
+			parent = populateChildren(parent, parentMap, model, populateInfo, profileFilterDTO);
 			profileHierachyDTO.add(parent);
 		}
 		return profileHierachyDTO;
 	}
 
 	private ProfileAspectDTO populateChildren(ProfileAspectDTO parent, Map<String, Set<ProfileAspect>> parentMap,
-			PredictionSystem model) {
+			PredictionSystem model, boolean populateInfo, ProfileFilterDTO profileFilterDTO) {
 
 		Set<ProfileAspect> children = parentMap.get(parent.getCode());
 
@@ -204,11 +208,14 @@ public class ProfileService {
 
 				ProfileAspectDTO child = new ProfileAspectDTO();
 				BeanUtils.copyProperties(profileAspect, child);
-
 				parent.addChild(child);
 
+				if (populateInfo) {
+					populateInfo(child, profileFilterDTO);
+				}
+
 				if (parentMap.get(profileAspect.getCode()) != null) {
-					populateChildren(child, parentMap, model);
+					populateChildren(child, parentMap, model, populateInfo, profileFilterDTO);
 				} else {
 					populateChildInfo(child, model);
 				}
@@ -249,10 +256,8 @@ public class ProfileService {
 				if (parentAspect.getParentCode() != null) {
 					ProfileAspect parentParentAspect = codeToObjectMap.get(parentAspect.getParentCode());
 					pathProfileAspectDTO.addToPath(parentParentAspect.getName());
-
 				}
 			}
-
 			profileHierachyDTO.add(pathProfileAspectDTO);
 		}
 		return profileHierachyDTO;
@@ -283,7 +288,7 @@ public class ProfileService {
 	public void saveTemplate(PredictionTemplateDTO predictionTemplateDTO) {
 
 		Optional<PredictionTemplate> template = predictionTemplateRepository
-				.getTemplate(predictionTemplateDTO.getCode());
+				.findByCode(predictionTemplateDTO.getCode());
 		PredictionTemplate predictionTemplate = new PredictionTemplate();
 		BeanUtils.copyProperties(predictionTemplateDTO, predictionTemplate);
 
@@ -310,7 +315,7 @@ public class ProfileService {
 
 		List<PathProfileAspectDTO> profileAspects = constructFlat(profileAspectRepository.findAll());
 		List<TemplateAspectDTO> templateAspectDTOList = new ArrayList<TemplateAspectDTO>();
-		Optional<PredictionTemplate> template = predictionTemplateRepository.getTemplate(templateCode);
+		Optional<PredictionTemplate> template = predictionTemplateRepository.findByCode(templateCode);
 		List<String> aspectCodes = null;
 
 		if (template.isPresent()) {
@@ -332,7 +337,7 @@ public class ProfileService {
 	public void deleteTemplate(PredictionTemplateDTO predictionTemplateDTO) {
 
 		Optional<PredictionTemplate> template = predictionTemplateRepository
-				.getTemplate(predictionTemplateDTO.getCode());
+				.findByCode(predictionTemplateDTO.getCode());
 
 		if (template.isPresent()) {
 			predictionTemplateRepository.delete(template.get().getId());
@@ -345,12 +350,12 @@ public class ProfileService {
 				}
 			}
 
-			Optional<List<AnalysisComponent>> components = analysisComponentRepository
+			Optional<AnalysisComponent> components = analysisComponentRepository
 					.findByTemplate(predictionTemplateDTO.getCode());
 			if (components.isPresent()) {
-				for (AnalysisComponent analysisComponent : components.get()) {
-					analysisComponentRepository.delete(analysisComponent);
-				}
+				AnalysisComponent analysisComponent = components.get();
+				analysisComponentRepository.delete(analysisComponent);
+
 			}
 
 			Optional<List<MemberAnalysis>> memberData = memberAnalysisRepository
@@ -381,13 +386,14 @@ public class ProfileService {
 		}
 		predictionOutcomeRepository.save(predictionOutcome);
 	}
-	
+
 	public void createPredictionOutcome(PredictionOutcomeDTO predictionOutcomeDTO) {
 
 		PredictionOutcome predictionOutcome = new PredictionOutcome();
 		BeanUtils.copyProperties(predictionOutcomeDTO, predictionOutcome);
-		
-		Optional<PredictionTemplate> predictionTemplate = predictionTemplateRepository.getTemplate(predictionOutcomeDTO.getTemplateCode());
+
+		Optional<PredictionTemplate> predictionTemplate = predictionTemplateRepository
+				.findByCode(predictionOutcomeDTO.getTemplateCode());
 
 		Map<String, PredictionObservation> aspectToObsMap = new HashMap<String, PredictionObservation>();
 		for (String aspectCode : predictionTemplate.get().getAspectCodes()) {
@@ -396,10 +402,10 @@ public class ProfileService {
 			predictionObservation.setNature(ObservationNature.Benefic);
 			aspectToObsMap.put(aspectCode, predictionObservation);
 		}
+
 		predictionOutcome.setPredictionObservations(aspectToObsMap);
 		predictionOutcomeRepository.save(predictionOutcome);
 	}
-
 
 	public void deleteOutcome(PredictionOutcomeDTO predictionOutcomeDTO) {
 
@@ -408,12 +414,12 @@ public class ProfileService {
 		if (outcome.isPresent()) {
 			predictionOutcomeRepository.delete(outcome.get().getId());
 
-			Optional<List<AnalysisComponent>> components = analysisComponentRepository
+			Optional<AnalysisComponent> components = analysisComponentRepository
 					.findByTemplate(predictionOutcomeDTO.getTemplateCode());
 			if (components.isPresent()) {
-				for (AnalysisComponent analysisComponent : components.get()) {
-					analysisComponentRepository.delete(analysisComponent);
-				}
+				AnalysisComponent analysisComponent = components.get();
+				analysisComponentRepository.delete(analysisComponent);
+
 			}
 
 			Optional<List<MemberAnalysis>> memberData = memberAnalysisRepository
@@ -427,7 +433,7 @@ public class ProfileService {
 	}
 
 	public List<PredictionOutcomeDTO> getOutcomes(String templateCode) {
-		
+
 		Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository.getOutcomesForTemplate(templateCode);
 		List<PredictionOutcomeDTO> outcomeDTOList = new ArrayList<PredictionOutcomeDTO>();
 		Map<String, String> codeToPathMap = getCodeToPathMap(PredictionSystem.Prashara);
@@ -436,23 +442,307 @@ public class ProfileService {
 			BeanUtils.copyProperties(predictionOutcome, predictionOutcomeDTO);
 			Map<String, PredictionObservation> predictionOutcomeMap = predictionOutcome.getPredictionObservations();
 			List<PredictionObservationDTO> dtoList = new ArrayList<PredictionObservationDTO>();
-			
+
 			for (Map.Entry<String, PredictionObservation> predictionOutcomeEntry : predictionOutcomeMap.entrySet()) {
-				
+
 				PredictionObservationDTO predictionObservationDTO = new PredictionObservationDTO();
 				predictionObservationDTO.setAspectCode(predictionOutcomeEntry.getKey());
 				predictionObservationDTO.setNature(predictionOutcomeEntry.getValue().getNature());
 				predictionObservationDTO.setObservation(predictionOutcomeEntry.getValue().getObservation());
 				predictionObservationDTO.setTimeDependent(predictionOutcomeEntry.getValue().isTimeDependent());
 				predictionObservationDTO.setAspectPath(codeToPathMap.get(predictionOutcomeEntry.getKey()));
-				
+
 				dtoList.add(predictionObservationDTO);
 			}
 			predictionOutcomeDTO.setObservations(dtoList);
 			outcomeDTOList.add(predictionOutcomeDTO);
 		}
-
 		return outcomeDTOList;
+	}
 
+	private void populateInfoFilterByTemplates(ProfileAspectDTO parent, List<String> templateCodes) {
+
+		List<String> templates = new ArrayList<String>();
+		List<ProfilePredictionDTO> observations = null;
+		Optional<List<PredictionTemplate>> predictionTemplateList = predictionTemplateRepository
+				.findByAspectCode(parent.getCode());
+
+		if (predictionTemplateList.isPresent() && !predictionTemplateList.get().isEmpty()) {
+
+			observations = new ArrayList<ProfilePredictionDTO>();
+
+			for (PredictionTemplate predictionTemplate : predictionTemplateList.get()) {
+
+				if (!templateCodes.isEmpty() && templateCodes.contains(predictionTemplate.getCode())) {
+
+					templates.add(predictionTemplate.getName());
+					Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
+							.getOutcomesForTemplate(predictionTemplate.getCode());
+					Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+							.findByTemplate(predictionTemplate.getCode());
+
+					if (outcomes.isPresent()) {
+						for (PredictionOutcome outcome : outcomes.get()) {
+
+							ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
+
+							if (analysisComp.isPresent()) {
+
+								AnalysisComponent analysisComponent = analysisComp.get();
+								profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
+								profilePredictDTO.setComponentName(analysisComponent.getName());
+								profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+							}
+
+							Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
+							PredictionObservation observation = observationMap.get(parent.getCode());
+
+							profilePredictDTO.setNature(observation.getNature());
+							profilePredictDTO.setOutcome(outcome.getName());
+							profilePredictDTO.setObservation(observation.getObservation());
+							profilePredictDTO.setTimeDependent(observation.isTimeDependent());
+
+							observations.add(profilePredictDTO);
+						}
+					}
+					parent.setPredictions(observations);
+				}
+			}
+		}
+		parent.setMappedTemplates(templates.toString());
+	}
+
+	private void populateInfoFilterByOutcomes(ProfileAspectDTO parent, Map<String, String> componentToOutcomeMap) {
+
+		List<String> templates = new ArrayList<String>();
+		List<ProfilePredictionDTO> observations = null;
+		Optional<List<PredictionTemplate>> predictionTemplateList = predictionTemplateRepository
+				.findByAspectCode(parent.getCode());
+
+		if (predictionTemplateList.isPresent() && !predictionTemplateList.get().isEmpty()) {
+
+			observations = new ArrayList<ProfilePredictionDTO>();
+
+			for (PredictionTemplate predictionTemplate : predictionTemplateList.get()) {
+
+				templates.add(predictionTemplate.getName());
+				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
+						.getOutcomesForTemplate(predictionTemplate.getCode());
+				Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+						.findByTemplate(predictionTemplate.getCode());
+
+				if (outcomes.isPresent()) {
+
+					for (PredictionOutcome outcome : outcomes.get()) {
+
+						if (!componentToOutcomeMap.values().isEmpty()
+								&& componentToOutcomeMap.values().contains(outcome.getCode())
+								&& !componentToOutcomeMap.keySet().isEmpty()
+								&& componentToOutcomeMap.keySet().contains(outcome.getCode())) {
+							ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
+
+							if (analysisComp.isPresent()) {
+
+								AnalysisComponent analysisComponent = analysisComp.get();
+								profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
+								profilePredictDTO.setComponentName(analysisComponent.getName());
+								profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+							}
+
+							Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
+							PredictionObservation observation = observationMap.get(parent.getCode());
+
+							profilePredictDTO.setNature(observation.getNature());
+							profilePredictDTO.setOutcome(outcome.getName());
+							profilePredictDTO.setObservation(observation.getObservation());
+							profilePredictDTO.setTimeDependent(observation.isTimeDependent());
+
+							observations.add(profilePredictDTO);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void populateInfoFilterByOutcomes(ProfileAspectDTO parent, Map<String, String> componentToOutcomeMap,
+			AnalysisGroup analysisGroup) {
+
+		List<String> templates = new ArrayList<String>();
+		List<ProfilePredictionDTO> observations = null;
+		Optional<List<PredictionTemplate>> predictionTemplateList = predictionTemplateRepository
+				.findByAspectCode(parent.getCode());
+
+		if (predictionTemplateList.isPresent() && !predictionTemplateList.get().isEmpty()) {
+
+			observations = new ArrayList<ProfilePredictionDTO>();
+
+			for (PredictionTemplate predictionTemplate : predictionTemplateList.get()) {
+
+				templates.add(predictionTemplate.getName());
+				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
+						.getOutcomesForTemplate(predictionTemplate.getCode());
+				Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+						.findByTemplate(predictionTemplate.getCode());
+
+				if (outcomes.isPresent()) {
+
+					for (PredictionOutcome outcome : outcomes.get()) {
+
+						if (!componentToOutcomeMap.values().isEmpty()
+								&& componentToOutcomeMap.values().contains(outcome.getCode())
+								&& !componentToOutcomeMap.keySet().isEmpty()
+								&& componentToOutcomeMap.keySet().contains(analysisComp.get().getCode())
+								&& analysisGroup.equals(analysisComp.get().getAnalysisGroup())) {
+							ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
+
+							if (analysisComp.isPresent()) {
+
+								AnalysisComponent analysisComponent = analysisComp.get();
+								profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
+								profilePredictDTO.setComponentName(analysisComponent.getName());
+								profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+							}
+
+							Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
+							PredictionObservation observation = observationMap.get(parent.getCode());
+
+							profilePredictDTO.setNature(observation.getNature());
+							profilePredictDTO.setOutcome(outcome.getName());
+							profilePredictDTO.setObservation(observation.getObservation());
+							profilePredictDTO.setTimeDependent(observation.isTimeDependent());
+
+							observations.add(profilePredictDTO);
+						}
+					}
+					parent.setMappedTemplates(templates.toString());
+					parent.setPredictions(observations);
+				}
+			}
+		}
+	}
+
+	private void populateInfoFilterBySource(ProfileAspectDTO parent, List<AnalysisGroup> analysisGroups) {
+
+		List<String> templates = new ArrayList<String>();
+		List<ProfilePredictionDTO> observations = null;
+		Optional<List<PredictionTemplate>> predictionTemplateList = predictionTemplateRepository
+				.findByAspectCode(parent.getCode());
+
+		if (predictionTemplateList.isPresent() && !predictionTemplateList.get().isEmpty()) {
+
+			observations = new ArrayList<ProfilePredictionDTO>();
+
+			for (PredictionTemplate predictionTemplate : predictionTemplateList.get()) {
+
+				templates.add(predictionTemplate.getName());
+				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
+						.getOutcomesForTemplate(predictionTemplate.getCode());
+				Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+						.findByTemplate(predictionTemplate.getCode());
+
+				if (!analysisGroups.isEmpty() && analysisGroups.contains(analysisComp.get().getAnalysisGroup())) {
+					if (outcomes.isPresent()) {
+
+						for (PredictionOutcome outcome : outcomes.get()) {
+
+							ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
+
+							if (analysisComp.isPresent()) {
+
+								AnalysisComponent analysisComponent = analysisComp.get();
+								profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
+								profilePredictDTO.setComponentName(analysisComponent.getName());
+								profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+							}
+
+							Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
+							PredictionObservation observation = observationMap.get(parent.getCode());
+
+							profilePredictDTO.setNature(observation.getNature());
+							profilePredictDTO.setOutcome(outcome.getName());
+							profilePredictDTO.setObservation(observation.getObservation());
+							profilePredictDTO.setTimeDependent(observation.isTimeDependent());
+
+							observations.add(profilePredictDTO);
+						}
+					}
+					parent.setMappedTemplates(templates.toString());
+					parent.setPredictions(observations);
+			
+				}
+			}
+		}
+	}
+
+	private void populateInfo(ProfileAspectDTO parent, ProfileFilterDTO profileFilterDTO) {
+
+		if (profileFilterDTO == null) {
+			this.populateInfo(parent);
+		} else if (profileFilterDTO.getFilterType().equals(ProfileFilterTypeDTO.Template)) {
+
+			List<String> templateCodes = new ArrayList<String>();
+			templateCodes.add(profileFilterDTO.getFilterValue());
+
+			this.populateInfoFilterByTemplates(parent, templateCodes);
+		} else if (profileFilterDTO.getFilterType().equals(ProfileFilterTypeDTO.AnalysisGroup)) {
+
+			List<AnalysisGroup> analysisGroups = new ArrayList<AnalysisGroup>();
+			analysisGroups.add(AnalysisGroup.valueOf(profileFilterDTO.getFilterValue()));
+
+			this.populateInfoFilterBySource(parent, analysisGroups);
+		} else {
+
+		}
+	}
+
+	private void populateInfo(ProfileAspectDTO parent) {
+
+		List<String> templates = new ArrayList<String>();
+		List<ProfilePredictionDTO> observations = null;
+		Optional<List<PredictionTemplate>> predictionTemplateList = predictionTemplateRepository
+				.findByAspectCode(parent.getCode());
+
+		if (predictionTemplateList.isPresent() 
+				&& !predictionTemplateList.get().isEmpty()) {
+
+			observations = new ArrayList<ProfilePredictionDTO>();
+
+			for (PredictionTemplate predictionTemplate : predictionTemplateList.get()) {
+
+				templates.add(predictionTemplate.getName());
+				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
+						.getOutcomesForTemplate(predictionTemplate.getCode());
+				Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+						.findByTemplate(predictionTemplate.getCode());
+
+				if (outcomes.isPresent()) {
+					for (PredictionOutcome outcome : outcomes.get()) {
+
+						ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
+
+						if (analysisComp.isPresent()) {
+
+							AnalysisComponent analysisComponent = analysisComp.get();
+							profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
+							profilePredictDTO.setComponentName(analysisComponent.getName());
+							profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+						}
+
+						Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
+						PredictionObservation observation = observationMap.get(parent.getCode());
+
+						profilePredictDTO.setNature(observation.getNature());
+						profilePredictDTO.setOutcome(outcome.getName());
+						profilePredictDTO.setObservation(observation.getObservation());
+						profilePredictDTO.setTimeDependent(observation.isTimeDependent());
+
+						observations.add(profilePredictDTO);
+					}
+				}
+			}
+		}
+		parent.setMappedTemplates(templates.toString());
+		parent.setPredictions(observations);
 	}
 }
