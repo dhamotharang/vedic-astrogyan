@@ -9,7 +9,7 @@
     function ProfileService($http, $rootScope) {
         var service = {};
 
-        service.getChartProfile = getChartProfile;
+        service.getAnalysisResult = getAnalysisResult;
         service.getHouseProfile = getHouseProfile;
         service.getProfileTree = getProfileTree;
         service.getProfileFlat = getProfileFlat;
@@ -34,8 +34,8 @@
         
         return service;
 
-        function getChartProfile() {
-            return $http.get('/api/profile/chart/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
+        function getAnalysisResult() {
+            return $http.get('/api/analysis/result/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting Analysis result'));
         }
         
         function getHouseProfile() {

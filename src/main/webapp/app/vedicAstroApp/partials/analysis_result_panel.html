@@ -1,4 +1,4 @@
-<div class="x_panel" ng-controller="ChartProfileController as vm">
+<div class="x_panel" ng-controller="AnalysisResultController as vm">
 	<div class="x_title">
 		<div class="row">
 			<div class="col-md-5 col-sm-12 col-xs-12">
@@ -47,10 +47,10 @@
 							<tr ng-class="['even pointer', 'odd pointer'][$index %2]"
 								ng-repeat="tableData in aspect.data| filter:search">
 
-								<td class=" ">{{tableData.entityType}}</td>
-								<td class=" ">{{tableData.name}}</td>
-								<td class=" ">{{tableData.source}}</td>
-								<td class=" ">{{tableData.impact}}</td>
+								<td class=" ">{{tableData.component}}</td>
+								<td class=" ">{{tableData.conditionChecked}}</td>
+								<td class=" ">{{tableData.outcome}}</td>
+					
 							</tr>
 						</tbody>
 					</table>

@@ -20,7 +20,7 @@ import com.mongodb.DBObject;
 import com.vedic.astro.domain.DashaCombination;
 import com.vedic.astro.domain.DashaPeriodSnapshot;
 import com.vedic.astro.enums.Dasha;
-import com.vedic.astro.enums.DashaSystem;
+import com.vedic.astro.enums.NakDashaSystem;
 import com.vedic.astro.exception.SystemException;
 
 /**
@@ -64,7 +64,7 @@ public class DashaInfoRepository {
 		}
 	}
 	
-	public DashaCombination findBy(String pid, DashaSystem dashaSystem, Date date ) {
+	public DashaCombination findBy(String pid, NakDashaSystem dashaSystem, Date date ) {
 
 		DashaCombination result = new DashaCombination();
 		
@@ -102,7 +102,7 @@ public class DashaInfoRepository {
 		return result;
 	}
 
-	public Long findSeqBy(String pid, DashaSystem dashaSystem, Date date ) {
+	public Long findSeqBy(String pid, NakDashaSystem dashaSystem, Date date ) {
 		
 		Long seq = null;     
 		
@@ -138,7 +138,7 @@ public class DashaInfoRepository {
 		return COLLECTION_NAME;
 	}
 
-	public List<DashaPeriodSnapshot> findBy(String pid, DashaSystem dashaSystem, Date fromDate, Date toDate) {
+	public List<DashaPeriodSnapshot> findBy(String pid, NakDashaSystem dashaSystem, Date fromDate, Date toDate) {
 
         List<DashaPeriodSnapshot> result = new ArrayList<DashaPeriodSnapshot>();
 		

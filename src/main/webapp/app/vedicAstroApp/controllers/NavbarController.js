@@ -30,7 +30,7 @@
 				href : '#/pr-yogas/'
 			}, {
 				title : 'Nakshatra Dashas',
-				href : '#/pr-nak-dashas/'
+				href : '#/nak-dashas/'
 			}, {
 				title : 'Transits',
 				href : '#/pr-transits/'

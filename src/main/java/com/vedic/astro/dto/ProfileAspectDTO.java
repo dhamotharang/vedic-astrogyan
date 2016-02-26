@@ -9,7 +9,6 @@ public class ProfileAspectDTO extends LevelProfileAspectDTO{
 	private List<ProfileAspectDTO> children = new ArrayList<ProfileAspectDTO>();
 	private String mappedTemplates = null;
 	private List<ProfilePredictionDTO> predictions = null;
-	private String[] headings = {"Source","Component","Condition","Outcome","Time dependence","Impact", "Nature"};
 	
 	public List<ProfileAspectDTO> getChildren() {
 		return children;
@@ -32,15 +31,9 @@ public class ProfileAspectDTO extends LevelProfileAspectDTO{
 	public void addChild(ProfileAspectDTO profileAspectDTO){
 		this.children.add(profileAspectDTO);
 	}
-	public String[] getHeadings() {
-		return headings;
-	}
-	public void setHeadings(String[] headings) {
-		this.headings = headings;
-	}
 	@Override
 	public String toString() {
 		return "ProfileAspectDTO [children=" + children + ", mappedTemplates=" + mappedTemplates + ", predictions="
-				+ predictions + ", headings=" + Arrays.toString(headings) + "]";
+				+ predictions + "]";
 	}
 }

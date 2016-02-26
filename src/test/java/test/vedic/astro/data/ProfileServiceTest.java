@@ -15,6 +15,7 @@ import com.vedic.astro.dto.PredictionOutcomeDTO;
 import com.vedic.astro.dto.PredictionTemplateDTO;
 import com.vedic.astro.enums.AnalysisGroup;
 import com.vedic.astro.enums.ObservationNature;
+import com.vedic.astro.repository.ComponentGroupRepository;
 import com.vedic.astro.repository.PredictionTemplateRepository;
 import com.vedic.astro.service.AnalysisComponentService;
 import com.vedic.astro.service.ProfileService;
@@ -38,6 +39,11 @@ public class ProfileServiceTest extends BaseUtilTest{
 	@Autowired
 	@Qualifier("predictionTemplateRepository")
 	private PredictionTemplateRepository predictionTemplateRepository;
+	
+	@Autowired
+	@Qualifier("componentGroupRepository")
+	private ComponentGroupRepository componentGroupRepository;
+	
 	
 	//@Test
 	public void testCreatePredictionTemplate() throws Exception {

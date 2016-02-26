@@ -20,8 +20,8 @@ import com.vedic.astro.domain.PredictionObservation;
 import com.vedic.astro.domain.PredictionOutcome;
 import com.vedic.astro.domain.PredictionTemplate;
 import com.vedic.astro.domain.ProfileAspect;
-import com.vedic.astro.dto.ChartImpactDTO;
-import com.vedic.astro.dto.ChartProfileDTO;
+import com.vedic.astro.dto.ComponentOutcomeDTO;
+import com.vedic.astro.dto.AnalysisResultDTO;
 import com.vedic.astro.dto.LevelProfileAspectDTO;
 import com.vedic.astro.dto.PathProfileAspectDTO;
 import com.vedic.astro.dto.PredictionObservationDTO;
@@ -65,23 +65,41 @@ public class ProfileService {
 	@Qualifier("memberAnalysisRepository")
 	private MemberAnalysisRepository memberAnalysisRepository;
 
-	public ChartProfileDTO getChartProfile(String memberId) {
+	public AnalysisResultDTO getAnalysisResult(String memberId) {
 
-		ChartProfileDTO chartProfileDTO = new ChartProfileDTO();
+		AnalysisResultDTO analysisResultDTO = new AnalysisResultDTO();
 
-		chartProfileDTO.addBodyImpact(new ChartImpactDTO("B-Planet", "Mars", "Strength", "Strong physically"));
-		chartProfileDTO.addBodyImpact(new ChartImpactDTO("B-Nakshatra", "Mrighshira", "Asc", "Lunatic"));
-		chartProfileDTO.addBodyImpact(new ChartImpactDTO("B-Zod", "Mars", "Strength", "Strong physically"));
+		analysisResultDTO.addNakAnalysis(new ComponentOutcomeDTO("MoonNakEvaluator","Rohini","Impact of Moon Nak"));
+		analysisResultDTO.addNakAnalysis(new ComponentOutcomeDTO("SunNakEvaluator","Mrigshira","Impact of Sun Nak"));
+		analysisResultDTO.addNakAnalysis(new ComponentOutcomeDTO("AscNakEvaluator","Hastha","Impact of Asc Nak"));
 
-		chartProfileDTO.addMindImpact(new ChartImpactDTO("M-Planet", "Mars", "Strength", "Strong physically"));
-		chartProfileDTO.addMindImpact(new ChartImpactDTO("M-Nakshatra", "Mrighshira", "Asc", "Lunatic"));
-		chartProfileDTO.addMindImpact(new ChartImpactDTO("M-Zod", "Mars", "Strength", "Strong physically"));
+		analysisResultDTO.addZodAnalysis(new ComponentOutcomeDTO("MoonZodEvaluator","Rohini","Impact of Moon Zod"));
+		analysisResultDTO.addZodAnalysis(new ComponentOutcomeDTO("SunZodEvaluator","Mrigshira","Impact of Sun Zod"));
+		analysisResultDTO.addZodAnalysis(new ComponentOutcomeDTO("AscZodEvaluator","Hastha","Impact of Asc Zod"));
 
-		chartProfileDTO.addSoulImpact(new ChartImpactDTO("S-Planet", "Mars", "Strength", "Strong physically"));
-		chartProfileDTO.addSoulImpact(new ChartImpactDTO("S-Nakshatra", "Mrighshira", "Asc", "Lunatic"));
-		chartProfileDTO.addSoulImpact(new ChartImpactDTO("S-Zod", "Mars", "Strength", "Strong physically"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H1StrengthEvaluator","H1 High strength","Impact of H1 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H2StrengthEvaluator","H2 Low strength","Impact of H2 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H3StrengthEvaluator","H3 Medium strength","Impact of H3 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H4StrengthEvaluator","H4 Low strength","Impact of H4 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H5StrengthEvaluator","H5 Low strength","Impact of H5 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H6StrengthEvaluator","H6 High strength","Impact of H6 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H7StrengthEvaluator","H7 High strength","Impact of H7 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H8StrengthEvaluator","H8 Medium strength","Impact of H8 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H9StrengthEvaluator","H9 Low strength","Impact of H9 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H10StrengthEvaluator","H10 High strength","Impact of H10 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H11StrengthEvaluator","H11 High strength","Impact of H11 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H12StrengthEvaluator","H12 Medium strength","Impact of H12 strength"));
+		
+		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("SunStrengthEvaluator","Sun high strength","Impact of Sun strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("MonStrengthEvaluator","Moon high strength","Impact of Moon strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("JupStrengthEvaluator","Jupiter high strength","Impact of Jupiter strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("MarStrengthEvaluator","Mars high strength","Impact of Mars strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("MerStrengthEvaluator","Mercury high strength","Impact of Mercury strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("SatStrengthEvaluator","Saturn high strength","Impact of Saturn strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("VenStrengthEvaluator","Venus high strength","Impact of Venus strength"));
+		
 
-		return chartProfileDTO;
+		return analysisResultDTO;
 	}
 
 	public List<LevelProfileAspectDTO> getAllParents() {
@@ -641,38 +659,41 @@ public class ProfileService {
 				Optional<AnalysisComponent> analysisComp = analysisComponentRepository
 						.findByTemplate(predictionTemplate.getCode());
 
-				if (!analysisGroups.isEmpty() && analysisGroups.contains(analysisComp.get().getAnalysisGroup())) {
-					if (outcomes.isPresent()) {
+				if (analysisComp.isPresent()) {
+					if (!analysisGroups.isEmpty() && analysisGroups.contains(analysisComp.get().getAnalysisGroup())) {
+						if (outcomes.isPresent()) {
 
-						for (PredictionOutcome outcome : outcomes.get()) {
+							for (PredictionOutcome outcome : outcomes.get()) {
 
-							ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
+								ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
 
-							if (analysisComp.isPresent()) {
+								if (analysisComp.isPresent()) {
 
-								AnalysisComponent analysisComponent = analysisComp.get();
-								profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
-								profilePredictDTO.setComponentName(analysisComponent.getName());
-								profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+									AnalysisComponent analysisComponent = analysisComp.get();
+									profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
+									profilePredictDTO.setComponentName(analysisComponent.getName());
+									profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+								}
+
+								Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
+								PredictionObservation observation = observationMap.get(parent.getCode());
+
+								profilePredictDTO.setNature(observation.getNature());
+								profilePredictDTO.setOutcome(outcome.getName());
+								profilePredictDTO.setObservation(observation.getObservation());
+								profilePredictDTO.setTimeDependent(observation.isTimeDependent());
+
+								observations.add(profilePredictDTO);
 							}
-
-							Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
-							PredictionObservation observation = observationMap.get(parent.getCode());
-
-							profilePredictDTO.setNature(observation.getNature());
-							profilePredictDTO.setOutcome(outcome.getName());
-							profilePredictDTO.setObservation(observation.getObservation());
-							profilePredictDTO.setTimeDependent(observation.isTimeDependent());
-
-							observations.add(profilePredictDTO);
 						}
+						parent.setMappedTemplates(templates.toString());
+
 					}
-					parent.setMappedTemplates(templates.toString());
-					parent.setPredictions(observations);
-			
 				}
 			}
 		}
+		parent.setPredictions(observations);
+
 	}
 
 	private void populateInfo(ProfileAspectDTO parent, ProfileFilterDTO profileFilterDTO) {
@@ -703,8 +724,7 @@ public class ProfileService {
 		Optional<List<PredictionTemplate>> predictionTemplateList = predictionTemplateRepository
 				.findByAspectCode(parent.getCode());
 
-		if (predictionTemplateList.isPresent() 
-				&& !predictionTemplateList.get().isEmpty()) {
+		if (predictionTemplateList.isPresent() && !predictionTemplateList.get().isEmpty()) {
 
 			observations = new ArrayList<ProfilePredictionDTO>();
 

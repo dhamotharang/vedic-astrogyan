@@ -94,7 +94,6 @@
 		} ];
 		
 		$scope.aspects = [];
-
 	
 		(function init() {
 			loadProfileAspects();

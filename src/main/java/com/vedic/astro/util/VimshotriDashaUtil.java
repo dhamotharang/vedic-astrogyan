@@ -20,8 +20,9 @@ import com.vedic.astro.domain.DashaPlanetPlanetRelationship;
 import com.vedic.astro.domain.DashaPlanetRelationship;
 import com.vedic.astro.domain.DashaTimePeriod;
 import com.vedic.astro.domain.ZodiacDegreeRange;
+import com.vedic.astro.dto.DashaDTO;
 import com.vedic.astro.enums.Dasha;
-import com.vedic.astro.enums.DashaSystem;
+import com.vedic.astro.enums.NakDashaSystem;
 import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.HousePlanetRelationshipType;
 import com.vedic.astro.enums.Nakshatra;
@@ -46,7 +47,7 @@ public class VimshotriDashaUtil {
 	@Qualifier("relationshipUtil")
 	private RelationshipUtil relationshipUtil;
 
-	private static final int DAYS_IN_YEAR = 365;
+	private static final double DAYS_IN_YEAR = 365.25;
 	private static final int TOTAL_DASHA_YEARS = 120;
 
 	// public Dasha getCurrentDashaPeriod(Date dob, DashaPeriod dashaAt) {
@@ -67,7 +68,7 @@ public class VimshotriDashaUtil {
 
 		int totalYears = dasha.getYears();
 
-		while (totalYears < 80) {
+		while (totalYears < 120) {
 			Dasha nextDasha = getNextDasha(dasha);
 			dasha = nextDasha;
 			totalYears = totalYears + nextDasha.getYears();
@@ -95,12 +96,11 @@ public class VimshotriDashaUtil {
 
 	public int daysInAntardasha(Dasha mahadasha, Dasha antardasha) {
 
-		int daysInMahadasha = mahadasha.getYears() * DAYS_IN_YEAR;
+		int daysInMahadasha = new Double(mahadasha.getYears() * DAYS_IN_YEAR).intValue();
 		return Math.round(antardasha.getProportion() * daysInMahadasha);
 	}
 
-	public Map<Dasha, DashaTimePeriod> getAllAntarDashasPeriods(Dasha dasha,
-			Date date) {
+	public Map<Dasha, DashaTimePeriod> getAllAntarDashasPeriods(Dasha dasha, Date date) {
 		Map<Dasha, DashaTimePeriod> dashaMap = new HashMap<Dasha, DashaTimePeriod>();
 
 		List<Dasha> antarDashaList = getAllAntarDashas(dasha);
@@ -109,8 +109,7 @@ public class VimshotriDashaUtil {
 
 			DashaTimePeriod period = new DashaTimePeriod();
 			period.setStartDate(calcDate);
-			Date endDate = DateUtil.getDateByDays(calcDate,
-					this.daysInAntardasha(dasha, antardasha));
+			Date endDate = DateUtil.getDateByDays(calcDate, this.daysInAntardasha(dasha, antardasha));
 			period.setEndDate(endDate);
 
 			dashaMap.put(antardasha, period);
@@ -120,8 +119,7 @@ public class VimshotriDashaUtil {
 		return dashaMap;
 	}
 
-	public Map<Dasha, DashaTimePeriod> divideIntoDashasPeriods(Dasha dasha,
-			Date fromDate, Date toDate) {
+	public Map<Dasha, DashaTimePeriod> divideIntoDashasPeriods(Dasha dasha, Date fromDate, Date toDate) {
 		Map<Dasha, DashaTimePeriod> dashaMap = new HashMap<Dasha, DashaTimePeriod>();
 
 		List<Dasha> antarDashaList = getAllAntarDashas(dasha);
@@ -133,8 +131,7 @@ public class VimshotriDashaUtil {
 
 			DashaTimePeriod period = new DashaTimePeriod();
 			period.setStartDate(calcDate);
-			Date endDate = DateUtil.getDateByDays(calcDate,
-					Math.round(totalDays * antardasha.getProportion()));
+			Date endDate = DateUtil.getDateByDays(calcDate, Math.round(totalDays * antardasha.getProportion()));
 			period.setEndDate(endDate);
 
 			dashaMap.put(antardasha, period);
@@ -144,8 +141,7 @@ public class VimshotriDashaUtil {
 		return dashaMap;
 	}
 
-	public Map<DashaTimePeriod, Dasha> dividePeriodIntoDashas(Dasha dasha,
-			Date fromDate, Date toDate) {
+	public Map<DashaTimePeriod, Dasha> dividePeriodIntoDashas(Dasha dasha, Date fromDate, Date toDate) {
 		Map<DashaTimePeriod, Dasha> dashaMap = new HashMap<DashaTimePeriod, Dasha>();
 
 		List<Dasha> antarDashaList = getAllAntarDashas(dasha);
@@ -161,11 +157,9 @@ public class VimshotriDashaUtil {
 
 			DashaTimePeriod period = new DashaTimePeriod();
 			period.setStartDate(calcDate);
-			Date endDate = DateUtil.getDateByDays(calcDate,
-					Math.round(totalDays * antardasha.getProportion()));
+			Date endDate = DateUtil.getDateByDays(calcDate, Math.round(totalDays * antardasha.getProportion()));
 
-			System.out.println("endDate ="
-					+ DateUtil.fromDate(endDate, "MM/dd/yyyy"));
+			System.out.println("endDate =" + DateUtil.fromDate(endDate, "MM/dd/yyyy"));
 
 			period.setEndDate(endDate);
 
@@ -177,11 +171,9 @@ public class VimshotriDashaUtil {
 		return dashaMap;
 	}
 
-	public int daysToCompleteDasha(Zodiac zodiac, Nakshatra nakshatra,
-			Double degs) {
+	public int daysToCompleteDasha(Zodiac zodiac, Nakshatra nakshatra, Double degs) {
 
-		Map<ZodiacDegreeRange, Nakshatra> nakMap = BaseEntityRefData
-				.createNakshatraRefData().get(zodiac);
+		Map<ZodiacDegreeRange, Nakshatra> nakMap = BaseEntityRefData.createNakshatraRefData().get(zodiac);
 
 		Double maxDegrees = null;
 		for (Map.Entry<ZodiacDegreeRange, Nakshatra> entry : nakMap.entrySet()) {
@@ -197,7 +189,7 @@ public class VimshotriDashaUtil {
 		Integer maxDegreesInMinutes = MathUtil.calcDegreesInMinutes(maxDegrees);
 		// System.out.println("maxDegreesInMinutes =" + maxDegreesInMinutes);
 
-		Integer currentDegreesInMinutes = MathUtil.calcDegreesInMinutes(degs);
+		Integer currentDegreesInMinutes = MathUtil.convertInMinutes(degs);
 		// System.out.println("currentDegreesInMinutes =" +
 		// currentDegreesInMinutes);
 
@@ -210,27 +202,22 @@ public class VimshotriDashaUtil {
 
 		// System.out.println("dasha =" + dasha);
 		// System.out.println("dasha yrs =" + dasha.getYears());
-
-		float daysInFloat = dasha.getYears() * DAYS_IN_YEAR
-				* ((float) diff / 800);
+		
+		float daysInFloat = new Double(dasha.getYears() * DAYS_IN_YEAR).intValue() * ((float) diff / 800);
 
 		return Math.round(daysInFloat);
 	}
 
-	public Date calcLastDateForCompletionOfFirstDasha(Zodiac zodiac,
-			Nakshatra nakshatra, Double degs, Date dob) {
+	public Date calcLastDateForCompletionOfFirstDasha(Zodiac zodiac, Nakshatra nakshatra, Double degs, Date dob) {
 
-		return DateUtil.getDateByDays(dob,
-				daysToCompleteDasha(zodiac, nakshatra, degs));
+		return DateUtil.getDateByDays(dob, daysToCompleteDasha(zodiac, nakshatra, degs));
 	}
 
-	public DashaData generateDashaData(Zodiac zodiac, Nakshatra nakshatra,
-			Double degs, Date dob, String pid) {
+	public DashaData generateDashaData(Zodiac zodiac, Nakshatra nakshatra, Double degs, Date dob, String pid) {
 
 		DashaData dashaData = new DashaData();
 
-		Date lastDate = calcLastDateForCompletionOfFirstDasha(zodiac,
-				nakshatra, degs, dob);
+		Date lastDate = calcLastDateForCompletionOfFirstDasha(zodiac, nakshatra, degs, dob);
 		// System.out.println("lastDate = " + lastDate);
 
 		Planet lordPlanet = nakshatraUtil.getNakshatraLord(nakshatra);
@@ -244,42 +231,30 @@ public class VimshotriDashaUtil {
 		Long sequence = 0L;
 		for (Dasha dashaAfter : dashasAfter) {
 
-			int daysOfDasha = dashaAfter.getYears() * DAYS_IN_YEAR;
+			
+			int daysOfDasha = new Double(dashaAfter.getYears() * DAYS_IN_YEAR).intValue();
 			Date toDate = DateUtil.getDateByDays(fromDate, daysOfDasha);
 
-			Map<DashaTimePeriod, Dasha> level2Dasha = this
-					.dividePeriodIntoDashas(dashaAfter, fromDate, toDate);
+			Map<DashaTimePeriod, Dasha> level2Dasha = this.dividePeriodIntoDashas(dashaAfter, fromDate, toDate);
 
 			// System.out.println("antarDasha = " + level2Dasha);
 
 			fromDate = DateUtil.getDateByDays(toDate, 1);
 
-			for (Map.Entry<DashaTimePeriod, Dasha> level2DashaEntry : level2Dasha
-					.entrySet()) {
+			for (Map.Entry<DashaTimePeriod, Dasha> level2DashaEntry : level2Dasha.entrySet()) {
 
-				Map<DashaTimePeriod, Dasha> level3Dasha = this
-						.dividePeriodIntoDashas(level2DashaEntry.getValue(),
-								level2DashaEntry.getKey().getStartDate(),
-								level2DashaEntry.getKey().getEndDate());
-				for (Map.Entry<DashaTimePeriod, Dasha> level3DashaEntry : level3Dasha
-						.entrySet()) {
+				Map<DashaTimePeriod, Dasha> level3Dasha = this.dividePeriodIntoDashas(level2DashaEntry.getValue(),
+						level2DashaEntry.getKey().getStartDate(), level2DashaEntry.getKey().getEndDate());
+				for (Map.Entry<DashaTimePeriod, Dasha> level3DashaEntry : level3Dasha.entrySet()) {
 
-					Map<DashaTimePeriod, Dasha> level4Dasha = this
-							.dividePeriodIntoDashas(
-									level3DashaEntry.getValue(),
-									level3DashaEntry.getKey().getStartDate(),
-									level3DashaEntry.getKey().getEndDate());
+					Map<DashaTimePeriod, Dasha> level4Dasha = this.dividePeriodIntoDashas(level3DashaEntry.getValue(),
+							level3DashaEntry.getKey().getStartDate(), level3DashaEntry.getKey().getEndDate());
 
-					for (Map.Entry<DashaTimePeriod, Dasha> level4DashaEntry : level4Dasha
-							.entrySet()) {
+					for (Map.Entry<DashaTimePeriod, Dasha> level4DashaEntry : level4Dasha.entrySet()) {
 						sequence++;
-						dashaData.add(new DashaPeriodSnapshot(pid, sequence,
-								DashaSystem.Vimshottri, level4DashaEntry
-										.getKey(), new DashaCombination(
-										dashaAfter,
-										level2DashaEntry.getValue(),
-										level3DashaEntry.getValue(),
-										level4DashaEntry.getValue())));
+						dashaData.add(new DashaPeriodSnapshot(pid, sequence, NakDashaSystem.VIM,
+								level4DashaEntry.getKey(), new DashaCombination(dashaAfter, level2DashaEntry.getValue(),
+										level3DashaEntry.getValue(), level4DashaEntry.getValue())));
 					}
 				}
 			}
@@ -288,22 +263,18 @@ public class VimshotriDashaUtil {
 		return dashaData;
 	}
 
-	public DashaCombination getDashaCombination(Zodiac zodiac,
-			Nakshatra nakshatra, Double degs, Date dob, Date eventDate) {
-		DashaData dashaData = generateDashaData(zodiac, nakshatra, degs, dob,
-				null);
+	public DashaCombination getDashaCombination(Zodiac zodiac, Nakshatra nakshatra, Double degs, Date dob,
+			Date eventDate) {
+		DashaData dashaData = generateDashaData(zodiac, nakshatra, degs, dob, null);
 
 		DashaCombination combination = null;
 		for (DashaPeriodSnapshot dashaPeriodSnapshot : dashaData.getData()) {
 
-			Date startDate = dashaPeriodSnapshot.getDashaPeriod()
-					.getStartDate();
+			Date startDate = dashaPeriodSnapshot.getDashaPeriod().getStartDate();
 			Date endDate = dashaPeriodSnapshot.getDashaPeriod().getEndDate();
 
-			if (eventDate.after(startDate)
-					&& (eventDate.before(endDate))
-					|| (eventDate.equals(startDate) || (eventDate
-							.equals(endDate)))) {
+			if (eventDate.after(startDate) && (eventDate.before(endDate))
+					|| (eventDate.equals(startDate) || (eventDate.equals(endDate)))) {
 				combination = dashaPeriodSnapshot.getDashaCombination();
 				break;
 			}
@@ -438,12 +409,11 @@ public class VimshotriDashaUtil {
 	 * return housesImpacted; }
 	 */
 	public List<Signification> getSignifications(Planet planet, House house) {
-		return BaseEntityRelationshipRefData.getPlanetSignificationsMap()
-				.get(planet).get(house);
+		return BaseEntityRelationshipRefData.getPlanetSignificationsMap().get(planet).get(house);
 	}
 
-	public DashaPlanetRelationship getDashaPlanetRelationships(
-			Planet dashaPlanet, BirthChartCalcPrep birthChartCalcPrep) {
+	public DashaPlanetRelationship getDashaPlanetRelationships(Planet dashaPlanet,
+			BirthChartCalcPrep birthChartCalcPrep) {
 		DashaPlanetRelationship dashaPlanetRelationship = new DashaPlanetRelationship();
 		dashaPlanetRelationship.setDashaPlanet(dashaPlanet);
 
@@ -451,67 +421,55 @@ public class VimshotriDashaUtil {
 		List<DashaPlanetPlanetRelationship> relatedPlanets = new ArrayList<DashaPlanetPlanetRelationship>();
 
 		List<Planet> otherInhabitants = birthChartCalcPrep
-				.getInhabitantsOtherThan(birthChartCalcPrep
-						.getPlanetHouseMapping().get(dashaPlanet), dashaPlanet);
+				.getInhabitantsOtherThan(birthChartCalcPrep.getPlanetHouseMapping().get(dashaPlanet), dashaPlanet);
 
 		if (otherInhabitants != null) {
 			for (Planet otherInhabitant : otherInhabitants) {
-				relatedPlanets.add(new DashaPlanetPlanetRelationship(
-						otherInhabitant,
-						PlanetPlanetRelationshipType.CoInhabitant));
+				relatedPlanets.add(
+						new DashaPlanetPlanetRelationship(otherInhabitant, PlanetPlanetRelationshipType.CoInhabitant));
 			}
 		}
 
-		List<House> ownedHouses = birthChartCalcPrep.getPlanetOwnedHouse().get(
-				dashaPlanet);
+		List<House> ownedHouses = birthChartCalcPrep.getPlanetOwnedHouse().get(dashaPlanet);
 		if (ownedHouses != null) {
 			for (House ownedHouse : ownedHouses) {
-				Set<Planet> inhabitantsInOwnedHouse = birthChartCalcPrep
-						.getHouseInhabitantsMapping().get(ownedHouse);
+				Set<Planet> inhabitantsInOwnedHouse = birthChartCalcPrep.getHouseInhabitantsMapping().get(ownedHouse);
 				if (inhabitantsInOwnedHouse != null) {
 					for (Planet inhabitantInOwnedHouse : inhabitantsInOwnedHouse) {
-						relatedPlanets
-								.add(new DashaPlanetPlanetRelationship(
-										inhabitantInOwnedHouse,
-										PlanetPlanetRelationshipType.InhabitantOfOwnedHouse));
+						relatedPlanets.add(new DashaPlanetPlanetRelationship(inhabitantInOwnedHouse,
+								PlanetPlanetRelationshipType.InhabitantOfOwnedHouse));
 					}
 				}
 			}
 		}
 
-/*		Nakshatra nakshatra = birthChartCalcPrep.getPlanetNakshatrasMapping()
-				.get(dashaPlanet);
-
-		if (nakshatra != null) {
-			relatedPlanets.add(new DashaPlanetPlanetRelationship(nakshatraUtil
-					.getNakshatraLord(nakshatra),
-					PlanetPlanetRelationshipType.LordOfNakshatra));
-		}
-*/		
-		List<House> aspectedHouses = birthChartCalcPrep
-				.getAspectPlanetHousesMapping().get(dashaPlanet);
+		/*
+		 * Nakshatra nakshatra = birthChartCalcPrep.getPlanetNakshatrasMapping()
+		 * .get(dashaPlanet);
+		 * 
+		 * if (nakshatra != null) { relatedPlanets.add(new
+		 * DashaPlanetPlanetRelationship(nakshatraUtil
+		 * .getNakshatraLord(nakshatra),
+		 * PlanetPlanetRelationshipType.LordOfNakshatra)); }
+		 */
+		List<House> aspectedHouses = birthChartCalcPrep.getAspectPlanetHousesMapping().get(dashaPlanet);
 
 		if (aspectedHouses != null) {
 			for (House aspectedHouse : aspectedHouses) {
-				Set<Planet> inhabitantsInAspectedHouse = birthChartCalcPrep
-						.getHouseInhabitantsMapping().get(aspectedHouse);
+				Set<Planet> inhabitantsInAspectedHouse = birthChartCalcPrep.getHouseInhabitantsMapping()
+						.get(aspectedHouse);
 				if (inhabitantsInAspectedHouse != null) {
 					for (Planet inhabitantInAspectedHouse : inhabitantsInAspectedHouse) {
-						relatedPlanets
-								.add(new DashaPlanetPlanetRelationship(
-										inhabitantInAspectedHouse,
-										PlanetPlanetRelationshipType.InhabitantOfAspectedHouse));
+						relatedPlanets.add(new DashaPlanetPlanetRelationship(inhabitantInAspectedHouse,
+								PlanetPlanetRelationshipType.InhabitantOfAspectedHouse));
 					}
 				}
 			}
 		}
 
-		House house = birthChartCalcPrep.getPlanetHouseMapping().get(
-				dashaPlanet);
-		Planet ownerPlanet = birthChartCalcPrep.getHouseOwnerMapping().get(
-				house);
-		relatedPlanets.add(new DashaPlanetPlanetRelationship(ownerPlanet,
-				PlanetPlanetRelationshipType.LordOfHouse));
+		House house = birthChartCalcPrep.getPlanetHouseMapping().get(dashaPlanet);
+		Planet ownerPlanet = birthChartCalcPrep.getHouseOwnerMapping().get(house);
+		relatedPlanets.add(new DashaPlanetPlanetRelationship(ownerPlanet, PlanetPlanetRelationshipType.LordOfHouse));
 
 		Set<Planet> allPlanetSet = new HashSet<Planet>();
 		for (DashaPlanetPlanetRelationship dashaPlanetPlanetRelationship : relatedPlanets) {
@@ -520,8 +478,7 @@ public class VimshotriDashaUtil {
 		allPlanetSet.add(dashaPlanet);
 
 		for (Planet planet : allPlanetSet) {
-			relationships.put(planet,
-					getPlanetHouseRelationships(planet, birthChartCalcPrep));
+			relationships.put(planet, getPlanetHouseRelationships(planet, birthChartCalcPrep));
 		}
 
 		dashaPlanetRelationship.setRelatedPlanets(relatedPlanets);
@@ -530,62 +487,53 @@ public class VimshotriDashaUtil {
 		return dashaPlanetRelationship;
 	}
 
-	public List<DashaPlanetHouseRelationship> getPlanetHouseRelationships(
-			Planet planet, BirthChartCalcPrep birthChartCalcPrep) {
+	public List<DashaPlanetHouseRelationship> getPlanetHouseRelationships(Planet planet,
+			BirthChartCalcPrep birthChartCalcPrep) {
 
 		List<DashaPlanetHouseRelationship> houseRelationships = new ArrayList<DashaPlanetHouseRelationship>();
 
 		DashaPlanetHouseRelationship planetAsInhabitant = new DashaPlanetHouseRelationship();
 
-		planetAsInhabitant.setHouse(birthChartCalcPrep.getPlanetHouseMapping()
-				.get(planet));
+		planetAsInhabitant.setHouse(birthChartCalcPrep.getPlanetHouseMapping().get(planet));
 		planetAsInhabitant.setPlanet(planet);
-		planetAsInhabitant
-				.setHousePlanetRelationship(HousePlanetRelationshipType.Inhabitant);
+		planetAsInhabitant.setHousePlanetRelationship(HousePlanetRelationshipType.Inhabitant);
 
 		houseRelationships.add(planetAsInhabitant);
 
-		List<House> ownedHouses = birthChartCalcPrep.getPlanetOwnedHouse().get(
-				planet);
+		List<House> ownedHouses = birthChartCalcPrep.getPlanetOwnedHouse().get(planet);
 
 		if (ownedHouses != null) {
 			for (House ownedHouse : ownedHouses) {
 				DashaPlanetHouseRelationship planetAsLord = new DashaPlanetHouseRelationship();
 				planetAsLord.setHouse(ownedHouse);
 				planetAsLord.setPlanet(planet);
-				planetAsLord
-						.setHousePlanetRelationship(HousePlanetRelationshipType.Owner);
+				planetAsLord.setHousePlanetRelationship(HousePlanetRelationshipType.Owner);
 				houseRelationships.add(planetAsLord);
 			}
 		}
 
-		List<House> aspectedHouses = birthChartCalcPrep
-				.getAspectPlanetHousesMapping().get(planet);
+		List<House> aspectedHouses = birthChartCalcPrep.getAspectPlanetHousesMapping().get(planet);
 
 		for (House aspectedHouse : aspectedHouses) {
 			DashaPlanetHouseRelationship planetAsAspectingHouse = new DashaPlanetHouseRelationship();
 			planetAsAspectingHouse.setHouse(aspectedHouse);
 			planetAsAspectingHouse.setPlanet(planet);
-			planetAsAspectingHouse
-					.setHousePlanetRelationship(HousePlanetRelationshipType.Aspect);
+			planetAsAspectingHouse.setHousePlanetRelationship(HousePlanetRelationshipType.Aspect);
 			houseRelationships.add(planetAsAspectingHouse);
 		}
 
-		House nakshatraLordHouse = birthChartCalcPrep
-				.getNakshatraLordHouseMapping().get(planet);
+		House nakshatraLordHouse = birthChartCalcPrep.getNakshatraLordHouseMapping().get(planet);
 
 		if (nakshatraLordHouse != null) {
 
 			DashaPlanetHouseRelationship planetAsNakshatraLord = new DashaPlanetHouseRelationship();
 			planetAsNakshatraLord.setHouse(nakshatraLordHouse);
 			planetAsNakshatraLord.setPlanet(planet);
-			planetAsNakshatraLord
-					.setHousePlanetRelationship(HousePlanetRelationshipType.LordOfNakshatra);
+			planetAsNakshatraLord.setHousePlanetRelationship(HousePlanetRelationshipType.LordOfNakshatra);
 			houseRelationships.add(planetAsNakshatraLord);
 		}
 
-		List<House> karakaOfHouses = planetUtil.getPlanetDetails(planet)
-				.getKarakaOf();
+		List<House> karakaOfHouses = planetUtil.getPlanetDetails(planet).getKarakaOf();
 
 		if (karakaOfHouses != null) {
 
@@ -593,8 +541,7 @@ public class VimshotriDashaUtil {
 				DashaPlanetHouseRelationship planetAsKaraka = new DashaPlanetHouseRelationship();
 				planetAsKaraka.setHouse(karakaOfHouse);
 				planetAsKaraka.setPlanet(planet);
-				planetAsKaraka
-						.setHousePlanetRelationship(HousePlanetRelationshipType.Karaka);
+				planetAsKaraka.setHousePlanetRelationship(HousePlanetRelationshipType.Karaka);
 				houseRelationships.add(planetAsKaraka);
 			}
 		}
@@ -602,41 +549,37 @@ public class VimshotriDashaUtil {
 		return houseRelationships;
 	}
 
-	public Map<Planet, Map<House,List<Signification>>> predictDasha(Planet dashaPlanet,
+	public Map<Planet, Map<House, List<Signification>>> predictDasha(Planet dashaPlanet,
 			BirthChartCalcPrep birthChartCalcPrep) {
-		DashaPlanetRelationship dashaPlanetRelationship = getDashaPlanetRelationships(
-				dashaPlanet, birthChartCalcPrep);
+		DashaPlanetRelationship dashaPlanetRelationship = getDashaPlanetRelationships(dashaPlanet, birthChartCalcPrep);
 		System.out.println("dashaPlanetRelationship = " + dashaPlanetRelationship);
-		Map<Planet, Map<House,List<Signification>>> planetSignifications = new HashMap<Planet, Map<House,List<Signification>>>();
-		Map<Planet, List<DashaPlanetHouseRelationship>> relationships = dashaPlanetRelationship
-				.getRelationships();
-		
+		Map<Planet, Map<House, List<Signification>>> planetSignifications = new HashMap<Planet, Map<House, List<Signification>>>();
+		Map<Planet, List<DashaPlanetHouseRelationship>> relationships = dashaPlanetRelationship.getRelationships();
+
 		for (Map.Entry<Planet, List<DashaPlanetHouseRelationship>> planetEntry : relationships.entrySet()) {
 
-			List<DashaPlanetHouseRelationship> dashaPlanetHouseRelationships = planetEntry
-					.getValue();
+			List<DashaPlanetHouseRelationship> dashaPlanetHouseRelationships = planetEntry.getValue();
 			Map<House, List<Signification>> houseSignificationMap = new HashMap<House, List<Signification>>();
-			
+
 			for (DashaPlanetHouseRelationship dashaPlanetHouseRelationship : dashaPlanetHouseRelationships) {
 				houseSignificationMap.put(dashaPlanetHouseRelationship.getHouse(), new ArrayList<Signification>());
 			}
 			planetSignifications.put(planetEntry.getKey(), houseSignificationMap);
 		}
-		
-		System.out.println("planetSignifications before = " +  planetSignifications);
+
+		System.out.println("planetSignifications before = " + planetSignifications);
 
 		for (Map.Entry<Planet, Map<House, List<Signification>>> mapEntry : planetSignifications.entrySet()) {
-		
-			Map<House, List<Signification>> dashaPlanetHouseRelationships = mapEntry
-					.getValue();
-			for (Map.Entry<House, List<Signification>> dashaPlanetHouseRelationship : dashaPlanetHouseRelationships.entrySet()) {
-				dashaPlanetHouseRelationship.setValue(this.getSignifications(
-						mapEntry.getKey(),
-						dashaPlanetHouseRelationship.getKey()));
+
+			Map<House, List<Signification>> dashaPlanetHouseRelationships = mapEntry.getValue();
+			for (Map.Entry<House, List<Signification>> dashaPlanetHouseRelationship : dashaPlanetHouseRelationships
+					.entrySet()) {
+				dashaPlanetHouseRelationship
+						.setValue(this.getSignifications(mapEntry.getKey(), dashaPlanetHouseRelationship.getKey()));
 			}
 		}
-		System.out.println("planetSignifications after = " +  planetSignifications);
-		
+		System.out.println("planetSignifications after = " + planetSignifications);
+
 		return planetSignifications;
 	}
 
@@ -649,4 +592,72 @@ public class VimshotriDashaUtil {
 	 * dashaHouseScore.getAspectImpact().getTotalCount()*aspectWeight +
 	 * dashaHouseScore.getKarakaImpact().getTotalCount()*karakaWeight; }
 	 */
+	public List<DashaDTO> getMainPeriods(Zodiac zodiac, Nakshatra nakshatra, Double degs, Date dob, String pid, Date givenDate) {
+
+		List<DashaDTO> mahadashaData = new ArrayList<DashaDTO>();
+
+		Date lastDate = calcLastDateForCompletionOfFirstDasha(zodiac, nakshatra, degs, dob);
+		// System.out.println("lastDate = " + lastDate);
+
+		Planet lordPlanet = nakshatraUtil.getNakshatraLord(nakshatra);
+		Dasha dasha = this.getDasha(lordPlanet);
+
+		List<Dasha> dashasAfter = getAllDashasAfter(dasha);
+
+		// System.out.println("dashasAfter = " + dashasAfter);
+
+		Date fromDate = lastDate;
+		for (Dasha dashaAfter : dashasAfter) {
+			
+			int daysOfDasha = new Double(dashaAfter.getYears() * DAYS_IN_YEAR).intValue();
+			Date toDate = DateUtil.getDateByDays(fromDate, daysOfDasha);
+
+			Date startDate = fromDate;
+			if (!fromDate.equals(lastDate)) {
+				startDate = DateUtil.getDateByDays(fromDate, 1);
+			}
+			DashaDTO dashaDTO = new DashaDTO(getPlanet(dashaAfter), DateUtil.fromDate(startDate, "dd/MM/yyyy"),
+					DateUtil.fromDate(toDate, "dd/MM/yyyy"));
+
+			if(startDate.before(givenDate) && toDate.after(givenDate)){
+				dashaDTO.setCurrent(true);
+			}
+			mahadashaData.add(dashaDTO);
+			fromDate = toDate;
+		}
+
+		return mahadashaData;
+	}
+
+	public List<DashaDTO> getSubPeriods(Planet planet, Date fromDate, Date toDate, Date givenDate) {
+
+		List<DashaDTO> subPeriods = new ArrayList<DashaDTO>();
+		List<Dasha> antarDashaList = getAllAntarDashas(getDasha(planet));
+		Date calcDate = fromDate;
+		int totalDays = DateUtil.daysBetween(fromDate, toDate);
+
+		for (Dasha antardasha : antarDashaList) {
+
+			Date endDate = DateUtil.getDateByDays(calcDate, Math.round(totalDays * antardasha.getProportion()));
+			Date startDate = calcDate;
+			if (!calcDate.equals(fromDate)) {
+				startDate = DateUtil.getDateByDays(calcDate, 1);
+			}
+
+			if (endDate.after(toDate)) {
+				endDate = toDate;
+			}
+			DashaDTO dashaDTO = new DashaDTO(getPlanet(antardasha), DateUtil.fromDate(startDate, "dd/MM/yyyy"),
+					DateUtil.fromDate(endDate, "dd/MM/yyyy"));
+
+			if(startDate.before(givenDate) && endDate.after(givenDate)){
+				dashaDTO.setCurrent(true);
+			}
+			subPeriods.add(dashaDTO);
+			calcDate = endDate;
+		}
+
+		return subPeriods;
+	}
+
 }

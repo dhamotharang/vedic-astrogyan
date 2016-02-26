@@ -12,6 +12,7 @@ import com.vedic.astro.dto.ReferenceDataDTO;
 import com.vedic.astro.enums.AnalysisGroup;
 import com.vedic.astro.enums.BirthChartType;
 import com.vedic.astro.enums.House;
+import com.vedic.astro.enums.NakDashaSystem;
 import com.vedic.astro.enums.Nakshatra;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.Yoga;
@@ -134,7 +135,7 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 		referenceDataRepository.save(referenceData);
 	}
 	
-	@Test
+	//@Test
 	public void setupComponentData() {
 		ReferenceData referenceData = new ReferenceData();
 		referenceData.setName("analysis_sources");
@@ -145,6 +146,24 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
 			referenceDataDTO.setCode(analysisGroup.name());
 			referenceDataDTO.setName(analysisGroup.getDesc());
+
+			referenceDataList.add(referenceDataDTO);
+		}
+		referenceData.setData(referenceDataList);
+		referenceDataRepository.save(referenceData);
+	}
+	
+	@Test
+	public void setupNakDashas() {
+		ReferenceData referenceData = new ReferenceData();
+		referenceData.setName("nak_dashas");
+
+		List<ReferenceDataDTO> referenceDataList = new ArrayList<ReferenceDataDTO>();
+		for (NakDashaSystem nakdashaSystem : NakDashaSystem.values()) {
+
+			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
+			referenceDataDTO.setCode(nakdashaSystem.name());
+			referenceDataDTO.setName(nakdashaSystem.getDescription());
 
 			referenceDataList.add(referenceDataDTO);
 		}

@@ -35,9 +35,9 @@
                 templateUrl: viewBase + 'yogas/pr_yoga_analysis.html',
                 controllerAs: 'vm'
             })
-           .when('/pr-nak-dasha/:pid', {
-                controller: 'DashaAnalysisController',
-                templateUrl: viewBase + 'dashas/pr_dasha_analysis.html',
+           .when('/nak-dashas', {
+                controller: 'ChartController',
+                templateUrl: viewBase + 'dashas/nak_dashas.html',
                 controllerAs: 'vm'
             })
            .when('/pr-transit/:pid', {
@@ -93,7 +93,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/prediction-templates','/prediction-outcomes','/analysis-components','/final-profile']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/prediction-templates','/prediction-outcomes','/analysis-components','/final-profile','/nak-dashas']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

@@ -1,6 +1,5 @@
 package com.vedic.astro.util;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -194,7 +193,6 @@ public class DateUtil {
 		
 		return result;
 	}
-
 	
 	public static void main(String[] args) {
 		//System.out.println(getYears("10/24/1968"));

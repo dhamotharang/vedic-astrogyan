@@ -1,6 +1,6 @@
 package com.vedic.astro.vo;
 
-import com.vedic.astro.enums.DashaSystem;
+import com.vedic.astro.enums.NakDashaSystem;
 import com.vedic.astro.enums.LifeEvent;
 
 public class LifeEventPrediction {
@@ -8,7 +8,7 @@ public class LifeEventPrediction {
 	private String pid;
 	private String startDate; 
 	private String endDate; 
-	private DashaSystem dashaSystem;
+	private NakDashaSystem dashaSystem;
 	private LifeEvent lifeEvent;
 	public String getPid() {
 		return pid;
@@ -28,10 +28,10 @@ public class LifeEventPrediction {
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
-	public DashaSystem getDashaSystem() {
+	public NakDashaSystem getDashaSystem() {
 		return dashaSystem;
 	}
-	public void setDashaSystem(DashaSystem dashaSystem) {
+	public void setDashaSystem(NakDashaSystem dashaSystem) {
 		this.dashaSystem = dashaSystem;
 	}
 	public LifeEvent getLifeEvent() {

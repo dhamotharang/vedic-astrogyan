@@ -15,6 +15,14 @@ public class MathUtil {
 		return value.intValue() * 60
 				+ new Long(Math.round(decimalValue * 100)).intValue();
 	}
+	
+	public static Integer convertInMinutes(Double value) {
+
+		Double decimalValue = value - value.intValue();
+		return value.intValue() * 60
+				+ new Long(Math.round(round(decimalValue*60/100,2) * 100)).intValue();
+		
+	}
 
 	public static double round(double x, int scale) {
 		return round(x, scale, BigDecimal.ROUND_HALF_UP);
@@ -39,6 +47,6 @@ public class MathUtil {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(place(29840, DecimalPlace.Unit));
+		System.out.println(convertInMinutes(6.34));
 	}
 }

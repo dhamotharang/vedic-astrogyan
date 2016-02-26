@@ -1,12 +1,12 @@
 package com.vedic.astro.domain;
 
-import com.vedic.astro.enums.DashaSystem;
+import com.vedic.astro.enums.NakDashaSystem;
 
 
 public class DashaPeriodSnapshot {
 	
 	private String pid;
-	private DashaSystem dashaSystem;
+	private NakDashaSystem dashaSystem;
 	private DashaTimePeriod dashaPeriod = null;
 	private DashaCombination dashaCombination = null;
 	private Long seq = null;
@@ -14,7 +14,7 @@ public class DashaPeriodSnapshot {
 	
 	public DashaPeriodSnapshot() {}
 	
-	public DashaPeriodSnapshot(String pid, Long seq, DashaSystem dashaSystem,
+	public DashaPeriodSnapshot(String pid, Long seq, NakDashaSystem dashaSystem,
 			DashaTimePeriod dashaPeriod, DashaCombination dashaCombination) {
 		super();
 		this.pid = pid;
@@ -48,11 +48,11 @@ public class DashaPeriodSnapshot {
 		this.pid = pid;
 	}
 
-	public DashaSystem getDashaSystem() {
+	public NakDashaSystem getDashaSystem() {
 		return dashaSystem;
 	}
 
-	public void setDashaSystem(DashaSystem dashaSystem) {
+	public void setDashaSystem(NakDashaSystem dashaSystem) {
 		this.dashaSystem = dashaSystem;
 	}
 	

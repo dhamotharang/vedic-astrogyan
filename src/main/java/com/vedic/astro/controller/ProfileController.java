@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vedic.astro.dto.ChartProfileDTO;
+import com.vedic.astro.dto.AnalysisResultDTO;
 import com.vedic.astro.dto.LevelProfileAspectDTO;
 import com.vedic.astro.dto.PathProfileAspectDTO;
 import com.vedic.astro.dto.PredictionOutcomeDTO;
@@ -39,13 +39,13 @@ final public class ProfileController extends BaseController {
 	@Qualifier("profileService")
 	private ProfileService profileService;
 
-	@RequestMapping(value = "/profile/chart/{memberPid}", method = RequestMethod.GET)
-	public RestServiceResponse<ChartProfileDTO> getChartProfile(@PathVariable String memberPid)
+	@RequestMapping(value = "/analysis/result/{memberPid}", method = RequestMethod.GET)
+	public RestServiceResponse<AnalysisResultDTO> getChartProfile(@PathVariable String memberPid)
 			throws BusinessException, SystemException {
 
-		ChartProfileDTO chartProfileDTO = profileService.getChartProfile(memberPid);
+		AnalysisResultDTO analysisResultDTO = profileService.getAnalysisResult(memberPid);
 
-		return new RestServiceResponse<ChartProfileDTO>(chartProfileDTO);
+		return new RestServiceResponse<AnalysisResultDTO>(analysisResultDTO);
 	}
 
 	@RequestMapping(value = "/profile/tree", method = RequestMethod.GET)
