@@ -9,6 +9,7 @@
 			<div class="col-md-3 col-sm-5 col-xs-12">
 				<p>
 					<select class="form-control" ng-model="vm.nakDashaSelected"
+					   ng-change="vm.changeInput()"
 						ng-options="nakDasha.name for nakDasha in vm.nakDashaOptions track by nakDasha.code">
 					</select>
 				</p>
@@ -20,7 +21,7 @@
 						is-open="vm.popup1.opened" min-date="vm.minDate"
 						max-date="vm.maxDate" datepicker-options="vm.dateOptions"
 						date-disabled="vm.disabled(date, mode)" ng-required="true"
-						close-text="Close" alt-input-formats="vm.altInputFormats" ng-change="vm.changeDate()"/> <span
+						close-text="Close" alt-input-formats="vm.altInputFormats" ng-change="vm.changeInput()"/> <span
 						class="input-group-btn" >
 						<button type="button" class="btn btn-default"
 							ng-click="vm.open1()">

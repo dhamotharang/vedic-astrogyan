@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.vedic.astro.domain.DashaTimePeriod;
 import com.vedic.astro.domain.ZodiacDashaPeriod;
+import com.vedic.astro.dto.ZodDashaDTO;
 import com.vedic.astro.enums.CharaType;
 import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.Planet;
@@ -289,5 +290,52 @@ public class CharaDashaUtil {
 				antardashaZodiac, 
 				antardashaTimePeriod, 
 				mahadashaTimePeriod);
+	}
+	
+	public List<ZodDashaDTO> getMainPeriods(Date dateOfBirth, BirthChartCalcPrep birthChartCalcPrep, Date asOfDate){
+		List<ZodDashaDTO> zodDashaList = new ArrayList<ZodDashaDTO>();
+		
+		Map<Zodiac, Integer> mahadashaPeriods = calcMahaDashaPeriods(birthChartCalcPrep);
+		Date startDate = dateOfBirth;
+		
+		for(Map.Entry<Zodiac, Integer> mahadashaPeriodEntry : mahadashaPeriods.entrySet()){
+			Zodiac zodiac = mahadashaPeriodEntry.getKey();
+			Integer years = mahadashaPeriodEntry.getValue();
+			
+			Date endDate = DateUtil.addMonths(startDate, 12*years);
+			
+			ZodDashaDTO zodDashaDTO = new ZodDashaDTO(zodiac, DateUtil.fromDate(startDate, "dd/MM/yyyy"), DateUtil.fromDate(endDate, "dd/MM/yyyy"));
+			if(startDate.before(asOfDate) && endDate.after(asOfDate)){
+				zodDashaDTO.setCurrent(true);
+			}
+			zodDashaList.add(zodDashaDTO);
+			
+			startDate = endDate;
+		}
+		
+		return zodDashaList;
+	}
+
+	public List<ZodDashaDTO> getSubPeriods(Zodiac parentZodiac, Date startDate, Date endDate, Date asOfDate){
+		List<ZodDashaDTO> zodDashaList = new ArrayList<ZodDashaDTO>();
+		
+		Integer time = DateUtil.yearsBetween(startDate,	endDate);
+		Map<Zodiac, Integer> antardashaMap = generateAntardashaData(time, parentZodiac);
+		Date antardashaStartDate = startDate;
+		for(Map.Entry<Zodiac, Integer> antardashaPeriodEntry : antardashaMap.entrySet()){
+			
+			Zodiac antarDashaZodiac = antardashaPeriodEntry.getKey();
+			Integer months = antardashaPeriodEntry.getValue();
+			
+			Date antardashaEndDate = DateUtil.addMonths(antardashaStartDate, months);
+			
+			ZodDashaDTO zodDashaDTO = new ZodDashaDTO(antarDashaZodiac, DateUtil.fromDate(antardashaStartDate, "dd/MM/yyyy"), DateUtil.fromDate(antardashaEndDate, "dd/MM/yyyy"));
+			if(antardashaStartDate.before(asOfDate) && antardashaEndDate.after(asOfDate)){
+				zodDashaDTO.setCurrent(true);
+			}
+			zodDashaList.add(zodDashaDTO);
+			antardashaStartDate = antardashaEndDate;
+		}
+		return zodDashaList;
 	}
 }

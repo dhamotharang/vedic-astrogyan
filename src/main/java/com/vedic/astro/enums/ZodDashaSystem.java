@@ -1,12 +1,12 @@
 package com.vedic.astro.enums;
 
-public enum NakDashaSystem {
+public enum ZodDashaSystem {
 
-	VIMSHOTTRI("Vimshottri"), YOGINI("Yogini");
+	CHARA("Chara"), KALCHAKRA("Kal Chakra"), NARAYANI("Narayani"), SHOOL("Shool");
 	
     private String description;
 	
-	private NakDashaSystem(String description){
+	private ZodDashaSystem(String description){
 		this.description = description;
 	}
 

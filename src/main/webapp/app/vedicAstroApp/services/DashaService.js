@@ -9,17 +9,27 @@
     function DashaService($http, $rootScope) {
         var service = {};
 
-        service.getMainPeriods = getMainPeriods;
-        service.getSubPeriods = getSubPeriods;
-        
+        service.getNakMainPeriods = getNakMainPeriods;
+        service.getNakSubPeriods = getNakSubPeriods;
+        service.getZodMainPeriods = getZodMainPeriods;
+        service.getZodSubPeriods = getZodSubPeriods;
+                
         return service;
 
-        function getMainPeriods(input) {
+        function getNakMainPeriods(input) {
             return $http.post('/api/dashas/nak/main' , input).then(handleGetSuccess, handleError('Error getting Main periods result'));
         }
         
-        function getSubPeriods(mainPeriod) {
+        function getNakSubPeriods(mainPeriod) {
             return $http.post('/api/dashas/nak/subperiods', mainPeriod).then(handleSubmitWithResponse, handleError('Error adding aspect'));
+        }
+        
+        function getZodMainPeriods(input) {
+            return $http.post('/api/dashas/zod/main' , input).then(handleGetSuccess, handleError('Error getting Main periods result'));
+        }
+        
+        function getZodSubPeriods(mainPeriod) {
+            return $http.post('/api/dashas/zod/subperiods', mainPeriod).then(handleSubmitWithResponse, handleError('Error adding aspect'));
         }
         
         function handleGetSuccess(res) {

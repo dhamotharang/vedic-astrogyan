@@ -1,25 +1,34 @@
-<div class="x_panel">
+<div class="x_panel" ng-controller="ZodDashaCalcController as vm">
 	<div class="x_title">
 		<div class="row">
 			<div class="col-md-3 col-sm-12 col-xs-12">
 				<h2>
-					<i class="fa fa-bars"></i> Dasha System
+					<i class="fa fa-bars"></i> {{vm.panelTitle}}
 				</h2>
 			</div>
 			<div class="col-md-3 col-sm-5 col-xs-12">
 				<p>
-					<select
-						class="form-control control-label col-md-2 col-sm-3 col-xs-12"
-						name="chartType">
-						<option>Narayani</option>
-						<option>Chara</option>
-						<option>Shool</option>
-						<option>Kaal Chakra</option>
+					<select class="form-control" ng-model="vm.zodDashaSelected"
+					   ng-change="vm.changeInput()"
+						ng-options="zodDasha.name for zodDasha in vm.zodDashaOptions track by zodDasha.code">
 					</select>
 				</p>
 			</div>
 			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
-				<input type="text" class="form-control" placeholder="20/12/2015">
+				<p class="input-group">
+					<input type="text" readonly=true class="form-control"
+						uib-datepicker-popup="{{vm.format}}" ng-model="vm.dt"
+						is-open="vm.popup1.opened" min-date="vm.minDate"
+						max-date="vm.maxDate" datepicker-options="vm.dateOptions"
+						date-disabled="vm.disabled(date, mode)" ng-required="true"
+						close-text="Close" alt-input-formats="vm.altInputFormats" ng-change="vm.changeInput()"/> <span
+						class="input-group-btn" >
+						<button type="button" class="btn btn-default"
+							ng-click="vm.open1()">
+							<i class="glyphicon glyphicon-calendar"></i>
+						</button>
+					</span>
+				</p>
 			</div>
 			<div class="col-md-3 col-sm-12 col-xs-12">
 				<ul class="nav navbar-right panel_toolbox">
@@ -32,82 +41,38 @@
 		</div>
 	</div>
 	<div class="x_content">
+		<br>
 		<div class="row">
 			<div class="col-md-3 col-sm-6 col-xs-12">
-				<p></p>
+				<h5>
+					<b>{{vm.mainPeriodSelected.startDate}} -
+						{{vm.mainPeriodSelected.endDate}}</b>
+				</h5>
 			</div>
 			<div class="col-md-9 col-sm-6 col-xs-12">
-				<h5>
-					<b>L1 : 20/12/2014 - 20/12/2015 </b>
-				</h5>
-				<h5>
-					<b>L2 : 20/12/2014 - 20/12/2015 </b>
-				</h5>
-
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12 col-sm-6 col-xs-12">
 				<div data-toggle="buttons" class="btn-group">
-
-					<label class="btn btn-default"> <input type="radio"
-						id="option1" name="options">ARE
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option2" name="options">TAU
-					</label> <label class="btn btn-default active"> <input
-						class="btn-primary" type="radio" id="option3" name="options">GEM
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">CAN
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">LEO
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">VIR
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">LIB
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">SCO
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">SAG
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">CAP
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">AQU
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">PIS
+					<label ng-repeat="mainPeriod in vm.mainPeriods"
+						class="btn {{vm.evaluateCurrentOrDefault(mainPeriod.current)}}"
+						ng-click="vm.changeMainPeriodZodiac(mainPeriod)"> <input
+						type="radio">{{mainPeriod.zodiac}}
 					</label>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-12 col-sm-6 col-xs-12">
+			<div class="col-md-3 col-sm-6 col-xs-12">
+				<h5>
+					<b>{{vm.subPeriodSelected.startDate}} -
+						{{vm.subPeriodSelected.endDate}}</b>
+				</h5>
+			</div>
+			<div class="col-md-9 col-sm-6 col-xs-12">
 				<div data-toggle="buttons" class="btn-group">
-
-					<label class="btn btn-default"> <input type="radio"
-						id="option1" name="options">ARE
-					</label> <label class="btn btn-round btn-default"> <input
-						type="radio" id="option2" name="options">TAU
-					</label> <label class="btn btn-default"> <input class="btn-primary"
-						type="radio" id="option3" name="options">GEM
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">CAN
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">LEO
-					</label> <label class="btn btn-default  active"> <input
-						type="radio" id="option3" name="options">VIR
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">LIB
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">SCO
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">SAG
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">CAP
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">AQU
-					</label> <label class="btn btn-default"> <input type="radio"
-						id="option3" name="options">PIS
+					<label ng-repeat="subPeriod in vm.subPeriods"
+						class="btn {{vm.evaluateCurrentOrDefault(subPeriod.current)}}"
+						ng-click="vm.changeSubPeriodZodiac(subPeriod)">
+						<input type="radio">{{subPeriod.zodiac}}
 					</label>
-
 				</div>
 			</div>
 		</div>

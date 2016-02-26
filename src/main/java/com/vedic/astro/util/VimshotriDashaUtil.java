@@ -20,7 +20,7 @@ import com.vedic.astro.domain.DashaPlanetPlanetRelationship;
 import com.vedic.astro.domain.DashaPlanetRelationship;
 import com.vedic.astro.domain.DashaTimePeriod;
 import com.vedic.astro.domain.ZodiacDegreeRange;
-import com.vedic.astro.dto.DashaDTO;
+import com.vedic.astro.dto.NakDashaDTO;
 import com.vedic.astro.enums.Dasha;
 import com.vedic.astro.enums.NakDashaSystem;
 import com.vedic.astro.enums.House;
@@ -252,7 +252,7 @@ public class VimshotriDashaUtil {
 
 					for (Map.Entry<DashaTimePeriod, Dasha> level4DashaEntry : level4Dasha.entrySet()) {
 						sequence++;
-						dashaData.add(new DashaPeriodSnapshot(pid, sequence, NakDashaSystem.VIM,
+						dashaData.add(new DashaPeriodSnapshot(pid, sequence, NakDashaSystem.VIMSHOTTRI,
 								level4DashaEntry.getKey(), new DashaCombination(dashaAfter, level2DashaEntry.getValue(),
 										level3DashaEntry.getValue(), level4DashaEntry.getValue())));
 					}
@@ -592,9 +592,9 @@ public class VimshotriDashaUtil {
 	 * dashaHouseScore.getAspectImpact().getTotalCount()*aspectWeight +
 	 * dashaHouseScore.getKarakaImpact().getTotalCount()*karakaWeight; }
 	 */
-	public List<DashaDTO> getMainPeriods(Zodiac zodiac, Nakshatra nakshatra, Double degs, Date dob, String pid, Date givenDate) {
+	public List<NakDashaDTO> getMainPeriods(Zodiac zodiac, Nakshatra nakshatra, Double degs, Date dob, String pid, Date givenDate) {
 
-		List<DashaDTO> mahadashaData = new ArrayList<DashaDTO>();
+		List<NakDashaDTO> mahadashaData = new ArrayList<NakDashaDTO>();
 
 		Date lastDate = calcLastDateForCompletionOfFirstDasha(zodiac, nakshatra, degs, dob);
 		// System.out.println("lastDate = " + lastDate);
@@ -616,7 +616,7 @@ public class VimshotriDashaUtil {
 			if (!fromDate.equals(lastDate)) {
 				startDate = DateUtil.getDateByDays(fromDate, 1);
 			}
-			DashaDTO dashaDTO = new DashaDTO(getPlanet(dashaAfter), DateUtil.fromDate(startDate, "dd/MM/yyyy"),
+			NakDashaDTO dashaDTO = new NakDashaDTO(getPlanet(dashaAfter), DateUtil.fromDate(startDate, "dd/MM/yyyy"),
 					DateUtil.fromDate(toDate, "dd/MM/yyyy"));
 
 			if(startDate.before(givenDate) && toDate.after(givenDate)){
@@ -629,9 +629,9 @@ public class VimshotriDashaUtil {
 		return mahadashaData;
 	}
 
-	public List<DashaDTO> getSubPeriods(Planet planet, Date fromDate, Date toDate, Date givenDate) {
+	public List<NakDashaDTO> getSubPeriods(Planet planet, Date fromDate, Date toDate, Date givenDate) {
 
-		List<DashaDTO> subPeriods = new ArrayList<DashaDTO>();
+		List<NakDashaDTO> subPeriods = new ArrayList<NakDashaDTO>();
 		List<Dasha> antarDashaList = getAllAntarDashas(getDasha(planet));
 		Date calcDate = fromDate;
 		int totalDays = DateUtil.daysBetween(fromDate, toDate);
@@ -647,7 +647,7 @@ public class VimshotriDashaUtil {
 			if (endDate.after(toDate)) {
 				endDate = toDate;
 			}
-			DashaDTO dashaDTO = new DashaDTO(getPlanet(antardasha), DateUtil.fromDate(startDate, "dd/MM/yyyy"),
+			NakDashaDTO dashaDTO = new NakDashaDTO(getPlanet(antardasha), DateUtil.fromDate(startDate, "dd/MM/yyyy"),
 					DateUtil.fromDate(endDate, "dd/MM/yyyy"));
 
 			if(startDate.before(givenDate) && endDate.after(givenDate)){

@@ -32,6 +32,9 @@
 				title : 'Nakshatra Dashas',
 				href : '#/nak-dashas/'
 			}, {
+				title : 'Zodiac Dashas',
+				href : '#/zod-dashas/'
+			}, {
 				title : 'Transits',
 				href : '#/pr-transits/'
 			}, {

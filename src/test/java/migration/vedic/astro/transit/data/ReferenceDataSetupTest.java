@@ -16,6 +16,7 @@ import com.vedic.astro.enums.NakDashaSystem;
 import com.vedic.astro.enums.Nakshatra;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.Yoga;
+import com.vedic.astro.enums.ZodDashaSystem;
 import com.vedic.astro.enums.Zodiac;
 import com.vedic.astro.repository.ReferenceDataRepository;
 
@@ -153,7 +154,7 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 		referenceDataRepository.save(referenceData);
 	}
 	
-	@Test
+	//@Test
 	public void setupNakDashas() {
 		ReferenceData referenceData = new ReferenceData();
 		referenceData.setName("nak_dashas");
@@ -164,6 +165,24 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
 			referenceDataDTO.setCode(nakdashaSystem.name());
 			referenceDataDTO.setName(nakdashaSystem.getDescription());
+
+			referenceDataList.add(referenceDataDTO);
+		}
+		referenceData.setData(referenceDataList);
+		referenceDataRepository.save(referenceData);
+	}
+
+	@Test
+	public void setupZodDashas() {
+		ReferenceData referenceData = new ReferenceData();
+		referenceData.setName("zod_dashas");
+
+		List<ReferenceDataDTO> referenceDataList = new ArrayList<ReferenceDataDTO>();
+		for (ZodDashaSystem zodDashaSystem : ZodDashaSystem.values()) {
+
+			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
+			referenceDataDTO.setCode(zodDashaSystem.name());
+			referenceDataDTO.setName(zodDashaSystem.getDescription());
 
 			referenceDataList.add(referenceDataDTO);
 		}
