@@ -4,19 +4,24 @@ import com.vedic.astro.enums.Gender;
 
 public class MemberDTO {
 	
+	private String pid = null;
 	private String firstName = null;
-	
 	private String lastName = null;
-	
 	private Gender gender = null;
-	
 	private String dob = null;
-	
 	private ReferenceDataDTO city = null;
-	
 	private ReferenceDataDTO country = null;
-	
 	private String email = null;
+	private String contact = null;
+	private String blocked = "N";
+
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
 
 	public String getFirstName() {
 		return firstName;
@@ -74,9 +79,26 @@ public class MemberDTO {
 		this.dob = dob;
 	}
 
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getBlocked() {
+		return blocked;
+	}
+
+	public void setBlocked(String blocked) {
+		this.blocked = blocked;
+	}
+
 	@Override
 	public String toString() {
-		return "MemberDTO [firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender + ", dob=" + dob
-				+ ", city=" + city + ", country=" + country + ", email=" + email + "]";
+		return "MemberDTO [pid=" + pid + ", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
+				+ ", dob=" + dob + ", city=" + city + ", country=" + country + ", email=" + email + ", contact="
+				+ contact + ", blocked=" + blocked + "]";
 	}
 }

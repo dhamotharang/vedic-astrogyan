@@ -2,6 +2,7 @@ package migration.vedic.astro.transit.data;
 
 import java.util.List;
 
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -27,44 +28,44 @@ public class PlanetTransitDataServiceTest extends BaseUtilTest {
 	@Qualifier("transitInfoRepository")
 	private TransitInfoRepository transitInfoRepository;
 
-	//@Test
+	@Test
 	public void migrateTransitDataForSAT() {
 		System.out.println("Starting up for SAT...      [Ok]");
-		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.SAT, 1980, 2030);
-		transitInfoRepository.add(transitUtil.setDateRange(planetTransitData));
+		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.SAT, 1950, 2050);
+		transitInfoRepository.save(transitUtil.setDateRange(planetTransitData));
 		System.out.println("Finised for SAT...          [Ok]");
 	}
 	
-	//@Test
+	
+	@Test
 	public void migrateTransitDataForMAR() {
 		System.out.println("Starting up for MAR...      [Ok]");
-		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.MAR, 1980, 2030);
-		transitInfoRepository.add(transitUtil.setDateRange(planetTransitData));
+		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.MAR, 1950, 2050);
+		transitInfoRepository.save(transitUtil.setDateRange(planetTransitData));
 		System.out.println("Finised for MAR...          [Ok]");
 	}
 
-	//@Test
+	@Test
 	public void migrateTransitDataForJUP() {
 		System.out.println("Starting up for JUP...      [Ok]");
-		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.JUP, 1980, 2030);
-		transitInfoRepository.add(transitUtil.setDateRange(planetTransitData));
+		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.JUP, 1950, 2050);
+		transitInfoRepository.save(transitUtil.setDateRange(planetTransitData));
 		System.out.println("Finised for JUP...          [Ok]");
 	}
 
-	//@Test
+	@Test
 	public void migrateTransitDataForVEN() {
 		System.out.println("Starting up for VEN...      [Ok]");
-		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.VEN, 1980, 2030);
-		transitInfoRepository.add(transitUtil.setDateRange(planetTransitData));
+		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.VEN, 1950, 2050);
+		transitInfoRepository.save(transitUtil.setDateRange(planetTransitData));
 		System.out.println("Finised for VEN...          [Ok]");
 	}
 
-	//@Test
+	@Test
 	public void migrateTransitDataForMER() {
 		System.out.println("Starting up for MER...      [Ok]");
-		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.MER, 1980, 2030);
-		transitInfoRepository.add(transitUtil.setDateRange(planetTransitData));
+		List<PlanetTransitData> planetTransitData = planetTransitDataService.getPlanetTransitData(Planet.MER, 1950, 2050);
+		transitInfoRepository.save(transitUtil.setDateRange(planetTransitData));
 		System.out.println("Finised for MER...          [Ok]");
 	}
-
 }

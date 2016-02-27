@@ -2,12 +2,19 @@ package com.vedic.astro.domain;
 
 import java.util.Date;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.Zodiac;
 
+@Document(collection="transit_info")
 public class PlanetTransitData {
 	
-	private transient Integer sequence;
+	@Id
+	private String id = null;
+	
+	private Integer sequence;
 	private Planet planet;
 	private Date startDate;
 	private Date endDate;
@@ -61,10 +68,19 @@ public class PlanetTransitData {
 		this.endDate = endDate;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
-		return "PlanetTransitData [planet=" + planet + ", startDate="
-				+ startDate + ", endDate=" + endDate + ", zodiac=" + zodiac
-				+ "]";
+		return "PlanetTransitData [id=" + id + ", sequence=" + sequence + ", planet=" + planet + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", zodiac=" + zodiac + "]";
 	}
+
+
 }

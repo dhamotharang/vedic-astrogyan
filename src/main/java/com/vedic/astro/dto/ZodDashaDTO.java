@@ -4,7 +4,7 @@ import com.vedic.astro.enums.Zodiac;
 
 public class ZodDashaDTO extends BaseDashaDTO{
 
-	private Zodiac zodiac = null;
+	protected Zodiac zodiac = null;
 	
 	public ZodDashaDTO(Zodiac zodiac, String startDate, String endDate) {
 		this.zodiac = zodiac;

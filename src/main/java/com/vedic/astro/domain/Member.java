@@ -14,18 +14,15 @@ public class Member {
 	
 	@Id
 	private String pid = null;
-	
 	private String firstName = null;
-	
 	private String lastName = null;
-	
 	private Gender gender = null;
-	
 	private Date dateOfBirth = null;
-	
 	private String cityCode = null;
-	
 	private String countryCode = null;
+	private String email = null;
+	private String contact = null;
+	private boolean active = true;
 	
 	public String getPid() {
 		return pid;
@@ -82,10 +79,35 @@ public class Member {
 	public void setDateOfBirth(Date dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
 
 	@Override
 	public String toString() {
 		return "Member [pid=" + pid + ", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
-				+ ", dateOfBirth=" + dateOfBirth + ", cityCode=" + cityCode + ", countryCode=" + countryCode + "]";
+				+ ", dateOfBirth=" + dateOfBirth + ", cityCode=" + cityCode + ", countryCode=" + countryCode
+				+ ", email=" + email + ", contact=" + contact + ", active=" + active + "]";
 	}
 }

@@ -1,18 +1,22 @@
-(function() {
+﻿(function() {
 
 	'use strict';
+	angular.module('vedicAstroApp')
+			.controller('PageController', PageController);
 
-	angular.module('vedicAstroApp').controller('NavbarController',
-			NavbarController);
+	PageController.$inject = [ '$scope','$rootScope' ];
 
-	NavbarController.$inject = [ '$scope', '$location', 'AuthService', '$rootScope'];
+	function PageController($scope,$rootScope) {
 
-	function NavbarController($scope, $location, AuthService, $rootScope) {
 		var vm = this;
 
-		vm.menuTitle = 'Vedic Astro';
-		vm.appIcon = 'fa-eye';
 		vm.user = $rootScope.globals.currentUser;
+		vm.appTitle = 'Vedic-Astro!';
+		vm.appIcon = 'fa-eye';
+		vm.footer = 'one place for all astrological investigation';
+		vm.company = 'Samlabs';
+		vm.copyright ='©2016 All Rights Reserved. Privacy and Terms';
+		
 		vm.menuItems = [ {
 			menuTitle : 'Prashari',
 			icon : 'fa-laptop',
@@ -36,7 +40,7 @@
 				href : '#/zod-dashas/'
 			}, {
 				title : 'Transits',
-				href : '#/pr-transits/'
+				href : '#/transits/'
 			}, {
 				title : 'Event Prediction',
 				href : '#/pr-event-prediction/'
@@ -76,5 +80,4 @@
 			}]
 		}];
 	}
-	;
 }());

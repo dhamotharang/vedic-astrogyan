@@ -32,10 +32,10 @@ final public class MemberController extends BaseController {
 	@Qualifier("memberService")
 	private MemberService memberService;
 
-	@RequestMapping(value = "/member/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/member/save", method = RequestMethod.POST)
 	public RestServiceResponse<String> add(@RequestBody @Valid MemberDTO memberDTO) {
 		
-		String pid = memberService.addMember(memberDTO);
+		String pid = memberService.saveMember(memberDTO);
 		return new RestServiceResponse<String>(pid);
 	}
 

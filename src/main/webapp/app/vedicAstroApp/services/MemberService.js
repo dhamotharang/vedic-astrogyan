@@ -11,8 +11,9 @@
 
         service.getAll = getAll;
         service.getById = getById;
-        service.create = create;
+        service.save = save;
         service.update = update;
+        service.getByMemberId = getByMemberId;
 
         return service;
 
@@ -24,12 +25,16 @@
             return $http.get('/api/member/get/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting user by id'));
         }
 
-        function create(member) {
-            return $http.post('/api/member/add', member).then(handleSubmitSuccess, handleError('Error creating user'));
+        function save(member) {
+            return $http.post('/api/member/save', member).then(handleSubmitSuccess, handleError('Error creating user'));
         }
 
         function update(member) {
             return $http.put('/api/member/update' + $rootScope.globals.currentUser.memberId, member).then(handleSubmitSuccess, handleError('Error updating user'));
+        }
+        
+        function getByMemberId(memberId) {
+            return $http.get('/api/member/get/' + memberId).then(handleGetSuccess, handleError('Error getting user by id'));
         }
 
         function handleGetSuccess(res) {

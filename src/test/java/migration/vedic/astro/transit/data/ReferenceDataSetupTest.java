@@ -172,7 +172,7 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 		referenceDataRepository.save(referenceData);
 	}
 
-	@Test
+	//@Test
 	public void setupZodDashas() {
 		ReferenceData referenceData = new ReferenceData();
 		referenceData.setName("zod_dashas");
@@ -183,6 +183,24 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
 			referenceDataDTO.setCode(zodDashaSystem.name());
 			referenceDataDTO.setName(zodDashaSystem.getDescription());
+
+			referenceDataList.add(referenceDataDTO);
+		}
+		referenceData.setData(referenceDataList);
+		referenceDataRepository.save(referenceData);
+	}
+
+	@Test
+	public void setupTransitPlanetsData() {
+		ReferenceData referenceData = new ReferenceData();
+		referenceData.setName("transit_planets");
+
+		List<ReferenceDataDTO> referenceDataList = new ArrayList<ReferenceDataDTO>();
+		for (Planet planet : Planet.values()) {
+
+			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
+			referenceDataDTO.setCode(planet.name());
+			referenceDataDTO.setName(planet.getEnglishName());
 
 			referenceDataList.add(referenceDataDTO);
 		}

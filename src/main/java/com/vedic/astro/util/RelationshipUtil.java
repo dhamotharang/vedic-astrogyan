@@ -426,18 +426,19 @@ public class RelationshipUtil {
 		return charakarakaMap;
 	}
 
-	public Map<Arudha, House> prepareArudhas(
+	public Map<House, Arudha> prepareArudhas(
 			BirthChartCalcPrep birthChartCalcPrep) {
-		Map<Arudha, House> arudhaMap = new HashMap<Arudha, House>();
+		Map<House, Arudha> arudhaMap = new HashMap<House, Arudha>();
 		for (House house : House.values()) {
               Planet lordOfHouse = birthChartCalcPrep.getHouseOwnerMapping().get(house);
               House houseOfLordOfHouse = birthChartCalcPrep.getPlanetHouseMapping().get(lordOfHouse);
               
-              arudhaMap.put(Arudha.getArudhaAt(house.getValue()), 
-            		  houseUtil.getHouseAtDistance(
-            				  houseUtil.distanceBetween(house, houseOfLordOfHouse), 
-            				  houseOfLordOfHouse));
+              arudhaMap.put(houseUtil.getHouseAtDistance(
+    				  houseUtil.distanceBetween(house, houseOfLordOfHouse), 
+    				  houseOfLordOfHouse), Arudha.getArudhaAt(house.getValue()));
 		}
 		return arudhaMap;
 	}
+	
+	
 }

@@ -34,8 +34,8 @@ public class MemberService {
 	@Qualifier("birthChartPipelineGateway")
 	private BirthChartPipelineGateway birthChartPipelineGateway;
 
-	public String addMember(MemberDTO memberDTO) {
-		
+	public String saveMember(MemberDTO memberDTO) {
+
 		Member member = this.memberRepository.save(convertfromDTO(memberDTO));
 		birthChartPipelineGateway.startBirthChartPipeline(member);
 
@@ -47,7 +47,7 @@ public class MemberService {
 		if (member == null) {
 			throw new BusinessException(Constants.MEMBER_NOT_FOUND, "Member with this id does not exist");
 		}
-		
+
 		return convertToDTO(member);
 	}
 
@@ -61,37 +61,43 @@ public class MemberService {
 
 		return memberList;
 	}
-	
+
 	public List<MemberSummaryDTO> getAllMembersSummary() throws BusinessException {
 		Iterable<Member> members = this.memberRepository.findAll();
 		List<MemberSummaryDTO> memberList = new ArrayList<MemberSummaryDTO>();
 
 		for (Member member : members) {
-			
+
 			MemberSummaryDTO memberSummaryDTO = new MemberSummaryDTO();
 			memberSummaryDTO.setName(member.getFirstName() + " " + member.getLastName());
 			memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
 			memberSummaryDTO.setId(member.getPid());
-			
+
 			memberList.add(memberSummaryDTO);
 		}
 
 		return memberList;
 	}
-	
-	private MemberDTO convertToDTO(Member member){
-		
+
+	private MemberDTO convertToDTO(Member member) {
+
 		MemberDTO memberDTO = new MemberDTO();
 		BeanUtils.copyProperties(member, memberDTO);
 		memberDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
 		memberDTO.setCountry(referenceDataService.getReferenceData("countries", member.getCountryCode()));
 		memberDTO.setCity(referenceDataService.getReferenceData("cities", member.getCityCode()));
+
+		if (member.isActive()) {
+			memberDTO.setBlocked("N");
+		} else {
+			memberDTO.setBlocked("Y");
+		}
 		
 		return memberDTO;
 	}
-	
-    private Member convertfromDTO(MemberDTO memberDTO){
-		
+
+	private Member convertfromDTO(MemberDTO memberDTO) {
+
 		Member member = new Member();
 		BeanUtils.copyProperties(memberDTO, member);
 
@@ -99,6 +105,11 @@ public class MemberService {
 		member.setCountryCode(memberDTO.getCountry().getCode());
 		member.setDateOfBirth(DateUtil.toDate(memberDTO.getDob(), "MM/dd/yyyy hh:mm a"));
 		
+		if (memberDTO.getBlocked().equals("Y")) {
+			member.setActive(false);
+		} else if (memberDTO.getBlocked().equals("N")) {
+			member.setActive(true);
+		}
 		return member;
 	}
 }

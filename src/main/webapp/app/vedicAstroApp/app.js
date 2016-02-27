@@ -12,7 +12,7 @@
 
         $routeProvider
             .when('/home', {
-                controller: 'ChartController',
+                controller: 'PageController',
                 templateUrl: viewBase + 'chart_analysis/pr_chart_main.html',
                 controllerAs: 'vm'
             })
@@ -36,18 +36,18 @@
                 controllerAs: 'vm'
             })
            .when('/nak-dashas', {
-                controller: 'ChartController',
+                controller: 'PageController',
                 templateUrl: viewBase + 'dashas/nak_dashas.html',
                 controllerAs: 'vm'
             })
            .when('/zod-dashas', {
-                controller: 'ChartController',
+                controller: 'PageController',
                 templateUrl: viewBase + 'dashas/zod_dashas.html',
                 controllerAs: 'vm'
             })
-           .when('/pr-transit/:pid', {
-                controller: 'TransitAnalysisController',
-                templateUrl: viewBase + 'transit/pr_transit_analysis.html',
+           .when('/transits', {
+                controller: 'PageController',
+                templateUrl: viewBase + 'transits/transits.html',
                 controllerAs: 'vm'
             })
             .when('/pr-references/:pid', {
@@ -56,28 +56,33 @@
                 controllerAs: 'vm'
             })
             .when('/profile-settings', {
-                controller: 'ChartController',
+                controller: 'PageController',
                 templateUrl: viewBase + 'settings/profile_settings.html',
                 controllerAs: 'vm'
             })
             .when('/prediction-templates', {
-                controller: 'ChartController',
+                controller: 'PageController',
                 templateUrl: viewBase + 'settings/prediction_template_settings.html',
                 controllerAs: 'vm'
             })
             .when('/prediction-outcomes', {
-                controller: 'ChartController',
+                controller: 'PageController',
                 templateUrl: viewBase + 'settings/prediction_outcome_settings.html',
                 controllerAs: 'vm'
             })
             .when('/analysis-components', {
-                controller: 'ChartController',
+                controller: 'PageController',
                 templateUrl: viewBase + 'settings/analysis_component_setting.html',
                 controllerAs: 'vm'
             })
             .when('/final-profile', {
-                controller: 'ChartController',
+                controller: 'PageController',
                 templateUrl: viewBase + 'settings/final_profile.html',
+                controllerAs: 'vm'
+            })
+            .when('/add-user', {
+                controller: 'PageController',
+                templateUrl: viewBase + 'members/add_member.html',
                 controllerAs: 'vm'
             })
             .when('/login', {
@@ -98,7 +103,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/prediction-templates','/prediction-outcomes','/analysis-components','/final-profile','/nak-dashas','/zod-dashas']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/prediction-templates','/prediction-outcomes','/analysis-components','/final-profile','/nak-dashas','/zod-dashas','/transits']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');
