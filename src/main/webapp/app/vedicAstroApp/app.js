@@ -80,9 +80,9 @@
                 templateUrl: viewBase + 'settings/final_profile.html',
                 controllerAs: 'vm'
             })
-            .when('/add-user', {
+            .when('/manage-member', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'members/add_member.html',
+                templateUrl: viewBase + 'members/manage_members.html',
                 controllerAs: 'vm'
             })
             .when('/login', {

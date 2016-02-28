@@ -46,59 +46,49 @@ public class PlanetMotionalStrengthEvaluator implements Command {
 	public boolean execute(Context context) throws Exception {
 
 		Map<Planet, Double> planetStrengths = new HashMap<Planet, Double>(7);
-		PersonalBirthInfo personalBirthInfo = (PersonalBirthInfo) context
-				.get(Constants.PERSONAL_BIRTH_INFO);
-		
-		BirthChartData birthChartData = (BirthChartData) context
-				.get(Constants.BIRTH_CHART_DATA);
+		PersonalBirthInfo personalBirthInfo = (PersonalBirthInfo) context.get(Constants.PERSONAL_BIRTH_INFO);
 
-		BirthChartCalcPrep birthChartCalcPrep = relationshipUtil
-				.preparePlanetsForCalc(birthChartData.getChartHouses());
+		BirthChartData birthChartData = (BirthChartData) context.get(Constants.BIRTH_CHART_DATA);
 
-		Map<Planet, House> planetToHouseMap = birthChartCalcPrep
-				.getPlanetHouseMapping();
-		Map<House, Zodiac> houseToZodiacMap = birthChartCalcPrep
-				.getHouseZodiacMapping();
-		Map<Planet, Double> planetToDegMap = birthChartCalcPrep
-				.getPlanetAgeMapping();
+		BirthChartCalcPrep birthChartCalcPrep = relationshipUtil.preparePlanetsForCalc(birthChartData.getChartHouses());
 
-		System.out.println("personalBirthInfo DOB = "
-				+ personalBirthInfo.getDob());
+		Map<Planet, House> planetToHouseMap = birthChartCalcPrep.getPlanetHouseMapping();
+		Map<House, Zodiac> houseToZodiacMap = birthChartCalcPrep.getHouseZodiacMapping();
+		Map<Planet, Double> planetToDegMap = birthChartCalcPrep.getPlanetAgeMapping();
 
-		Double sunMeanLongitude = planetUtil.getMeanLatitude(Planet.SUN,
-				personalBirthInfo.getDob());
+		System.out.println("personalBirthInfo DOB = " + personalBirthInfo.getDob());
+
+		Double sunMeanLongitude = planetUtil.getMeanLatitude(Planet.SUN, personalBirthInfo.getDob());
 
 		for (Planet planet : Planet.values()) {
 
-			PlanetDetails planetDetails = planetUtil.getPlanetDetails(planet);
+			if (!planet.equals(Planet.ASC)) {
 
-			if (planetDetails.isRetrograde()) {
-				Zodiac zodiac = houseToZodiacMap.get(planetToHouseMap.get(planet));
+				PlanetDetails planetDetails = planetUtil.getPlanetDetails(planet);
 
-				
-				Double meanLongitude = null;
-				Double seeghrachcha = null;
-				
-				Double trueLongitude = zodiac.getMinDegrees()
-						+ planetToDegMap.get(planet);
+				if (planetDetails.isRetrograde()) {
+					Zodiac zodiac = houseToZodiacMap.get(planetToHouseMap.get(planet));
 
-				if(!planetDetails.isInnerPlanet()){
-				meanLongitude = planetUtil.getMeanLatitude(planet,
-						personalBirthInfo.getDob());
-				seeghrachcha = sunMeanLongitude;
-				
+					Double meanLongitude = null;
+					Double seeghrachcha = null;
+
+					Double trueLongitude = zodiac.getMinDegrees() + planetToDegMap.get(planet);
+
+					if (!planetDetails.isInnerPlanet()) {
+						meanLongitude = planetUtil.getMeanLatitude(planet, personalBirthInfo.getDob());
+						seeghrachcha = sunMeanLongitude;
+
+					} else {
+						meanLongitude = sunMeanLongitude;
+						seeghrachcha = planetUtil.getMeanLatitude(planet, personalBirthInfo.getDob());
+					}
+					Double chestaKendra = (seeghrachcha - (meanLongitude + trueLongitude) / 2);
+
+					if (chestaKendra > 180) {
+						chestaKendra = 360 - chestaKendra;
+					}
+					planetStrengths.put(planet, MathUtil.round(Math.abs(chestaKendra / 3), 2));
 				}
-				else{
-					meanLongitude = sunMeanLongitude; 
-					seeghrachcha = planetUtil.getMeanLatitude(planet,
-							personalBirthInfo.getDob()); 
-				}
-               Double chestaKendra = (seeghrachcha - (meanLongitude+trueLongitude)/2);
-				
-				if(chestaKendra > 180){
-					chestaKendra = 360-chestaKendra;
-				}
-				planetStrengths.put(planet, MathUtil.round(Math.abs(chestaKendra/3), 2));
 			}
 		}
 

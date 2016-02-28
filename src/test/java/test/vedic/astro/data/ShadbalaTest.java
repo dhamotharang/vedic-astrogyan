@@ -4,6 +4,7 @@ import org.apache.commons.chain.Context;
 import org.apache.commons.chain.impl.ContextBase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.vedic.astro.chain.shadbala.IshtaKashtaPhalaEvaluator;
 import com.vedic.astro.chain.shadbala.PlanetAspectualStrengthEvaluator;
@@ -17,6 +18,7 @@ import com.vedic.astro.domain.BirthChartData;
 import com.vedic.astro.domain.PersonalBirthInfo;
 import com.vedic.astro.domain.SunriseSunsetData;
 import com.vedic.astro.enums.Planet;
+import com.vedic.astro.repository.BirthChartRepository;
 import com.vedic.astro.util.BirthChartUtil;
 import com.vedic.astro.util.DivChartUtil;
 import com.vedic.astro.util.HouseUtil;
@@ -63,6 +65,10 @@ public class ShadbalaTest extends BaseUtilTest{
 	@Autowired
 	IshtaKashtaPhalaEvaluator ishtaKashtaPhalaEvaluator;
 
+	@Autowired
+	@Qualifier("birthChartRepository")
+	private BirthChartRepository birthChartRepository;
+	
 
 	@Test
 	public void testDivCharts() throws Exception {
@@ -91,7 +97,10 @@ public class ShadbalaTest extends BaseUtilTest{
 		absolutePlanetaryPositions.addAbsolutePlanetPosition(ketu);
 		
 		BirthChartData d1Chart = birthChartUtil.generateD1Chart(absolutePlanetaryPositions);
-		System.out.println("D1 chart = " + birthChartUtil.generateD1Chart(absolutePlanetaryPositions));
+		
+		
+//		Optional<BirthChartData> birthChartData = birthChartRepository.findByPid("56b5029c1b3a745432b941e3");
+		System.out.println("D1 chart = " + d1Chart);
 //		System.out.println("D2 chart = " + divChartUtil.generateDivChart(BirthChartType.D2, null, d1Chart));
 //		System.out.println("D3 chart = " + divChartUtil.generateDivChart(BirthChartType.D3, 
 //			BaseEntityRefData.createDivisionalChartRefData().get(BirthChartType.D3), d1Chart));
@@ -105,10 +114,10 @@ public class ShadbalaTest extends BaseUtilTest{
 		context.put(Constants.PERSONAL_BIRTH_INFO, personalBirthInfo);
 				
 		planetPositionalStrengthEvaluator.execute(context);
-	//	planetDirectionalStrengthEvaluator.execute(context);
-	//	planetMotionalStrengthEvaluator.execute(context);
-	//	planetAspectualStrengthEvaluator.execute(context);
-	//	planetNaturalStrengthEvaluator.execute(context);
+		planetDirectionalStrengthEvaluator.execute(context);
+		planetMotionalStrengthEvaluator.execute(context);
+		planetAspectualStrengthEvaluator.execute(context);
+		planetNaturalStrengthEvaluator.execute(context);
 	//	planetTemporalStrengthEvaluator.execute(context);
 		
 	//	ishtaKashtaPhalaEvaluator.execute(context);

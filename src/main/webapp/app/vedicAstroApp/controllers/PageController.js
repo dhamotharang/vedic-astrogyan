@@ -69,14 +69,11 @@
 				href : '#/final-profile/'
 			} ]
 		},{
-			menuTitle : 'User Management',
+			menuTitle : 'Members',
 			icon : 'fa-user',
 			subItems : [ {
-				title : 'Add User',
-				href : '#/add-user/'
-			}, {
-				title : 'Edit User',
-				href : '#/edit-user/'
+				title : 'Manage',
+				href : '#/manage-member/'
 			}]
 		}];
 	}

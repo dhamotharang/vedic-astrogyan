@@ -290,6 +290,8 @@ public class RelationshipUtil {
 				.getHouseInhabitantsMapping();
 
 		for (Planet planet : Planet.values()) {
+			
+			if(!planet.equals(Planet.ASC)){
 
 			Map<Planet, PlanetPlanetRelationshipResult> planetPlanetRelationshipResultMap = new HashMap<Planet, PlanetPlanetRelationshipResult>();
 
@@ -344,6 +346,7 @@ public class RelationshipUtil {
 			}
 
 			result.put(planet, planetPlanetRelationshipResultMap);
+		}
 		}
 		return result;
 	}
