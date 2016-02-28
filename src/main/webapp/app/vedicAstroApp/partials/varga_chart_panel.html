@@ -1,27 +1,20 @@
-
-<div class="x_panel" ng-controller="NatalChartController as vm">
+<div class="x_panel" ng-controller="VargaChartController as vm">
 	<div class="x_title">
 		<div class="row">
-			<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="col-md-5 col-sm-12 col-xs-12">
 				<h2>
 					<i class="fa fa-bars"></i>{{vm.panelTitle}}
 				</h2>
 			</div>
-			<div class="col-md-6 col-sm-5 col-xs-12 form-group ">
+			<div class="col-md-5 col-sm-5 col-xs-12 form-group ">
 				<p>
-					<select
-						class="form-control control-label col-md-2 col-sm-3 col-xs-12"
-						name="chartType">
-						<option>D1-Rashi</option>
-						<option>D2-Hora</option>
-						<option>D3-Drekkna</option>
-						<option>D4-Chaturthamsha</option>
-						<option>D9-Navamsha</option>
-						<option>D10-Dashamsha</option>
+					<select class="form-control" ng-model="vm.vargaChartSelected"
+					   ng-change="vm.changeInput()"
+						ng-options="varga.name for varga in vm.vargas track by varga.code">
 					</select>
 				</p>
 			</div>
-			<div class="col-md-3 col-sm-12 col-xs-12">
+			<div class="col-md-2 col-sm-12 col-xs-12">
 				<ul class="nav navbar-right panel_toolbox">
 					<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 					</li>
@@ -34,54 +27,11 @@
 	<div class="x_content">
 		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12">
-				<div id="natal_chart_panel"></div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" ng-model="vm.showNak"
-					ng-click="vm.hideOrShow(vm.showNak,'nakshatra')"> Nak
-				</label>
-			</div>
-			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" ng-model="vm.showLongs"
-					ng-click="vm.hideOrShow(vm.showLongs,'longitudes')">Long
-				</label>
-			</div>
-			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" ng-model="vm.showPlanets"
-					ng-click="vm.hideOrShow(vm.showPlanets,'planet')"> Planets
-				</label>
-			</div>
-			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" ng-model="vm.showLord"
-					ng-click="vm.hideOrShow(vm.showLord,'lord')"> Lord
-				</label>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked">
-					Argala
-				</label>
-			</div>
-			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" ng-model="vm.showArudha"
-					ng-click="vm.hideOrShow(vm.showArudha,'arudha')"> Arudha
-				</label>
-			</div>
-			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked"> KL
-				</label>
-			</div>
-			<div class="col-md-3 col-sm-12 col-xs-12">
-				<label> <input type="checkbox" value="checked"> CK
-				</label>
+				<div id="varga_chart_panel"></div>
 			</div>
 		</div>
 	</div>
 </div>
-
 <script src="js/d3.min.js"></script>
 
 

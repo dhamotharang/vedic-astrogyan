@@ -253,7 +253,7 @@ public class RelationshipUtil {
 		prepData.setPlanetHouseKarakasMap(planetHouseKarakasMap);
 		prepData.setHousePlanetKarakasMap(housePlanetKarakasMap);
 
-		prepData.setCharakarakaMap(this.setCharaKarakas(planetStrengthMap));
+	//	prepData.setCharakarakaMap(this.setCharaKarakas(planetStrengthMap));
 
 		return prepData;
 	}

@@ -9,12 +9,17 @@
     function ChartService($http, $rootScope) {
         var service = {};
 
-        service.getChartData = getChartData;
+        service.getVargaChartData = getVargaChartData;
+        service.getRashiChartData = getRashiChartData;
         
         return service;
 
-        function getChartData(chartType) {
+        function getVargaChartData(chartType) {
             return $http.get('/api/chart/' + chartType + '/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
+        }
+        
+        function getRashiChartData() {
+            return $http.get('/api/chart/rashi/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
         function handleGetSuccess(res) {

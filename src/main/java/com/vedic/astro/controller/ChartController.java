@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vedic.astro.dto.ChartHouseDTO;
+import com.vedic.astro.dto.RashiChartHouseDTO;
+import com.vedic.astro.dto.VargaChartHouseDTO;
 import com.vedic.astro.enums.BirthChartType;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.SystemException;
@@ -29,16 +30,29 @@ final public class ChartController extends BaseController {
 	@Qualifier("chartService")
 	private ChartService chartService;
 
+	@RequestMapping(value = "/chart/rashi/{memberPid}", method = 
+			RequestMethod.GET)
+	public RestServiceResponse<List<RashiChartHouseDTO>> 
+						getRashiChartData(@PathVariable String memberPid)
+			throws BusinessException, SystemException {
+
+		List<RashiChartHouseDTO> chartHouseDTOList = 
+				chartService.getRashiChart(memberPid);
+		
+		return new RestServiceResponse<List<RashiChartHouseDTO>>(
+				chartHouseDTOList);
+	}
+	
 	@RequestMapping(value = "/chart/{chartType}/{memberPid}", method = 
 			RequestMethod.GET)
-	public RestServiceResponse<List<ChartHouseDTO>> 
+	public RestServiceResponse<List<VargaChartHouseDTO>> 
 						getChartData(@PathVariable BirthChartType chartType, @PathVariable String memberPid)
 			throws BusinessException, SystemException {
 
-		List<ChartHouseDTO> chartHouseDTOList = 
-				chartService.getChart(chartType, memberPid);
+		List<VargaChartHouseDTO> chartHouseDTOList = 
+				chartService.getVargaChart(chartType, memberPid);
 		
-		return new RestServiceResponse<List<ChartHouseDTO>>(
+		return new RestServiceResponse<List<VargaChartHouseDTO>>(
 				chartHouseDTOList);
 	}
 }

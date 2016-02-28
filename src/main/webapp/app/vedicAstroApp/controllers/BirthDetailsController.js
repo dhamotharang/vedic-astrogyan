@@ -22,6 +22,7 @@
 			// reset login status
 			loadAllCountries();
 			loadAllCities();
+			angular.element(document.getElementById('datetimepicker1')).datetimepicker();
 			loadCurrentMember();
 		})();
 

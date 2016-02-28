@@ -2,12 +2,12 @@ package com.vedic.astro.dto;
 
 import com.vedic.astro.enums.House;
 
-public class ChartHouseDTO {
+public class RashiChartHouseDTO {
 	
 	private House id = null;
-	private HouseContentDTO content = null;
+	private RashiHouseContentDTO content = null;
 	
-	public ChartHouseDTO(House id, HouseContentDTO content) {
+	public RashiChartHouseDTO(House id, RashiHouseContentDTO content) {
 		this.id = id;
 		this.content = content;
 	}
@@ -18,10 +18,10 @@ public class ChartHouseDTO {
 	public void setId(House id) {
 		this.id = id;
 	}
-	public HouseContentDTO getContent() {
+	public RashiHouseContentDTO getContent() {
 		return content;
 	}
-	public void setContent(HouseContentDTO content) {
+	public void setContent(RashiHouseContentDTO content) {
 		this.content = content;
 	}
 

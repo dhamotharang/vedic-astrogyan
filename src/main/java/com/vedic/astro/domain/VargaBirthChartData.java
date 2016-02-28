@@ -3,11 +3,18 @@ package com.vedic.astro.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.vedic.astro.enums.BirthChartType;
 import com.vedic.astro.vo.VargaChartHouse;
 
+@Document(collection="varga_charts")
 public class VargaBirthChartData implements Serializable {
 
+	@Id
+	private String id;
+	
 	private String pid;
 	
 	private BirthChartType birthChartType;

@@ -28,7 +28,7 @@
 				href : '#/pr-house-analysis/'
 			}, {
 				title : 'Varga Analysis',
-				href : '#/pr-varga-analysis/'
+				href : '#/vargas/'
 			}, {
 				title : 'Yogas',
 				href : '#/pr-yogas/'

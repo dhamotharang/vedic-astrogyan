@@ -100,7 +100,7 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 		referenceDataRepository.save(referenceData);
 	}
 
-	// @Test
+	@Test
 	public void setupVargaData() {
 		ReferenceData referenceData = new ReferenceData();
 		referenceData.setName("vargas");
@@ -190,7 +190,7 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 		referenceDataRepository.save(referenceData);
 	}
 
-	@Test
+	//@Test
 	public void setupTransitPlanetsData() {
 		ReferenceData referenceData = new ReferenceData();
 		referenceData.setName("transit_planets");

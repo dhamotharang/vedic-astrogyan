@@ -70,7 +70,9 @@ public class MemberService {
 
 			MemberSummaryDTO memberSummaryDTO = new MemberSummaryDTO();
 			memberSummaryDTO.setName(member.getFirstName() + " " + member.getLastName());
+			if(member.getDateOfBirth()!=null){
 			memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
+			}
 			memberSummaryDTO.setId(member.getPid());
 
 			memberList.add(memberSummaryDTO);

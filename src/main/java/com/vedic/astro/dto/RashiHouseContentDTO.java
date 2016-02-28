@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.vedic.astro.enums.Planet;
 
-public class HouseContentDTO {
+public class RashiHouseContentDTO {
 	
 	private Integer zod = -1;
 	private Integer arudha = -1;
@@ -14,7 +14,7 @@ public class HouseContentDTO {
 	private List<Integer> naks = new ArrayList<Integer>();
 	private Planet lord = null;
 	
-	public HouseContentDTO(int zod, List<Planet> planets, List<Integer> naks, List<Double> longitudes,int arudha, Planet lord ) {
+	public RashiHouseContentDTO(int zod, List<Planet> planets, List<Integer> naks, List<Double> longitudes,int arudha, Planet lord ) {
 		this.zod = zod;
 		this.planets = planets;
 		this.naks = naks;
@@ -23,7 +23,7 @@ public class HouseContentDTO {
 		this.lord = lord;
 	}
 	
-	public HouseContentDTO(int zod, int arudha, Planet lord) {
+	public RashiHouseContentDTO(int zod, int arudha, Planet lord) {
 		this.zod = zod;
 		this.lord = lord;
 		this.arudha = arudha;

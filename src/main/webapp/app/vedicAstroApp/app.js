@@ -25,9 +25,9 @@
                 templateUrl: viewBase + 'house_analysis/pr_house_analysis.html',
                 controllerAs: 'vm'
             })
-           .when('/pr-varga-analysis/:pid', {
-                controller: 'VargaAnalysisController',
-                templateUrl: viewBase + 'varga_analysis/pr_varga_analysis.html',
+           .when('/vargas', {
+                controller: 'PageController',
+                templateUrl: viewBase + 'varga_analysis/vargas.html',
                 controllerAs: 'vm'
             })
            .when('/pr-yogas/:pid', {
@@ -103,7 +103,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/prediction-templates','/prediction-outcomes','/analysis-components','/final-profile','/nak-dashas','/zod-dashas','/transits']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/prediction-templates','/prediction-outcomes','/analysis-components','/final-profile','/nak-dashas','/zod-dashas','/transits','/vargas']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

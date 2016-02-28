@@ -2,8 +2,8 @@ package test.vedic.astro.data;
 
 import org.apache.commons.chain.Context;
 import org.apache.commons.chain.impl.ContextBase;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.vedic.astro.chain.shadbala.IshtaKashtaPhalaEvaluator;
 import com.vedic.astro.chain.shadbala.PlanetAspectualStrengthEvaluator;
@@ -64,7 +64,7 @@ public class ShadbalaTest extends BaseUtilTest{
 	IshtaKashtaPhalaEvaluator ishtaKashtaPhalaEvaluator;
 
 
-	//@Test
+	@Test
 	public void testDivCharts() throws Exception {
 		System.out.println("Starting up...      [Ok]");
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = new AbsolutePlanetaryPositions();
@@ -104,14 +104,14 @@ public class ShadbalaTest extends BaseUtilTest{
 		personalBirthInfo.setSunriseSunsetData(new SunriseSunsetData("18:28", "06:05"));
 		context.put(Constants.PERSONAL_BIRTH_INFO, personalBirthInfo);
 				
-	//	planetPositionalStrengthEvaluator.execute(context);
+		planetPositionalStrengthEvaluator.execute(context);
 	//	planetDirectionalStrengthEvaluator.execute(context);
 	//	planetMotionalStrengthEvaluator.execute(context);
 	//	planetAspectualStrengthEvaluator.execute(context);
 	//	planetNaturalStrengthEvaluator.execute(context);
 	//	planetTemporalStrengthEvaluator.execute(context);
 		
-		ishtaKashtaPhalaEvaluator.execute(context);
+	//	ishtaKashtaPhalaEvaluator.execute(context);
 		
 	//	System.out.println("Mean latitude of SUN = " + planetUtil.getMeanLatitude(Planet.SUN, "09/13/1981"));
 	//	System.out.println("Mean latitude of JUP = " + planetUtil.getMeanLatitude(Planet.JUP, "09/13/1981"));
