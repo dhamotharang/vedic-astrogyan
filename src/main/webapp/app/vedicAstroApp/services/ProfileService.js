@@ -28,9 +28,12 @@
         service.saveComponent = saveComponent;
         service.deleteComponent = deleteComponent;
         service.getComponents = getComponents;
-        service.saveComponents = saveComponents;
+        service.saveSubComponents = saveSubComponents;
         service.getProfileInfo = getProfileInfo;
         service.getFilteredProfile = getFilteredProfile;
+        service.saveSubComponent = saveSubComponent;
+        service.deleteSubComponent = deleteSubComponent;
+        service.getSubComponents = getSubComponents;
         
         return service;
 
@@ -105,13 +108,29 @@
         function deleteComponent(component) {
             return $http.post('/api/component/delete', component).then(handleSubmitSuccess, handleError('Error adding template'));
         }
-
-        function getComponents(analysisGroup) {
-            return $http.get('/api/components/' + analysisGroup).then(handleGetSuccess, handleError('Error getting all users'));
+        
+        function deleteSubComponent(subComponent) {
+            return $http.post('/api/subComponent/delete', subComponent).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
+        
+        function saveSubComponent(subComponent) {
+            return $http.post('/api/subComponent/save', subComponent).then(handleSubmitSuccess, handleError('Error adding template'));
+        }
+        
+        function deleteComponent(subComponent) {
+            return $http.post('/api/subComponent/delete', subComponent).then(handleSubmitSuccess, handleError('Error adding template'));
         }
 
-        function saveComponents(components) {
-            return $http.post('/api/components/save', components).then(handleSubmitSuccess, handleError('Error adding template'));
+        function getComponents(predictionSystem, analysisGroup) {
+            return $http.get('/api/components/' + predictionSystem + '/' + analysisGroup).then(handleGetSuccess, handleError('Error getting all users'));
+        }
+        
+        function getSubComponents(componentCode) {
+            return $http.get('/api/subComponents/' + componentCode).then(handleGetSuccess, handleError('Error getting all users'));
+        }
+
+        function saveSubComponents(subComponents) {
+            return $http.post('/api/subComponents/save', subComponents).then(handleSubmitSuccess, handleError('Error adding template'));
         }
         
         function getProfileInfo() {

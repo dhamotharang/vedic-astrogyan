@@ -8,6 +8,7 @@ public class ProfilePredictionDTO {
 	private String outcome = null;
 	private String componentName = null;
 	private AnalysisGroup analysisGroup = null;
+	private String subComponentName = null;
 	private String conditionChecked = null;
 	private String observation = null;
 	private ObservationNature nature = null;
@@ -55,10 +56,16 @@ public class ProfilePredictionDTO {
 	public void setAnalysisGroup(AnalysisGroup analysisGroup) {
 		this.analysisGroup = analysisGroup;
 	}
+	public String getSubComponentName() {
+		return subComponentName;
+	}
+	public void setSubComponentName(String subComponentName) {
+		this.subComponentName = subComponentName;
+	}
 	@Override
 	public String toString() {
 		return "ProfilePredictionDTO [outcome=" + outcome + ", componentName=" + componentName + ", analysisGroup="
-				+ analysisGroup + ", conditionChecked=" + conditionChecked + ", observation=" + observation
-				+ ", nature=" + nature + ", timeDependent=" + timeDependent + "]";
+				+ analysisGroup + ", subComponentName=" + subComponentName + ", conditionChecked=" + conditionChecked
+				+ ", observation=" + observation + ", nature=" + nature + ", timeDependent=" + timeDependent + "]";
 	}
 }

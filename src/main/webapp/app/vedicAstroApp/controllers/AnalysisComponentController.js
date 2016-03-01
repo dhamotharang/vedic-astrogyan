@@ -12,14 +12,33 @@
 
 		var vm = this;
 		vm.panelTitle = '< Manage Analysis components >';
-		vm.componentHeadings = [ 'Name', 'Condition checked', 'Mapped with',
-				'Outcomes', 'Enabled'];
-		vm.analysisComponents = [];
-		vm.predictionTemplates;
+		vm.componentHeadings = [ 'Component', 'Name', 'Condition checked',
+				'Mapped with', 'Outcomes' ];
+		vm.labels = [ 'Analysis Group', 'Component', 'Sub-component' ];
+
+		vm.predictionSystems = [];
+		vm.predictionSystemSelected = {};
+
 		vm.analysisGroups = [];
 		vm.analysisGroupSelected = {};
+
+		vm.components = [];
 		vm.componentSelected = {};
 		vm.newComponent = {};
+		vm.addComponent = addComponent;
+		vm.deleteComponent = deleteComponent;
+		vm.getComponents = getComponents;
+		vm.saveComponent = saveComponent;
+
+		vm.subComponents = [];
+		vm.subComponentSelected = {};
+		vm.newSubComponent = {};
+		vm.saveSubComponents = saveSubComponents;
+		vm.getSubComponents = getSubComponents;
+		vm.addSubComponent = addSubComponent;
+		vm.deleteSubComponent = deleteSubComponent;
+		vm.saveSubComponent = saveSubComponent;
+
 		vm.gotoNext = gotoNext;
 		vm.gotoPrevious = gotoPrevious;
 		vm.finish = finish;
@@ -27,12 +46,10 @@
 		vm.previousButton = 'buttonDisabled';
 		vm.finishButton = 'buttonDisabled';
 		vm.currentStep = {};
-		vm.saveComponent = saveComponent;
-		vm.saveComponents = saveComponents;
-		vm.addComponent = addComponent;
-		vm.deleteComponent = deleteComponent;
-		vm.getComponents = getComponents;
+
+		vm.predictionTemplates;
 		vm.getOutcomes = getOutcomes;
+
 		vm.step1 = {
 			name : 'Step 1',
 			title : 'Add Component name',
@@ -54,75 +71,153 @@
 
 		(function init() {
 			vm.currentStep = vm.step1;
-			loadAllAnalysisGroups();
+			loadAllAnalysisGroupsAndPredictionSystems();
 		})();
 
-		function loadAllAnalysisGroups(){
-			ReferenceDataService.getData('analysis_sources').then(function(analysisGroups) {
-				vm.analysisGroups = analysisGroups;
-				vm.analysisGroupSelected = vm.analysisGroups[0];
-				getComponents(vm.analysisGroupSelected.code);
-			});
-		};
-		
-		function addComponent(component, analysisGroupCode) {
-			component.analysisGroup = analysisGroupCode;
-			ProfileService.saveComponent(component).then(function(response) {
-				getComponents(analysisGroupCode);
-				vm.newComponent = {};
-			});
-		};
-		
-		function saveComponent(component) {
-			ProfileService.saveComponent(component).then(function(response) {
-				getComponents(vm.analysisGroupSelected.code);
-			});
-		};
-		
-		function saveComponents(components) {
-			ProfileService.saveComponents(components).then(function(response) {
-				getComponents(vm.analysisGroupSelected.code);
-			});
-		};
+		function loadAllAnalysisGroupsAndPredictionSystems() {
+			ReferenceDataService
+					.getData('analysis_sources')
+					.then(
+							function(analysisGroups) {
+								vm.analysisGroups = analysisGroups;
+								vm.analysisGroupSelected = vm.analysisGroups[0];
 
-		function getComponents(analysisGroupCode) {
-			ProfileService.getComponents(analysisGroupCode).then(function(components) {
-				vm.analysisComponents = components;
-				vm.componentSelected = vm.analysisComponents[0];
+								ReferenceDataService
+										.getData('prediction_systems')
+										.then(
+												function(predictionSystems) {
+													vm.predictionSystems = predictionSystems;
+													vm.predictionSystemSelected = vm.predictionSystems[0];
+
+													getComponents(
+															vm.predictionSystemSelected.code,
+															vm.analysisGroupSelected.code);
+
+												});
+							});
+
+		}
+
+		function addComponent(component, predictionSystem, analysisGroup) {
+
+			component.analysisGroup = analysisGroup;
+			component.predictionSystem = predictionSystem;
+			ProfileService.saveComponent(component).then(
+					function(response) {
+						getComponents(vm.predictionSystemSelected.code,
+								vm.analysisGroupSelected.code);
+						vm.newComponent = {};
+					});
+		}
+		;
+
+		function addSubComponent(subComponent, componentCode) {
+			subComponent.componentCode = componentCode;
+			ProfileService.saveSubComponent(subComponent).then(
+					function(response) {
+						getSubComponents(vm.componentSelected.code);
+						vm.newSubComponent = {};
+					});
+		}
+		;
+
+		function saveComponent(component) {
+			ProfileService.saveComponent(component).then(
+					function(response) {
+						getComponents(vm.predictionSystemSelected.code,
+								vm.analysisGroupSelected.code);
+					});
+		}
+		;
+
+		function saveSubComponent(subComponent) {
+			ProfileService.saveSubComponent(subComponent).then(
+					function(response) {
+						getSubComponents(vm.componentSelected.code);
+					});
+		}
+		;
+
+		function saveSubComponents(subComponents) {
+			ProfileService.saveSubComponents(subComponents).then(function(response) {
+				getSubComponents(vm.componentSelected.code);
 			});
-		};
+		}
+		;
+
+		function getComponents(predictionSystemCode, analysisGroupCode) {
+			ProfileService.getComponents(predictionSystemCode,
+					analysisGroupCode).then(function(components) {
+				if (components.length > 0) {
+					vm.components = components;
+					vm.componentSelected = vm.components[0];
+					getSubComponents(vm.componentSelected.code);
+				}
+				else{
+					vm.components = [];
+					vm.subComponents = [];
+				}
+			});
+
+		}
+		;
+
+		function getSubComponents(componentCode) {
+			ProfileService.getSubComponents(componentCode).then(
+					function(subComponents) {
+						vm.subComponents = subComponents;
+						vm.subComponentSelected = vm.subComponents[0];
+					});
+		}
+		;
 
 		function deleteComponent(component) {
 			console.log('deleting component' + component);
-			ProfileService.deleteComponent(component).then(function(response) {
-				getComponents(vm.analysisGroupSelected.code);
-			});
+			ProfileService.deleteComponent(component).then(
+					function(response) {
+						getComponents(vm.predictionSystemSelected.code,
+								vm.analysisGroupSelected.code);
+					});
 
-		};
-		
+		}
+		;
+
+		function deleteSubComponent(subComponent) {
+			console.log('deleting subComponent' + subComponent);
+			ProfileService.deleteSubComponent(subComponent).then(
+					function(response) {
+						getSubComponents(vm.componentSelected.code);
+					});
+
+		}
+		;
+
 		function loadAllTemplates() {
 			ProfileService.getAllTemplates().then(function(templates) {
 				vm.predictionTemplates = templates;
 				vm.templateSelected = vm.predictionTemplates[0];
 			});
-		};
-		
+		}
+		;
+
 		function getOutcomes(code, templateCode) {
-			 ProfileService.getOutcomes(templateCode).then(function(outcomes) {
-				 for (var i = 0; i < vm.analysisComponents.length; i++) {
-					 if(vm.analysisComponents[i].code == code){
-						 vm.analysisComponents[i].predictionOutcomes = outcomes;
-					 }
-				 }
-			  });
-		};
+			ProfileService.getOutcomes(templateCode).then(function(outcomes) {
+				for (var i = 0; i < vm.subComponents.length; i++) {
+					if (vm.subComponents[i].code == code) {
+						vm.subComponents[i].predictionOutcomes = outcomes;
+					}
+				}
+			});
+		}
+		;
 
 		function logAspects(msg) {
 			for (var i = 0; i < vm.aspectsSelected.length; i++) {
 				console.log(msg + vm.aspectsSelected[i].path + " = "
 						+ vm.aspectsSelected[i].selected);
 			}
-		};
+		}
+		;
 
 		function gotoNext() {
 			if (vm.currentStep.stepNo == 1) {
@@ -132,20 +227,23 @@
 				vm.nextButton = 'buttonDisabled';
 				vm.finishButton = '';
 			}
-		};
+		}
+		;
 
-		function finish(components) {
-			saveComponents(components);
+		function finish(subComponents) {
+			saveSubComponents(subComponents);
 			reset();
 			$route.reload();
-		};
+		}
+		;
 
 		function gotoPrevious() {
 			if (vm.currentStep.stepNo == 2) {
 				moveFront(vm.step2, vm.step1);
 				vm.previousButton = 'buttonDisabled';
 			}
-		};
+		}
+		;
 
 		function moveFront(from, to) {
 			vm.currentTemplateStep = to;
@@ -154,7 +252,8 @@
 			from.isDone = '1';
 			to.style = 'block';
 			to.status = 'selected';
-		};
+		}
+		;
 
 		function moveBack(from, to) {
 			vm.currentTemplateStep = from;
@@ -163,7 +262,8 @@
 			to.isDone = '1';
 			from.style = 'block';
 			from.status = 'selected';
-		};
+		}
+		;
 
 		function gotoStep(step) {
 			if (step == 1) {
@@ -175,7 +275,8 @@
 				vm.step2.status = 'selected';
 				vm.step1.style = 'none';
 			}
-		};
+		}
+		;
 
 		function reset() {
 			vm.step1.isDone = '0';
@@ -192,6 +293,7 @@
 			vm.previousButton = 'buttonDisabled';
 			vm.finishButton = 'buttonDisabled';
 			vm.newComponent = {};
-		};
+		}
+		;
 	}
 }());

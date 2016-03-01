@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.vedic.astro.domain.PredictionTemplate;
-import com.vedic.astro.dto.ComponentDTO;
+import com.vedic.astro.dto.SubComponentDTO;
 import com.vedic.astro.dto.PredictionObservationDTO;
 import com.vedic.astro.dto.PredictionOutcomeDTO;
 import com.vedic.astro.dto.PredictionTemplateDTO;
 import com.vedic.astro.enums.AnalysisGroup;
 import com.vedic.astro.enums.ObservationNature;
-import com.vedic.astro.repository.ComponentGroupRepository;
+import com.vedic.astro.repository.ComponentRepository;
 import com.vedic.astro.repository.PredictionTemplateRepository;
 import com.vedic.astro.service.AnalysisComponentService;
 import com.vedic.astro.service.ProfileService;
@@ -42,7 +42,7 @@ public class ProfileServiceTest extends BaseUtilTest{
 	
 	@Autowired
 	@Qualifier("componentGroupRepository")
-	private ComponentGroupRepository componentGroupRepository;
+	private ComponentRepository componentGroupRepository;
 	
 	
 	//@Test
@@ -133,13 +133,13 @@ public class ProfileServiceTest extends BaseUtilTest{
 		//@Test
 		public void testCreateAnalysisComponent() throws Exception {
 			
-			ComponentDTO componentDTO = new ComponentDTO();
+			SubComponentDTO componentDTO = new SubComponentDTO();
 			componentDTO.setCode("HA-ANL-1");
 			componentDTO.setName("Component 1");
 			
-			componentDTO.setAnalysisGroup(AnalysisGroup.HouseAnalysis);
+	//		componentDTO.setAnalysisGroup(AnalysisGroup.HouseAnalysis);
 			
-			analysisComponentService.save(componentDTO);
+			analysisComponentService.saveSubComponent(componentDTO);
 	 	}
 		@Test
 		public void testGetTemplateByAspectCode() throws Exception {

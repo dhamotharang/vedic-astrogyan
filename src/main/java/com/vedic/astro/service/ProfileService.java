@@ -14,14 +14,15 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vedic.astro.domain.AnalysisSubComponent;
 import com.vedic.astro.domain.AnalysisComponent;
 import com.vedic.astro.domain.MemberAnalysis;
 import com.vedic.astro.domain.PredictionObservation;
 import com.vedic.astro.domain.PredictionOutcome;
 import com.vedic.astro.domain.PredictionTemplate;
 import com.vedic.astro.domain.ProfileAspect;
-import com.vedic.astro.dto.ComponentOutcomeDTO;
 import com.vedic.astro.dto.AnalysisResultDTO;
+import com.vedic.astro.dto.SubComponentOutcomeDTO;
 import com.vedic.astro.dto.LevelProfileAspectDTO;
 import com.vedic.astro.dto.PathProfileAspectDTO;
 import com.vedic.astro.dto.PredictionObservationDTO;
@@ -35,7 +36,8 @@ import com.vedic.astro.dto.TemplateAspectDTO;
 import com.vedic.astro.enums.AnalysisGroup;
 import com.vedic.astro.enums.ObservationNature;
 import com.vedic.astro.enums.PredictionSystem;
-import com.vedic.astro.repository.AnalysisComponentRepository;
+import com.vedic.astro.repository.SubComponentRepository;
+import com.vedic.astro.repository.ComponentRepository;
 import com.vedic.astro.repository.MemberAnalysisRepository;
 import com.vedic.astro.repository.PredictionOutcomeRepository;
 import com.vedic.astro.repository.PredictionTemplateRepository;
@@ -58,46 +60,68 @@ public class ProfileService {
 	private PredictionOutcomeRepository predictionOutcomeRepository;
 
 	@Autowired
-	@Qualifier("analysisComponentRepository")
-	private AnalysisComponentRepository analysisComponentRepository;
+	@Qualifier("subComponentRepository")
+	private SubComponentRepository subComponentRepository;
 
 	@Autowired
 	@Qualifier("memberAnalysisRepository")
 	private MemberAnalysisRepository memberAnalysisRepository;
 
+	@Autowired
+	@Qualifier("componentRepository")
+	private ComponentRepository componentRepository;
+
 	public AnalysisResultDTO getAnalysisResult(String memberId) {
 
 		AnalysisResultDTO analysisResultDTO = new AnalysisResultDTO();
 
-		analysisResultDTO.addNakAnalysis(new ComponentOutcomeDTO("MoonNakEvaluator","Rohini","Impact of Moon Nak"));
-		analysisResultDTO.addNakAnalysis(new ComponentOutcomeDTO("SunNakEvaluator","Mrigshira","Impact of Sun Nak"));
-		analysisResultDTO.addNakAnalysis(new ComponentOutcomeDTO("AscNakEvaluator","Hastha","Impact of Asc Nak"));
+		analysisResultDTO.addNakAnalysis(new SubComponentOutcomeDTO("MoonNakEvaluator", "Rohini", "Impact of Moon Nak"));
+		analysisResultDTO.addNakAnalysis(new SubComponentOutcomeDTO("SunNakEvaluator", "Mrigshira", "Impact of Sun Nak"));
+		analysisResultDTO.addNakAnalysis(new SubComponentOutcomeDTO("AscNakEvaluator", "Hastha", "Impact of Asc Nak"));
 
-		analysisResultDTO.addZodAnalysis(new ComponentOutcomeDTO("MoonZodEvaluator","Rohini","Impact of Moon Zod"));
-		analysisResultDTO.addZodAnalysis(new ComponentOutcomeDTO("SunZodEvaluator","Mrigshira","Impact of Sun Zod"));
-		analysisResultDTO.addZodAnalysis(new ComponentOutcomeDTO("AscZodEvaluator","Hastha","Impact of Asc Zod"));
+		analysisResultDTO.addZodAnalysis(new SubComponentOutcomeDTO("MoonZodEvaluator", "Rohini", "Impact of Moon Zod"));
+		analysisResultDTO.addZodAnalysis(new SubComponentOutcomeDTO("SunZodEvaluator", "Mrigshira", "Impact of Sun Zod"));
+		analysisResultDTO.addZodAnalysis(new SubComponentOutcomeDTO("AscZodEvaluator", "Hastha", "Impact of Asc Zod"));
 
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H1StrengthEvaluator","H1 High strength","Impact of H1 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H2StrengthEvaluator","H2 Low strength","Impact of H2 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H3StrengthEvaluator","H3 Medium strength","Impact of H3 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H4StrengthEvaluator","H4 Low strength","Impact of H4 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H5StrengthEvaluator","H5 Low strength","Impact of H5 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H6StrengthEvaluator","H6 High strength","Impact of H6 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H7StrengthEvaluator","H7 High strength","Impact of H7 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H8StrengthEvaluator","H8 Medium strength","Impact of H8 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H9StrengthEvaluator","H9 Low strength","Impact of H9 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H10StrengthEvaluator","H10 High strength","Impact of H10 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H11StrengthEvaluator","H11 High strength","Impact of H11 strength"));
-		analysisResultDTO.addHouseStrengthAnalysis(new ComponentOutcomeDTO("H12StrengthEvaluator","H12 Medium strength","Impact of H12 strength"));
-		
-		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("SunStrengthEvaluator","Sun high strength","Impact of Sun strength"));
-		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("MonStrengthEvaluator","Moon high strength","Impact of Moon strength"));
-		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("JupStrengthEvaluator","Jupiter high strength","Impact of Jupiter strength"));
-		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("MarStrengthEvaluator","Mars high strength","Impact of Mars strength"));
-		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("MerStrengthEvaluator","Mercury high strength","Impact of Mercury strength"));
-		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("SatStrengthEvaluator","Saturn high strength","Impact of Saturn strength"));
-		analysisResultDTO.addPlanetStrengthAnalysis(new ComponentOutcomeDTO("VenStrengthEvaluator","Venus high strength","Impact of Venus strength"));
-		
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H1StrengthEvaluator", "H1 High strength", "Impact of H1 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H2StrengthEvaluator", "H2 Low strength", "Impact of H2 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H3StrengthEvaluator", "H3 Medium strength", "Impact of H3 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H4StrengthEvaluator", "H4 Low strength", "Impact of H4 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H5StrengthEvaluator", "H5 Low strength", "Impact of H5 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H6StrengthEvaluator", "H6 High strength", "Impact of H6 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H7StrengthEvaluator", "H7 High strength", "Impact of H7 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H8StrengthEvaluator", "H8 Medium strength", "Impact of H8 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H9StrengthEvaluator", "H9 Low strength", "Impact of H9 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H10StrengthEvaluator", "H10 High strength", "Impact of H10 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H11StrengthEvaluator", "H11 High strength", "Impact of H11 strength"));
+		analysisResultDTO.addHouseStrengthAnalysis(
+				new SubComponentOutcomeDTO("H12StrengthEvaluator", "H12 Medium strength", "Impact of H12 strength"));
+
+		analysisResultDTO.addPlanetStrengthAnalysis(
+				new SubComponentOutcomeDTO("SunStrengthEvaluator", "Sun high strength", "Impact of Sun strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(
+				new SubComponentOutcomeDTO("MonStrengthEvaluator", "Moon high strength", "Impact of Moon strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(
+				new SubComponentOutcomeDTO("JupStrengthEvaluator", "Jupiter high strength", "Impact of Jupiter strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(
+				new SubComponentOutcomeDTO("MarStrengthEvaluator", "Mars high strength", "Impact of Mars strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(
+				new SubComponentOutcomeDTO("MerStrengthEvaluator", "Mercury high strength", "Impact of Mercury strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(
+				new SubComponentOutcomeDTO("SatStrengthEvaluator", "Saturn high strength", "Impact of Saturn strength"));
+		analysisResultDTO.addPlanetStrengthAnalysis(
+				new SubComponentOutcomeDTO("VenStrengthEvaluator", "Venus high strength", "Impact of Venus strength"));
 
 		return analysisResultDTO;
 	}
@@ -368,11 +392,11 @@ public class ProfileService {
 				}
 			}
 
-			Optional<AnalysisComponent> components = analysisComponentRepository
+			Optional<AnalysisSubComponent> components = subComponentRepository
 					.findByTemplate(predictionTemplateDTO.getCode());
 			if (components.isPresent()) {
-				AnalysisComponent analysisComponent = components.get();
-				analysisComponentRepository.delete(analysisComponent);
+				AnalysisSubComponent subComponent = components.get();
+				subComponentRepository.delete(subComponent);
 
 			}
 
@@ -432,11 +456,11 @@ public class ProfileService {
 		if (outcome.isPresent()) {
 			predictionOutcomeRepository.delete(outcome.get().getId());
 
-			Optional<AnalysisComponent> components = analysisComponentRepository
+			Optional<AnalysisSubComponent> components = subComponentRepository
 					.findByTemplate(predictionOutcomeDTO.getTemplateCode());
 			if (components.isPresent()) {
-				AnalysisComponent analysisComponent = components.get();
-				analysisComponentRepository.delete(analysisComponent);
+				AnalysisSubComponent subComponent = components.get();
+				subComponentRepository.delete(subComponent);
 
 			}
 
@@ -496,7 +520,7 @@ public class ProfileService {
 					templates.add(predictionTemplate.getName());
 					Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
 							.getOutcomesForTemplate(predictionTemplate.getCode());
-					Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+					Optional<AnalysisSubComponent> subComp = subComponentRepository
 							.findByTemplate(predictionTemplate.getCode());
 
 					if (outcomes.isPresent()) {
@@ -504,12 +528,19 @@ public class ProfileService {
 
 							ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
 
-							if (analysisComp.isPresent()) {
+							if (subComp.isPresent()) {
 
-								AnalysisComponent analysisComponent = analysisComp.get();
-								profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
-								profilePredictDTO.setComponentName(analysisComponent.getName());
-								profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+								AnalysisSubComponent subComponent = subComp.get();
+
+								Optional<AnalysisComponent> component = componentRepository
+										.findByCode(subComponent.getComponentCode());
+
+								if (component.isPresent()) {
+									profilePredictDTO.setAnalysisGroup(component.get().getAnalysisGroup());
+									profilePredictDTO.setComponentName(component.get().getName());
+								}
+								profilePredictDTO.setSubComponentName(subComponent.getName());
+								profilePredictDTO.setConditionChecked(subComponent.getConditionChecked());
 							}
 
 							Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
@@ -546,7 +577,7 @@ public class ProfileService {
 				templates.add(predictionTemplate.getName());
 				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
 						.getOutcomesForTemplate(predictionTemplate.getCode());
-				Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+				Optional<AnalysisSubComponent> subComp = subComponentRepository
 						.findByTemplate(predictionTemplate.getCode());
 
 				if (outcomes.isPresent()) {
@@ -559,12 +590,20 @@ public class ProfileService {
 								&& componentToOutcomeMap.keySet().contains(outcome.getCode())) {
 							ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
 
-							if (analysisComp.isPresent()) {
+							if (subComp.isPresent()) {
 
-								AnalysisComponent analysisComponent = analysisComp.get();
-								profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
-								profilePredictDTO.setComponentName(analysisComponent.getName());
-								profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+								AnalysisSubComponent subComponent = subComp.get();
+
+								Optional<AnalysisComponent> component = componentRepository
+										.findByCode(subComponent.getComponentCode());
+
+								if (component.isPresent()) {
+									profilePredictDTO.setAnalysisGroup(component.get().getAnalysisGroup());
+									profilePredictDTO.setComponentName(component.get().getName());
+								}
+
+								profilePredictDTO.setSubComponentName(subComponent.getName());
+								profilePredictDTO.setConditionChecked(subComponent.getConditionChecked());
 							}
 
 							Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
@@ -600,9 +639,13 @@ public class ProfileService {
 				templates.add(predictionTemplate.getName());
 				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
 						.getOutcomesForTemplate(predictionTemplate.getCode());
-				Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+				Optional<AnalysisSubComponent> subComp = subComponentRepository
 						.findByTemplate(predictionTemplate.getCode());
+				Optional<AnalysisComponent> component = null;
+				if (subComp.isPresent()) {
+					component = componentRepository.findByCode(subComp.get().getComponentCode());
 
+				}
 				if (outcomes.isPresent()) {
 
 					for (PredictionOutcome outcome : outcomes.get()) {
@@ -610,16 +653,20 @@ public class ProfileService {
 						if (!componentToOutcomeMap.values().isEmpty()
 								&& componentToOutcomeMap.values().contains(outcome.getCode())
 								&& !componentToOutcomeMap.keySet().isEmpty()
-								&& componentToOutcomeMap.keySet().contains(analysisComp.get().getCode())
-								&& analysisGroup.equals(analysisComp.get().getAnalysisGroup())) {
+								&& componentToOutcomeMap.keySet().contains(subComp.get().getCode())
+								&& analysisGroup.equals(component.get().getAnalysisGroup())) {
 							ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
 
-							if (analysisComp.isPresent()) {
+							if (subComp.isPresent()) {
 
-								AnalysisComponent analysisComponent = analysisComp.get();
-								profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
-								profilePredictDTO.setComponentName(analysisComponent.getName());
-								profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+								AnalysisSubComponent subComponent = subComp.get();
+
+								if (component.isPresent()) {
+									profilePredictDTO.setAnalysisGroup(component.get().getAnalysisGroup());
+									profilePredictDTO.setComponentName(component.get().getName());
+								}
+								profilePredictDTO.setSubComponentName(subComponent.getName());
+								profilePredictDTO.setConditionChecked(subComponent.getConditionChecked());
 							}
 
 							Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
@@ -656,23 +703,28 @@ public class ProfileService {
 				templates.add(predictionTemplate.getName());
 				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
 						.getOutcomesForTemplate(predictionTemplate.getCode());
-				Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+				Optional<AnalysisSubComponent> subComp = subComponentRepository
 						.findByTemplate(predictionTemplate.getCode());
+				Optional<AnalysisComponent> component = componentRepository
+						.findByCode(subComp.get().getComponentCode());
 
-				if (analysisComp.isPresent()) {
-					if (!analysisGroups.isEmpty() && analysisGroups.contains(analysisComp.get().getAnalysisGroup())) {
+				if (subComp.isPresent() && component.isPresent()) {
+					if (!analysisGroups.isEmpty() && analysisGroups.contains(component.get().getAnalysisGroup())) {
 						if (outcomes.isPresent()) {
 
 							for (PredictionOutcome outcome : outcomes.get()) {
 
 								ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
 
-								if (analysisComp.isPresent()) {
+								if (subComp.isPresent()) {
 
-									AnalysisComponent analysisComponent = analysisComp.get();
-									profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
-									profilePredictDTO.setComponentName(analysisComponent.getName());
-									profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+									AnalysisSubComponent subComponent = subComp.get();
+									if (component.isPresent()) {
+										profilePredictDTO.setAnalysisGroup(component.get().getAnalysisGroup());
+										profilePredictDTO.setComponentName(component.get().getName());
+									}
+									profilePredictDTO.setSubComponentName(subComponent.getName());
+									profilePredictDTO.setConditionChecked(subComponent.getConditionChecked());
 								}
 
 								Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
@@ -733,7 +785,7 @@ public class ProfileService {
 				templates.add(predictionTemplate.getName());
 				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
 						.getOutcomesForTemplate(predictionTemplate.getCode());
-				Optional<AnalysisComponent> analysisComp = analysisComponentRepository
+				Optional<AnalysisSubComponent> subComp = subComponentRepository
 						.findByTemplate(predictionTemplate.getCode());
 
 				if (outcomes.isPresent()) {
@@ -741,12 +793,18 @@ public class ProfileService {
 
 						ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
 
-						if (analysisComp.isPresent()) {
+						if (subComp.isPresent()) {
 
-							AnalysisComponent analysisComponent = analysisComp.get();
-							profilePredictDTO.setAnalysisGroup(analysisComponent.getAnalysisGroup());
-							profilePredictDTO.setComponentName(analysisComponent.getName());
-							profilePredictDTO.setConditionChecked(analysisComponent.getConditionChecked());
+							AnalysisSubComponent subComponent = subComp.get();
+							Optional<AnalysisComponent> component = componentRepository
+									.findByCode(subComponent.getComponentCode());
+
+							if (component.isPresent()) {
+								profilePredictDTO.setAnalysisGroup(component.get().getAnalysisGroup());
+								profilePredictDTO.setComponentName(component.get().getName());
+							}
+							profilePredictDTO.setSubComponentName(subComponent.getName());
+							profilePredictDTO.setConditionChecked(subComponent.getConditionChecked());
 						}
 
 						Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();

@@ -11,25 +11,33 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vedic.astro.domain.AnalysisComponent;
+import com.vedic.astro.domain.AnalysisSubComponent;
 import com.vedic.astro.domain.PredictionOutcome;
 import com.vedic.astro.domain.PredictionTemplate;
 import com.vedic.astro.dto.ComponentDTO;
-import com.vedic.astro.dto.ComponentInfoDTO;
 import com.vedic.astro.dto.PredictionOutcomeDTO;
 import com.vedic.astro.dto.PredictionTemplateDTO;
+import com.vedic.astro.dto.SubComponentDTO;
+import com.vedic.astro.dto.SubComponentInfoDTO;
 import com.vedic.astro.enums.AnalysisGroup;
-import com.vedic.astro.repository.AnalysisComponentRepository;
+import com.vedic.astro.enums.PredictionSystem;
+import com.vedic.astro.repository.ComponentRepository;
 import com.vedic.astro.repository.PredictionOutcomeRepository;
 import com.vedic.astro.repository.PredictionTemplateRepository;
+import com.vedic.astro.repository.SubComponentRepository;
 
 @Service("analysisComponentService")
 @Transactional
 public class AnalysisComponentService {
 
 	@Autowired
-	@Qualifier("analysisComponentRepository")
-	private AnalysisComponentRepository analysisComponentRepository;
+	@Qualifier("subComponentRepository")
+	private SubComponentRepository subComponentRepository;
 
+	@Autowired
+	@Qualifier("componentRepository")
+	private ComponentRepository componentRepository;
+	
 	@Autowired
 	@Qualifier("predictionTemplateRepository")
 	private PredictionTemplateRepository predictionTemplateRepository;
@@ -38,48 +46,88 @@ public class AnalysisComponentService {
 	@Qualifier("predictionOutcomeRepository")
 	private PredictionOutcomeRepository predictionOutcomeRepository;
 
-	public void save(ComponentDTO componentDTO) {
-		Optional<AnalysisComponent> component = analysisComponentRepository.findByCode(componentDTO.getCode());
-		AnalysisComponent analysisComponent = new AnalysisComponent();
-		BeanUtils.copyProperties(componentDTO, analysisComponent);
+	public void saveSubComponent(SubComponentDTO subComponentDTO) {
+		Optional<AnalysisSubComponent> subcomponent = subComponentRepository.findByCode(subComponentDTO.getCode());
+		AnalysisSubComponent subComponent = new AnalysisSubComponent();
+		BeanUtils.copyProperties(subComponentDTO, subComponent);
 
 		List<String> outcomes = new ArrayList<String>();
 		Optional<List<PredictionOutcome>> predictionOutcomes = predictionOutcomeRepository
-				.getOutcomesForTemplate(componentDTO.getPredictionTemplateCode());
+				.getOutcomesForTemplate(subComponentDTO.getPredictionTemplateCode());
 
 		for (PredictionOutcome predictionOutcome : predictionOutcomes.get()) {
 			outcomes.add(predictionOutcome.getCode());
 		}
-		analysisComponent.setPredictionOutcomes(outcomes);
+		subComponent.setPredictionOutcomes(outcomes);
 
-		if (component.isPresent()) {
-			analysisComponent.setId(component.get().getId());
+		if (subcomponent.isPresent()) {
+			subComponent.setId(subcomponent.get().getId());
 		}
-		analysisComponentRepository.save(analysisComponent);
+		subComponentRepository.save(subComponent);
 	}
 
-	public void delete(ComponentDTO componentDTO) {
-		Optional<AnalysisComponent> component = analysisComponentRepository.findByCode(componentDTO.getCode());
-		AnalysisComponent analysisComponent = new AnalysisComponent();
-		BeanUtils.copyProperties(componentDTO, analysisComponent);
+	public void deleteSubComponent(SubComponentDTO subComponentDTO) {
+		Optional<AnalysisSubComponent> subcomponent = subComponentRepository.findByCode(subComponentDTO.getCode());
+		AnalysisSubComponent subComponent = new AnalysisSubComponent();
+		BeanUtils.copyProperties(subComponentDTO, subComponent);
 
-		if (component.isPresent()) {
-			analysisComponent.setId(component.get().getId());
+		if (subcomponent.isPresent()) {
+			subComponent.setId(subcomponent.get().getId());
 		}
-		analysisComponentRepository.delete(analysisComponent);
+		subComponentRepository.delete(subComponent);
 	}
 
-	public List<ComponentInfoDTO> findBySource(AnalysisGroup analysisGroup) {
-		Optional<List<AnalysisComponent>> componentList = analysisComponentRepository.findBySource(analysisGroup);
-		List<ComponentInfoDTO> componentInfoList = new ArrayList<ComponentInfoDTO>();
-		for (AnalysisComponent analysisComponent : componentList.get()) {
-			ComponentInfoDTO componentInfoDTO = new ComponentInfoDTO();
-			BeanUtils.copyProperties(analysisComponent, componentInfoDTO);
-			if (analysisComponent.getPredictionTemplateCode() != null) {
-				componentInfoDTO
-						.setPredictionTemplate(getPredictionTemplateDTO(analysisComponent.getPredictionTemplateCode()));
+	public void saveComponent(ComponentDTO componentDTO) {
+		Optional<AnalysisComponent> componentOpt = componentRepository.findByCode(componentDTO.getCode());
+		AnalysisComponent component = new AnalysisComponent();
+		BeanUtils.copyProperties(componentDTO, component);
+
+		if (componentOpt.isPresent()) {
+			component.setId(componentOpt.get().getId());
+		}
+		componentRepository.save(component);
+	}
+
+	public void deleteComponent(ComponentDTO componentDTO) {
+		Optional<AnalysisComponent> componentOpt = componentRepository.findByCode(componentDTO.getCode());
+		AnalysisComponent component = new AnalysisComponent();
+		BeanUtils.copyProperties(componentDTO, component);
+
+		if (componentOpt.isPresent()) {
+			component.setId(componentOpt.get().getId());
+		}
+		componentRepository.delete(component);
+		
+		Optional<List<AnalysisSubComponent>> subComponentOpt = subComponentRepository.findByComponent(componentDTO.getCode());
+		if(subComponentOpt.isPresent()){
+			subComponentRepository.delete(subComponentOpt.get());
+		}
+	}
+
+	public List<SubComponentInfoDTO> findByComponent(String componentCode) {
+		List<SubComponentInfoDTO> subComponentInfoList = new ArrayList<SubComponentInfoDTO>();	
+	
+
+		Optional<List<AnalysisSubComponent>> subComponentList = subComponentRepository.findByComponent(componentCode);
+		
+		for (AnalysisSubComponent subComponent : subComponentList.get()) {
+			SubComponentInfoDTO subComponentInfoDTO = new SubComponentInfoDTO();
+			
+			BeanUtils.copyProperties(subComponent, subComponentInfoDTO);
+			
+			subComponentInfoDTO.setCode(subComponent.getCode());
+			subComponentInfoDTO.setName(subComponent.getName());
+			
+			AnalysisComponent component = componentRepository.findByCode(subComponent.getComponentCode()).get();
+			
+			subComponentInfoDTO.setComponentName(component.getName());
+			subComponentInfoDTO.setComponentCode(component.getCode());
+			
+			if (subComponent.getPredictionTemplateCode() != null) {
+				subComponentInfoDTO
+						.setPredictionTemplate(getPredictionTemplateDTO(subComponent.getPredictionTemplateCode()));
 				Optional<List<PredictionOutcome>> predictionOutcomes = predictionOutcomeRepository
-						.getOutcomesForTemplate(componentInfoDTO.getPredictionTemplate().getCode());
+						.getOutcomesForTemplate(subComponentInfoDTO.getPredictionTemplate().getCode());
 
 				List<PredictionOutcomeDTO> dtoList = new ArrayList<PredictionOutcomeDTO>();
 				
@@ -89,38 +137,58 @@ public class AnalysisComponentService {
 					dtoList.add(predictionOutcomeDTO);
 				}
 				
-				componentInfoDTO.setPredictionOutcomes(dtoList);
+				subComponentInfoDTO.setPredictionOutcomes(dtoList);
 			}
-			componentInfoList.add(componentInfoDTO);
+		
+			subComponentInfoList.add(subComponentInfoDTO);
 		}
-		return componentInfoList;
+		
+		
+		return subComponentInfoList;
+	}
+	
+	public List<ComponentDTO> findBySource(AnalysisGroup analysisGroup, PredictionSystem predictionSystem) {
+		List<ComponentDTO> componentList = new ArrayList<ComponentDTO>();	
+	
+		Optional<List<AnalysisComponent>> components = 
+				componentRepository.findByAnalysisGroupAndPredictionSystem(
+						analysisGroup, predictionSystem);
+		
+		for(AnalysisComponent component : components.get()){
+			ComponentDTO componentDTO = new ComponentDTO();
+			BeanUtils.copyProperties(component, componentDTO);
+			componentList.add(componentDTO);
+		}
+		
+		return componentList;
 	}
 
-	public void save(List<ComponentInfoDTO> componentInfoDTOList) {
 
-		List<AnalysisComponent> analysisComponents = new ArrayList<AnalysisComponent>();
-		for (ComponentInfoDTO componentInfoDTO : componentInfoDTOList) {
-			Optional<AnalysisComponent> component = 
-					analysisComponentRepository.findByCode(componentInfoDTO.getCode());
-			AnalysisComponent analysisComponent = new AnalysisComponent();
-			BeanUtils.copyProperties(componentInfoDTO, analysisComponent);
+	public void save(List<SubComponentInfoDTO> subComponentInfoDTOList) {
 
+		List<AnalysisSubComponent> subComponents = new ArrayList<AnalysisSubComponent>();
+		for (SubComponentInfoDTO subComponentInfoDTO : subComponentInfoDTOList) {
+			Optional<AnalysisSubComponent> subcomponent = 
+					subComponentRepository.findByCode(subComponentInfoDTO.getCode());
+			AnalysisSubComponent subComponent = new AnalysisSubComponent();
+			BeanUtils.copyProperties(subComponentInfoDTO, subComponent);
+			
 			List<String> outcomes = new ArrayList<String>();
 			Optional<List<PredictionOutcome>> predictionOutcomes = predictionOutcomeRepository
-					.getOutcomesForTemplate(componentInfoDTO.getPredictionTemplate().getCode());
+					.getOutcomesForTemplate(subComponentInfoDTO.getPredictionTemplate().getCode());
 
 			for (PredictionOutcome predictionOutcome : predictionOutcomes.get()) {
 				outcomes.add(predictionOutcome.getCode());
 			}
-			analysisComponent.setPredictionOutcomes(outcomes);
-			analysisComponent.setPredictionTemplateCode(
-					componentInfoDTO.getPredictionTemplate().getCode());
-			if (component.isPresent()) {
-				analysisComponent.setId(component.get().getId());
+			subComponent.setPredictionOutcomes(outcomes);
+			subComponent.setPredictionTemplateCode(
+					subComponentInfoDTO.getPredictionTemplate().getCode());
+			if (subcomponent.isPresent()) {
+				subComponent.setId(subcomponent.get().getId());
 			}
-			analysisComponents.add(analysisComponent);
+			subComponents.add(subComponent);
 		}
-		analysisComponentRepository.save(analysisComponents);
+		subComponentRepository.save(subComponents);
 	}
 	
 	private PredictionTemplateDTO getPredictionTemplateDTO(String code) {

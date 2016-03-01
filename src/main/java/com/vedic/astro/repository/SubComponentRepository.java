@@ -8,7 +8,8 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.vedic.astro.domain.ComponentGroup;
+import com.vedic.astro.domain.AnalysisSubComponent;
+import com.vedic.astro.enums.AnalysisGroup;
 
 /**
  * The Repository which does all basic CRUD operations on the
@@ -18,13 +19,16 @@ import com.vedic.astro.domain.ComponentGroup;
  * @author Sumeer Saxena
  * @param <T>
  */
-@Repository("componentGroupRepository")
-public interface ComponentGroupRepository extends CrudRepository<ComponentGroup, String>{
+@Repository("subComponentRepository")
+public interface SubComponentRepository extends CrudRepository<AnalysisSubComponent, String>{
+
+	@Query(value="{'predictionTemplateCode' : ?0}")
+	public Optional<AnalysisSubComponent> findByTemplate(String predictionTemplateCode);
 
 	@Query(value="{'code' : ?0}")
-	public Optional<ComponentGroup> findByCode(String code);
+	public Optional<AnalysisSubComponent> findByCode(String code);
 
-	@Query(value="{'parentCode' : ?0}")
-	public Optional<List<ComponentGroup>> findByParentCode(String parentCode);
+	@Query(value="{'componentCode' : ?0}")
+	public Optional<List<AnalysisSubComponent>> findByComponent(String componentCode);
 
 }

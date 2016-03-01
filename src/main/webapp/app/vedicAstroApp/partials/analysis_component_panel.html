@@ -41,122 +41,206 @@
 				<div style="display: {{vm.step1.style}}" class="wizard_content"
 					id="step-1">
 					<div class="row">
-						<div class="col-md-3 col-sm-12 col-xs-12 form-group"></div>
-						<div class="col-md-5 col-sm-12 col-xs-12 form-group">
-							<select class="form-control" ng-model="vm.analysisGroupSelected"
-					            ng-change="vm.getComponents(vm.analysisGroupSelected.code)"
-								ng-options="analysisGroup.name for analysisGroup in vm.analysisGroups track by analysisGroup.code">
-							</select>
+						<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+							<h4>
+								<b>{{vm.labels[0]}}</b>
+							</h4>
 						</div>
-						<div class="col-md-4 col-sm-12 col-xs-12 form-group"></div>
+						<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+							<h4>
+								<b>{{vm.labels[1]}}</b>
+							</h4>
+						</div>
+						<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+							<h4>
+								<b>{{vm.labels[2]}}</b>
+							</h4>
+						</div>
 					</div>
 
 					<div class="row">
-						<div class="col-md-3 col-sm-12 col-xs-12 form-group"></div>
-						<div class="col-md-5 col-sm-12 col-xs-12 form-group">
-							<select class="form-control" size=5 ng-model="vm.componentSelected"
-								ng-selected="vm.componentSelected.code"
-								ng-options="component.name for component in vm.analysisComponents track by component.code">
+
+						<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+							<select class="form-control" size=5 ng-model="vm.analysisGroupSelected"
+								ng-change="vm.getComponents(vm.predictionSystemSelected.code, vm.analysisGroupSelected.code)"
+								ng-options="analysisGroup.name for analysisGroup in vm.analysisGroups track by analysisGroup.code">
 							</select>
 						</div>
-						<div class="col-md-4 col-sm-12 col-xs-12 form-group"></div>
-					</div>
-						<div class="row">
-							<div class="col-md-3 col-sm-12 col-xs-12 form-group"></div>
-							<div class="col-md-2 col-sm-12 col-xs-12 form-group">
-								<div class="form-group">
-									<input type="text" name="cat1" id="cat1" class="form-control"
-										ng-model="vm.newComponent.code" required placeholder="Code" />
-								</div>
-							</div>
-							<div class="col-md-3 col-sm-12 col-xs-12 form-group">
-								<div class="form-group">
-									<input type="text" name="cat1" id="cat1" class="form-control"
-										ng-model="vm.newComponent.name" required placeholder="Name" />
-								</div>
-							</div>
-							<div class="col-md-2 col-sm-12 col-xs-12 form-group">
-								<div class="form-group">
-									<a href="" ng-click="vm.addComponent(vm.newComponent, vm.analysisGroupSelected.code)"><i
-										class="fa fa-plus-square fa-2x"></i></a>
-								</div>
-							</div>
-							<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+						<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+							<select class="form-control" size=5
+								ng-model="vm.componentSelected"
+								ng-change="vm.getSubComponents(vm.componentSelected.code)"
+								ng-options="component.name for component in vm.components track by component.code">
+							</select>
 						</div>
-						<div class="row">
-							<div class="col-md-3 col-sm-12 col-xs-12 form-group"></div>
-							<div class="col-md-2 col-sm-12 col-xs-12 form-group">
-								<div class="form-group">
-									<input type="text" name="cat1" id="cat1" class="form-control"
-										ng-model="vm.componentSelected.code" required
-										placeholder="Code" readonly />
-								</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+						<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+							<select class="form-control" size=5
+								ng-model="vm.subComponentSelected"
+								ng-selected="vm.subComponentSelected.code"
+								ng-options="subComponent.name for subComponent in vm.subComponents track by subComponent.code">
+							</select>
+						</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+						<select class="form-control" ng-model="vm.predictionSystemSelected"
+								ng-change="vm.getComponents(vm.predictionSystemSelected.code, vm.analysisGroupSelected.code)"
+								ng-options="predictionSystem.name for predictionSystem in vm.predictionSystems track by predictionSystem.code">
+							</select>
+						</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<input type="text" name="cat1" id="cat1" class="form-control"
+									ng-model="vm.newComponent.code" required
+									placeholder="Code" />
 							</div>
-							<div class="col-md-3 col-sm-12 col-xs-12 form-group">
-								<div class="form-group">
-									<input type="text" name="cat2" id="cat2" class="form-control"
-										ng-model="vm.componentSelected.name" required
-										placeholder="Name" />
-								</div>
+						</div>
+
+						<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<input type="text" name="cat1" id="cat1" class="form-control"
+									ng-model="vm.newComponent.name" required
+									placeholder="Name" />
 							</div>
-							<div class="col-md-4 col-sm-12 col-xs-12 form-group">
-								<a href="" ng-click="vm.saveComponent(vm.componentSelected)"><i
+						</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<a href=""
+									ng-click="vm.addComponent(vm.newComponent, vm.predictionSystemSelected.code, vm.analysisGroupSelected.code)"><i
+									class="fa fa-plus-square fa-2x"></i></a>
+							</div>
+						</div>
+
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<input type="text" name="cat1" id="cat1" class="form-control"
+									ng-model="vm.newSubComponent.code" required placeholder="Code" />
+							</div>
+						</div>
+						<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<input type="text" name="cat1" id="cat1" class="form-control"
+									ng-model="vm.newSubComponent.name" required placeholder="Name" />
+							</div>
+						</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<a href=""
+									ng-click="vm.addSubComponent(vm.newSubComponent, vm.componentSelected.code)"><i
+									class="fa fa-plus-square fa-2x"></i></a>
+							</div>
+						</div>
+
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+					</div>
+
+					<div class="row">
+
+						<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+						</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<input type="text" name="cat1" id="cat1" class="form-control"
+									ng-model="vm.componentSelected.code" required readonly
+									placeholder="Code" />
+							</div>
+						</div>
+
+						<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<input type="text" name="cat1" id="cat1" class="form-control"
+									ng-model="vm.componentSelected.name" required
+									placeholder="Name" />
+							</div>
+						</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<a href=""
+									ng-click="vm.saveComponent(vm.componentSelected)"><i
 									class="fa fa-check-square fa-2x"></i></a> <a href=""
 									ng-click="vm.deleteComponent(vm.componentSelected)"><i
 									class="fa fa-minus-square fa-2x"></i></a>
 							</div>
-
+						</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<input type="text" name="cat1" id="cat1" class="form-control"
+									ng-model="vm.subComponentSelected.code" required
+									placeholder="Code" readonly />
+							</div>
+						</div>
+						<div class="col-md-2 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<input type="text" name="cat2" id="cat2" class="form-control"
+									ng-model="vm.subComponentSelected.name" required
+									placeholder="Name" />
+							</div>
+						</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group">
+							<div class="form-group">
+								<a href="" ng-click="vm.saveSubComponent(vm.subComponentSelected)"><i
+								class="fa fa-check-square fa-2x"></i></a> <a href=""
+								ng-click="vm.deleteSubComponent(vm.subComponentSelected)"><i
+								class="fa fa-minus-square fa-2x"></i></a>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div style="display: {{vm.step2.style}}" class="wizard_content"
-					id="step-2">
-					<h4 class="StepTitle">{{vm.step2.title}}</h4>
-					<div class="row">
-						<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
-						<div class="col-md-10 col-sm-12 col-xs-12 form-group">
-							<table class="table table-striped responsive-utilities jambo_table bulk_action">
-								<thead>
-									<tr class="headings">
-										<th class="column-title" ng-repeat="heading in vm.componentHeadings">{{heading}}</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr ng-repeat="component in vm.analysisComponents">
-										<td scope="row">{{component.name}}</td>
-										<td scope="row"><input type="text" name="cat1" id="cat1" class="form-control"
-										ng-model="component.conditionChecked" required placeholder="Add condition" /></td>
-										<td scope="row">
-										<select class="form-control" ng-model="component.predictionTemplate"
-					                       ng-change="vm.getOutcomes(component.code, component.predictionTemplate.code)"
-					                       ng-options="predictionTemplate.name for predictionTemplate in vm.predictionTemplates track by predictionTemplate.code">
-										</select>
-							            </td>
-							            <td scope="row">
-							            <div ng-repeat="outcome in component.predictionOutcomes track by $index">
-  											{{outcome.name}}
-										</div>
-										</td>
-										<td scope="row">
-										<input type="checkbox" ng-model="component.enabled" >
-										</td>		
-									</tr>
 
-								</tbody>
-							</table>
-						</div>
-						<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
-					</div>
 				</div>
 			</div>
-			<div class="actionBar">
-				<a class="btn btn-default {{vm.finishButton}}"
-					ng-click="vm.finish(vm.analysisComponents)" href="">Finish</a><a
-					class="btn btn-success {{vm.nextButton}}" ng-click="vm.gotoNext()"
-					href="">Next</a><a class="btn btn-primary {{vm.previousButton}}"
-					ng-click="vm.gotoPrevious()" href="">Previous</a>
+			<div style="display: {{vm.step2.style}}" class="wizard_content"
+				id="step-2">
+				<h4 class="StepTitle">{{vm.step2.title}}</h4>
+				<div class="row">
+					<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+					<div class="col-md-10 col-sm-12 col-xs-12 form-group">
+						<table
+							class="table table-striped responsive-utilities jambo_table bulk_action">
+							<thead>
+								<tr class="headings">
+									<th class="column-title"
+										ng-repeat="heading in vm.componentHeadings">{{heading}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="subComponent in vm.subComponents">
+                                    <td scope="row">{{subComponent.componentName}}</td>  								
+									<td scope="row">{{subComponent.name}}</td>
+									<td scope="row"><input type="text" name="cat1" id="cat1"
+										class="form-control" ng-model="subComponent.conditionChecked"
+										required placeholder="Add condition" /></td>
+									<td scope="row"><select class="form-control"
+										ng-model="subComponent.predictionTemplate"
+										ng-change="vm.getOutcomes(subComponent.code, subComponent.predictionTemplate.code)"
+										ng-options="predictionTemplate.name for predictionTemplate in vm.predictionTemplates track by predictionTemplate.code">
+									</select></td>
+									<td scope="row">
+										<div
+											ng-repeat="outcome in subComponent.predictionOutcomes track by $index">
+											{{outcome.name}}</div>
+									</td>
+									
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+					<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
+				</div>
 			</div>
 		</div>
-		<!-- End SmartWizard Content -->
+		<div class="actionBar">
+			<a class="btn btn-default {{vm.finishButton}}"
+				ng-click="vm.finish(vm.subComponents)" href="">Finish</a><a
+				class="btn btn-success {{vm.nextButton}}" ng-click="vm.gotoNext()"
+				href="">Next</a><a class="btn btn-primary {{vm.previousButton}}"
+				ng-click="vm.gotoPrevious()" href="">Previous</a>
+		</div>
 	</div>
+	<!-- End SmartWizard Content -->
+</div>
 </div>

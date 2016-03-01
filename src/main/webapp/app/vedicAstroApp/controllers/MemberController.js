@@ -17,15 +17,7 @@
 		$scope.members = [];
 		$scope.selected = undefined;
 
-		$scope.alerts = [
-				{
-					type : 'danger',
-					msg : 'Oh snap! Change a few things up and try submitting again.'
-				},
-				{
-					type : 'success',
-					msg : 'Well done! You successfully read this important alert message.'
-				} ];
+		$scope.alerts = [];
 
 		$scope.addAlert = function() {
 			$scope.alerts.push({
@@ -35,6 +27,8 @@
 
 		$scope.closeAlert = function(index) {
 			$scope.alerts.splice(index, 1);
+			vm.member = {};
+			$scope.selected = undefined;
 		};
 
 		vm.loadMember = loadMember;

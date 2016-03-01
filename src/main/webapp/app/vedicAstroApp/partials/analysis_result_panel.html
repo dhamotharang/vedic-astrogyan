@@ -33,7 +33,7 @@
 					ng-click="vm.changeActiveTab(aspect.id)">{{aspect.title}}</a></li>
 			</ul>
 			<div class="tab-content" id="myTabContent">
-				<div aria-labelledby="{{aspect.id}}" id="{{aspect.tabId}}"
+				<div aria-labelledby="{{aspect.id}}" 
 					ng-show="vm.isActiveTab(aspect.id)" role="tabpanel"
 					ng-repeat="aspect in vm.aspects">
 					<table

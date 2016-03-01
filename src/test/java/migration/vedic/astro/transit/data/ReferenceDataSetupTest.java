@@ -15,6 +15,7 @@ import com.vedic.astro.enums.House;
 import com.vedic.astro.enums.NakDashaSystem;
 import com.vedic.astro.enums.Nakshatra;
 import com.vedic.astro.enums.Planet;
+import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.enums.Yoga;
 import com.vedic.astro.enums.ZodDashaSystem;
 import com.vedic.astro.enums.Zodiac;
@@ -207,5 +208,22 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 		referenceData.setData(referenceDataList);
 		referenceDataRepository.save(referenceData);
 	}
+	
+	@Test
+	public void setupPredictionSystemData() {
+		ReferenceData referenceData = new ReferenceData();
+		referenceData.setName("prediction_systems");
 
+		List<ReferenceDataDTO> referenceDataList = new ArrayList<ReferenceDataDTO>();
+		for (PredictionSystem predictionSystem : PredictionSystem.values()) {
+
+			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
+			referenceDataDTO.setCode(predictionSystem.name());
+			referenceDataDTO.setName(predictionSystem.getDesc());
+
+			referenceDataList.add(referenceDataDTO);
+		}
+		referenceData.setData(referenceDataList);
+		referenceDataRepository.save(referenceData);
+	}
 }

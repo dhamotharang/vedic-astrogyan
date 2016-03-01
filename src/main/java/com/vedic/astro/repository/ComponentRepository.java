@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import com.vedic.astro.domain.AnalysisComponent;
 import com.vedic.astro.enums.AnalysisGroup;
+import com.vedic.astro.enums.PredictionSystem;
 
 /**
  * The Repository which does all basic CRUD operations on the
@@ -19,14 +20,14 @@ import com.vedic.astro.enums.AnalysisGroup;
  * @author Sumeer Saxena
  * @param <T>
  */
-@Repository("analysisComponentRepository")
-public interface AnalysisComponentRepository extends CrudRepository<AnalysisComponent, String>{
-
-	@Query(value="{'predictionTemplateCode' : ?0}")
-	public Optional<AnalysisComponent> findByTemplate(String predictionTemplateCode);
+@Repository("componentRepository")
+public interface ComponentRepository extends CrudRepository<AnalysisComponent, String>{
 
 	@Query(value="{'code' : ?0}")
 	public Optional<AnalysisComponent> findByCode(String code);
+
+	@Query(value="{'analysisGroup' : ?0, 'predictionSystem' : ?1}")
+	public Optional<List<AnalysisComponent>> findByAnalysisGroupAndPredictionSystem(AnalysisGroup analysisGroup, PredictionSystem predictionSystem);
 
 	@Query(value="{'analysisGroup' : ?0}")
 	public Optional<List<AnalysisComponent>> findBySource(AnalysisGroup analysisGroup);

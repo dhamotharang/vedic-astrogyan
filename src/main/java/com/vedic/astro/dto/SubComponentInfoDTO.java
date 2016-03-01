@@ -5,45 +5,22 @@ import java.util.List;
 
 import com.vedic.astro.enums.AnalysisGroup;
 
-public class ComponentInfoDTO {
+public class SubComponentInfoDTO {
 	
-	private AnalysisGroup analysisGroup = null; 
+	private String componentName = null;
+	private String componentCode = null;
 	private String name = null;
 	private String code = null;
 	private String conditionChecked = null;
+	
 	private PredictionTemplateDTO predictionTemplate = null;
 	private List<PredictionOutcomeDTO> predictionOutcomes = new ArrayList<PredictionOutcomeDTO>();
-	private Boolean enabled = true;
 
-	public AnalysisGroup getAnalysisGroup() {
-		return analysisGroup;
-	}
-	public void setAnalysisGroup(AnalysisGroup analysisGroup) {
-		this.analysisGroup = analysisGroup;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public String getConditionChecked() {
 		return conditionChecked;
 	}
 	public void setConditionChecked(String conditionChecked) {
 		this.conditionChecked = conditionChecked;
-	}
-	public Boolean getEnabled() {
-		return enabled;
-	}
-	public void setEnabled(Boolean enabled) {
-		this.enabled = enabled;
-	}
-	public String getCode() {
-		return code;
-	}
-	public void setCode(String code) {
-		this.code = code;
 	}
 	public PredictionTemplateDTO getPredictionTemplate() {
 		return predictionTemplate;
@@ -57,10 +34,34 @@ public class ComponentInfoDTO {
 	public void setPredictionOutcomes(List<PredictionOutcomeDTO> predictionOutcomes) {
 		this.predictionOutcomes = predictionOutcomes;
 	}
+	public String getComponentName() {
+		return componentName;
+	}
+	public void setComponentName(String componentName) {
+		this.componentName = componentName;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getCode() {
+		return code;
+	}
+	public void setCode(String code) {
+		this.code = code;
+	}
+	public String getComponentCode() {
+		return componentCode;
+	}
+	public void setComponentCode(String componentCode) {
+		this.componentCode = componentCode;
+	}
 	@Override
 	public String toString() {
-		return "ComponentInfoDTO [analysisGroup=" + analysisGroup + ", name=" + name + ", code=" + code
-				+ ", conditionChecked=" + conditionChecked + ", predictionTemplate=" + predictionTemplate
-				+ ", predictionOutcomes=" + predictionOutcomes + ", enabled=" + enabled + "]";
+		return "SubComponentInfoDTO [componentName=" + componentName + ", componentCode=" + componentCode + ", name="
+				+ name + ", code=" + code + ", conditionChecked=" + conditionChecked + ", predictionTemplate="
+				+ predictionTemplate + ", predictionOutcomes=" + predictionOutcomes + "]";
 	}
 }

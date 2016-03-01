@@ -1,14 +1,14 @@
 package com.vedic.astro.dto;
 
-public class ComponentOutcomeDTO {
+public class SubComponentOutcomeDTO {
 	
 	private String component = null;
 	private String outcome = null;
 	private String conditionChecked = null;
 
-	public ComponentOutcomeDTO(){}
+	public SubComponentOutcomeDTO(){}
 	
-	public ComponentOutcomeDTO(String component, String outcome, String conditionChecked) {
+	public SubComponentOutcomeDTO(String component, String outcome, String conditionChecked) {
 		super();
 		this.component = component;
 		this.outcome = outcome;

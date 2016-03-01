@@ -1,21 +1,21 @@
 package com.vedic.astro.dto;
 
 import com.vedic.astro.enums.AnalysisGroup;
+import com.vedic.astro.enums.PredictionSystem;
 
 public class ComponentDTO {
 	
 	private AnalysisGroup analysisGroup = null; 
+	private PredictionSystem predictionSystem = null;
 	private String code = null;
 	private String name = null;
-	private String conditionChecked = null;
-	private String predictionTemplateCode = null;
-	private Boolean enabled = true;
+	private boolean enabled = true;
 	
-	public AnalysisGroup getAnalysisGroup() {
-		return analysisGroup;
+	public PredictionSystem getPredictionSystem() {
+		return predictionSystem;
 	}
-	public void setAnalysisGroup(AnalysisGroup analysisGroup) {
-		this.analysisGroup = analysisGroup;
+	public void setPredictionSystem(PredictionSystem predictionSystem) {
+		this.predictionSystem = predictionSystem;
 	}
 	public String getCode() {
 		return code;
@@ -29,28 +29,21 @@ public class ComponentDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getConditionChecked() {
-		return conditionChecked;
-	}
-	public void setConditionChecked(String conditionChecked) {
-		this.conditionChecked = conditionChecked;
-	}
-	public String getPredictionTemplateCode() {
-		return predictionTemplateCode;
-	}
-	public void setPredictionTemplateCode(String predictionTemplateCode) {
-		this.predictionTemplateCode = predictionTemplateCode;
-	}
-	public Boolean getEnabled() {
+	public boolean isEnabled() {
 		return enabled;
 	}
-	public void setEnabled(Boolean enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+	public AnalysisGroup getAnalysisGroup() {
+		return analysisGroup;
+	}
+	public void setAnalysisGroup(AnalysisGroup analysisGroup) {
+		this.analysisGroup = analysisGroup;
 	}
 	@Override
 	public String toString() {
-		return "ComponentDTO [analysisGroup=" + analysisGroup + ", code=" + code + ", name=" + name
-				+ ", conditionChecked=" + conditionChecked + ", predictionTemplateCode=" + predictionTemplateCode
-				+ ", enabled=" + enabled + "]";
+		return "ComponentDTO [analysisGroup=" + analysisGroup + ", predictionSystem=" + predictionSystem + ", code="
+				+ code + ", name=" + name + ", enabled=" + enabled + "]";
 	}
 }
