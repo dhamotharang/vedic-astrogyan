@@ -77,4 +77,10 @@ public class AuthService {
 
 		return userInfo.getId();
 	}
+	
+	public void updateLastViewedMember(UserDTO userDTO){
+		UserInfo userInfo = this.userInfoRepository.findOne(userDTO.getId());
+		userInfo.setLastViewedPid(userDTO.getLastViewedPid());
+		this.userInfoRepository.save(userInfo);
+	}
 }

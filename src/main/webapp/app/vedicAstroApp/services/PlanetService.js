@@ -13,8 +13,8 @@
         
         return service;
 
-        function getPlanetsStrengthInfo() {
-            return $http.get('/api/planets/strength/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
+        function getPlanetsStrengthInfo(predictionSystem) {
+            return $http.get('/api/planets/strength/' + predictionSystem + '/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
         function handleGetSuccess(res) {

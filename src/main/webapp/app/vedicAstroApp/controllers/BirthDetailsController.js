@@ -64,10 +64,10 @@
 	angular.module('vedicAstroApp').controller('SwitchMemberController',
 			SwitchMemberController);
 
-	SwitchMemberController.$inject = [ '$rootScope', '$cookieStore', '$route', '$scope', '$uibModalInstance',
-			'MemberService' ];
+	SwitchMemberController.$inject = [ '$rootScope', '$cookieStore', '$route', '$scope', '$uibModalInstance', '$http',
+			'MemberService', 'AuthService' ];
 
-	function SwitchMemberController($rootScope, $cookieStore, $route, $scope, $uibModalInstance, MemberService) {
+	function SwitchMemberController($rootScope, $cookieStore, $route, $scope, $uibModalInstance, $http, MemberService, AuthService) {
 
 		$scope.members = [];
 		$scope.selected = undefined;
@@ -77,7 +77,7 @@
 		})();
 	
 		function loadMembers() {
-			MemberService.getAll().then(function(members) {
+			MemberService.getAllByAdmin($rootScope.globals.currentUser.id).then(function(members) {
 				$scope.members = members;
 			});
 		}
@@ -90,6 +90,7 @@
 			$cookieStore.remove('globals');
 			$cookieStore.put('globals', $rootScope.globals);
 			$uibModalInstance.close($scope.selected);
+			AuthService.updateLastViewedMember();
 			$route.reload();
 		};
 

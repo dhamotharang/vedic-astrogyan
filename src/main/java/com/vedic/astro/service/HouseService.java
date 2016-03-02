@@ -7,12 +7,13 @@ import com.vedic.astro.dto.HouseStrengthDTO;
 import com.vedic.astro.dto.HouseStrengthSignificanceDTO;
 import com.vedic.astro.dto.HousesStrengthDTO;
 import com.vedic.astro.enums.House;
+import com.vedic.astro.enums.PredictionSystem;
 
 @Service("houseService")
 @Transactional
 public class HouseService {
 
-	public HousesStrengthDTO getHousesStrengths(String memberId) {
+	public HousesStrengthDTO getHousesStrengths(PredictionSystem predictionSystem, String memberId) {
 		
 		HousesStrengthDTO housesStrengthDTO = new HousesStrengthDTO();
 	

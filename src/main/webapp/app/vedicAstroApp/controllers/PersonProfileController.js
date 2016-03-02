@@ -9,9 +9,9 @@
 	};
 	angular.module('vedicAstroApp').controller('PersonProfileController',
 			PersonProfileController);
-	PersonProfileController.$inject = ['$scope','ProfileService'];
+	PersonProfileController.$inject = ['$rootScope','$scope','ProfileService'];
 
-	function PersonProfileController($scope, ProfileService) {
+	function PersonProfileController($rootScope, $scope, ProfileService) {
 		$scope.panelTitle = '< Personal Profile >';
 		$scope.profile = [ {
 			name : 'Body',
@@ -96,15 +96,21 @@
 		$scope.aspects = [];
 	
 		(function init() {
-			loadProfileAspects();
+			loadMemberProfile();
 		})();
 
-		function loadProfileAspects() {
-			ProfileService.getProfileTree().then(function(aspects) {
-				$scope.aspects = aspects;
-			});
+		function loadMemberProfile() {
+			var filter = {
+					filterType : 'MemberAnalysis',
+					filterValue : $rootScope.globals.currentUser.memberId,
+					model : $scope.predictionSystem,
+					analysisGroup : $scope.analysisGroup 
+				};
+				ProfileService.getFilteredProfile(filter).then(function(aspects) {
+					$scope.aspects = aspects;
+				});
 		}
-		;
+		
 	};
 
 }());

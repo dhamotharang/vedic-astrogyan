@@ -34,4 +34,12 @@ final public class LoginController extends BaseController {
 		UserDTO userDTO = authService.login(userCredentials);
 		return new RestServiceResponse<UserDTO>(userDTO);
 	}
+	
+	@RequestMapping(value = "/update/lastViewedMember", method = RequestMethod.POST)
+	public RestServiceResponse<String> login(@RequestBody @Valid UserDTO userDTO)
+			throws BusinessException {
+		authService.updateLastViewedMember(userDTO);
+		String msg = "Last viewed member updated successfully";
+		return new RestServiceResponse<String>(msg);
+	}
 }

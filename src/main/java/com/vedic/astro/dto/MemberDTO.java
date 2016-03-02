@@ -1,6 +1,7 @@
 package com.vedic.astro.dto;
 
 import com.vedic.astro.enums.Gender;
+import com.vedic.astro.enums.MemberType;
 
 public class MemberDTO {
 	
@@ -14,6 +15,8 @@ public class MemberDTO {
 	private String email = null;
 	private String contact = null;
 	private String blocked = "N";
+	private String createdById = null;
+	private MemberType memberType = null;
 
 	public String getPid() {
 		return pid;
@@ -95,10 +98,27 @@ public class MemberDTO {
 		this.blocked = blocked;
 	}
 
+	public String getCreatedById() {
+		return createdById;
+	}
+
+	public void setCreatedById(String createdById) {
+		this.createdById = createdById;
+	}
+
+	public MemberType getMemberType() {
+		return memberType;
+	}
+
+	public void setMemberType(MemberType memberType) {
+		this.memberType = memberType;
+	}
+
 	@Override
 	public String toString() {
 		return "MemberDTO [pid=" + pid + ", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
 				+ ", dob=" + dob + ", city=" + city + ", country=" + country + ", email=" + email + ", contact="
-				+ contact + ", blocked=" + blocked + "]";
+				+ contact + ", blocked=" + blocked + ", createdById=" + createdById + ", memberType=" + memberType
+				+ "]";
 	}
 }

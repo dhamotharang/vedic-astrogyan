@@ -1,7 +1,9 @@
 package com.vedic.astro.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import com.vedic.astro.constant.Constants;
 import com.vedic.astro.domain.Member;
 import com.vedic.astro.dto.MemberDTO;
 import com.vedic.astro.dto.MemberSummaryDTO;
+import com.vedic.astro.enums.MemberType;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.pipeline.service.BirthChartPipelineGateway;
 import com.vedic.astro.repository.MemberRepository;
@@ -70,12 +73,102 @@ public class MemberService {
 
 			MemberSummaryDTO memberSummaryDTO = new MemberSummaryDTO();
 			memberSummaryDTO.setName(member.getFirstName() + " " + member.getLastName());
-			if(member.getDateOfBirth()!=null){
-			memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
+			if (member.getDateOfBirth() != null) {
+				memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
 			}
 			memberSummaryDTO.setId(member.getPid());
 
 			memberList.add(memberSummaryDTO);
+		}
+
+		return memberList;
+	}
+
+	public List<MemberSummaryDTO> getAllMembersSummary(String adminId) throws BusinessException {
+		Optional<List<Member>> members = this.memberRepository.findByAdminId(adminId);
+		List<MemberSummaryDTO> memberList = new ArrayList<MemberSummaryDTO>();
+
+		if (members.isPresent()) {
+			for (Member member : members.get()) {
+
+				String firstName = "";
+				String lastName = "";
+
+				MemberSummaryDTO memberSummaryDTO = new MemberSummaryDTO();
+				if (member.getFirstName() != null) {
+					firstName = member.getFirstName();
+				}
+				if (member.getLastName() != null) {
+					lastName = member.getLastName();
+				}
+				memberSummaryDTO.setName(firstName + " " + lastName);
+				if (member.getDateOfBirth() != null) {
+					memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
+				}
+				memberSummaryDTO.setId(member.getPid());
+
+				memberList.add(memberSummaryDTO);
+			}
+		}
+
+		return memberList;
+	}
+
+	public List<MemberSummaryDTO> getAllMembersSummary(String adminId, MemberType memberType) throws BusinessException {
+		Optional<List<Member>> members = this.memberRepository.findByAdminIdAndMemberType(adminId, memberType);
+		List<MemberSummaryDTO> memberList = new ArrayList<MemberSummaryDTO>();
+
+		if (members.isPresent()) {
+			for (Member member : members.get()) {
+
+				String firstName = "";
+				String lastName = "";
+
+				MemberSummaryDTO memberSummaryDTO = new MemberSummaryDTO();
+				if (member.getFirstName() != null) {
+					firstName = member.getFirstName();
+				}
+				if (member.getLastName() != null) {
+					lastName = member.getLastName();
+				}
+				memberSummaryDTO.setName(firstName + " " + lastName);
+				if (member.getDateOfBirth() != null) {
+					memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
+				}
+				memberSummaryDTO.setId(member.getPid());
+
+				memberList.add(memberSummaryDTO);
+			}
+		}
+
+		return memberList;
+	}
+	
+	public List<MemberSummaryDTO> getAllMembersSummaryNotIn(String adminId, MemberType memberType) throws BusinessException {
+		Optional<List<Member>> members = this.memberRepository.findByAdminIdNotMemberType(adminId, memberType);
+		List<MemberSummaryDTO> memberList = new ArrayList<MemberSummaryDTO>();
+
+		if (members.isPresent()) {
+			for (Member member : members.get()) {
+
+				String firstName = "";
+				String lastName = "";
+
+				MemberSummaryDTO memberSummaryDTO = new MemberSummaryDTO();
+				if (member.getFirstName() != null) {
+					firstName = member.getFirstName();
+				}
+				if (member.getLastName() != null) {
+					lastName = member.getLastName();
+				}
+				memberSummaryDTO.setName(firstName + " " + lastName);
+				if (member.getDateOfBirth() != null) {
+					memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
+				}
+				memberSummaryDTO.setId(member.getPid());
+
+				memberList.add(memberSummaryDTO);
+			}
 		}
 
 		return memberList;
@@ -94,7 +187,7 @@ public class MemberService {
 		} else {
 			memberDTO.setBlocked("Y");
 		}
-		
+
 		return memberDTO;
 	}
 
@@ -106,7 +199,13 @@ public class MemberService {
 		member.setCityCode(memberDTO.getCity().getCode());
 		member.setCountryCode(memberDTO.getCountry().getCode());
 		member.setDateOfBirth(DateUtil.toDate(memberDTO.getDob(), "MM/dd/yyyy hh:mm a"));
-		
+
+		if (memberDTO.getPid() != null) {
+			member.setUpdatedDt(new Date());
+		} else {
+			member.setCreatedDt(new Date());
+		}
+
 		if (memberDTO.getBlocked().equals("Y")) {
 			member.setActive(false);
 		} else if (memberDTO.getBlocked().equals("N")) {

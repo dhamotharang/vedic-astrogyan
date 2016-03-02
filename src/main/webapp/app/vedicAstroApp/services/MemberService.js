@@ -14,13 +14,28 @@
         service.save = save;
         service.update = update;
         service.getByMemberId = getByMemberId;
-
+        service.getAllByAdmin = getAllByAdmin;
+        service.getMemberTypesByAdmin = getMemberTypesByAdmin;
+        service.getMemberTypesNotInByAdmin = getMemberTypesNotInByAdmin;
+        
         return service;
 
         function getAll() {
             return $http.get('/api/members/all').then(handleGetSuccess, handleError('Error getting all users'));
         }
 
+        function getAllByAdmin(adminId) {
+            return $http.get('/api/members/' + adminId).then(handleGetSuccess, handleError('Error getting all users'));
+        }
+        
+        function getMemberTypesByAdmin(memberType, adminId) {
+            return $http.get('/api/members/' + memberType + '/' + adminId).then(handleGetSuccess, handleError('Error getting all users'));
+        }
+        
+        function getMemberTypesNotInByAdmin(memberType, adminId) {
+            return $http.get('/api/members/not/' + memberType + '/' + adminId).then(handleGetSuccess, handleError('Error getting all users'));
+        }
+        
         function getById() {
             return $http.get('/api/member/get/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting user by id'));
         }

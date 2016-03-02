@@ -1,12 +1,14 @@
 package com.vedic.astro.dto;
 
 import com.vedic.astro.enums.AnalysisGroup;
+import com.vedic.astro.enums.PredictionSystem;
 
 public class ProfileFilterDTO {
 	
 	private ProfileFilterTypeDTO filterType;
 	private String filterValue;
 	private AnalysisGroup analysisGroup;
+	private PredictionSystem model;
 
 	public ProfileFilterTypeDTO getFilterType() {
 		return filterType;
@@ -26,9 +28,15 @@ public class ProfileFilterDTO {
 	public void setAnalysisGroup(AnalysisGroup analysisGroup) {
 		this.analysisGroup = analysisGroup;
 	}
+	public PredictionSystem getModel() {
+		return model;
+	}
+	public void setModel(PredictionSystem model) {
+		this.model = model;
+	}
 	@Override
 	public String toString() {
 		return "ProfileFilterDTO [filterType=" + filterType + ", filterValue=" + filterValue + ", analysisGroup="
-				+ analysisGroup + "]";
+				+ analysisGroup + ", model=" + model + "]";
 	}
 }

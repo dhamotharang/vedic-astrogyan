@@ -7,6 +7,7 @@ import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.vedic.astro.enums.Gender;
+import com.vedic.astro.enums.MemberType;
 
 @Document(collection="members")
 @TypeAlias("member")
@@ -23,6 +24,10 @@ public class Member {
 	private String email = null;
 	private String contact = null;
 	private boolean active = true;
+	private Date createdDt = null;
+	private Date updatedDt = null;
+	private String createdById = null;
+	private MemberType memberType = null;
 	
 	public String getPid() {
 		return pid;
@@ -104,10 +109,43 @@ public class Member {
 		this.active = active;
 	}
 
+	public Date getCreatedDt() {
+		return createdDt;
+	}
+
+	public void setCreatedDt(Date createdDt) {
+		this.createdDt = createdDt;
+	}
+
+	public Date getUpdatedDt() {
+		return updatedDt;
+	}
+
+	public void setUpdatedDt(Date updatedDt) {
+		this.updatedDt = updatedDt;
+	}
+
+	public String getCreatedById() {
+		return createdById;
+	}
+
+	public void setCreatedById(String createdById) {
+		this.createdById = createdById;
+	}
+	
+	public MemberType getMemberType() {
+		return memberType;
+	}
+
+	public void setMemberType(MemberType memberType) {
+		this.memberType = memberType;
+	}
+
 	@Override
 	public String toString() {
 		return "Member [pid=" + pid + ", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
 				+ ", dateOfBirth=" + dateOfBirth + ", cityCode=" + cityCode + ", countryCode=" + countryCode
-				+ ", email=" + email + ", contact=" + contact + ", active=" + active + "]";
+				+ ", email=" + email + ", contact=" + contact + ", active=" + active + ", createdDt=" + createdDt
+				+ ", updatedDt=" + updatedDt + ", createdById=" + createdById + ", memberType=" + memberType + "]";
 	}
 }

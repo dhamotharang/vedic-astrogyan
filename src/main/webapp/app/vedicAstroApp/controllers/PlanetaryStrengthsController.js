@@ -4,8 +4,8 @@
 	angular.module('vedicAstroApp').controller('PlanetaryStrengthsController',
 			PlanetaryStrengthsController);
 
-	PlanetaryStrengthsController.$inject = ['PlanetService'];
-	function PlanetaryStrengthsController(PlanetService) {
+	PlanetaryStrengthsController.$inject = ['$scope','PlanetService'];
+	function PlanetaryStrengthsController($scope, PlanetService) {
 		var vm = this;
 
 		vm.panelTitle = '< Planetary Strengths >';
@@ -30,7 +30,7 @@
 		};
 
 		function loadPlanetaryStrengthsInfo() {
-			PlanetService.getPlanetsStrengthInfo()
+			PlanetService.getPlanetsStrengthInfo($scope.predictionSystem)
                .then(function (planetsStrengthInfo) {
             	   console.log(planetsStrengthInfo);
                    vm.planetsStrengthInfo = planetsStrengthInfo;

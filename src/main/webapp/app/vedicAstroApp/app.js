@@ -11,86 +11,91 @@
            var viewBase = '/app/vedicAstroApp/views/';
 
         $routeProvider
-            .when('/home', {
+            .when('/chart/:predictionSystem/:analysisGroup', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'chart_analysis/pr_chart_main.html',
+                templateUrl: viewBase + 'chart_analysis.html',
                 controllerAs: 'vm'
             })
             .when('/experiment', {
                 controller: 'AccordionDemoCtrl',
-                templateUrl: viewBase + 'experiment/experiment.html',
+                templateUrl: viewBase + 'experiment.html',
             })
-            .when('/pr-house-analysis/:pid', {
-                controller: 'HouseAnalysisController',
-                templateUrl: viewBase + 'house_analysis/pr_house_analysis.html',
-                controllerAs: 'vm'
-            })
-           .when('/vargas', {
+            .when('/house/:predictionSystem/:analysisGroup', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'varga_analysis/vargas.html',
+                templateUrl: viewBase + 'house_analysis.html',
                 controllerAs: 'vm'
             })
-           .when('/pr-yogas/:pid', {
-                controller: 'YogaAnalysisController',
-                templateUrl: viewBase + 'yogas/pr_yoga_analysis.html',
-                controllerAs: 'vm'
-            })
-           .when('/nak-dashas', {
+           .when('/vargas/:predictionSystem/:analysisGroup', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'dashas/nak_dashas.html',
+                templateUrl: viewBase + 'vargas.html',
                 controllerAs: 'vm'
             })
-           .when('/zod-dashas', {
+           .when('/yogas/:predictionSystem/:analysisGroup', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'dashas/zod_dashas.html',
+                templateUrl: viewBase + 'yogas.html',
                 controllerAs: 'vm'
             })
-           .when('/transits', {
+           .when('/nak-dashas/:predictionSystem/:analysisGroup', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'transits/transits.html',
+                templateUrl: viewBase + 'nak_dashas.html',
                 controllerAs: 'vm'
             })
-            .when('/pr-references/:pid', {
-                controller: 'ReferencesController',
-                templateUrl: viewBase + 'reference/pr_references.html',
+           .when('/zod-dashas/:predictionSystem/:analysisGroup', {
+                controller: 'PageController',
+                templateUrl: viewBase + 'zod_dashas.html',
+                controllerAs: 'vm'
+            })
+           .when('/transits/:predictionSystem/:analysisGroup', {
+                controller: 'PageController',
+                templateUrl: viewBase + 'transits.html',
                 controllerAs: 'vm'
             })
             .when('/profile-settings', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'settings/profile_settings.html',
+                templateUrl: viewBase + 'profile_settings.html',
                 controllerAs: 'vm'
             })
             .when('/prediction-templates', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'settings/prediction_template_settings.html',
+                templateUrl: viewBase + 'prediction_template_settings.html',
                 controllerAs: 'vm'
             })
             .when('/prediction-outcomes', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'settings/prediction_outcome_settings.html',
+                templateUrl: viewBase + 'prediction_outcome_settings.html',
                 controllerAs: 'vm'
             })
             .when('/analysis-components', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'settings/analysis_component_setting.html',
+                templateUrl: viewBase + 'analysis_component_setting.html',
                 controllerAs: 'vm'
             })
             .when('/final-profile', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'settings/final_profile.html',
+                templateUrl: viewBase + 'final_profile.html',
                 controllerAs: 'vm'
             })
             .when('/manage-member', {
                 controller: 'PageController',
-                templateUrl: viewBase + 'members/manage_members.html',
+                templateUrl: viewBase + 'manage_members.html',
+                controllerAs: 'vm'
+            })
+             .when('/manage-entity', {
+                controller: 'PageController',
+                templateUrl: viewBase + 'manage_entities.html',
+                controllerAs: 'vm'
+            })
+             .when('/manage-admin', {
+                controller: 'PageController',
+                templateUrl: viewBase + 'manage_admins.html',
                 controllerAs: 'vm'
             })
             .when('/login', {
                 controller: 'LoginController',
-                templateUrl: viewBase + 'login/login.html',
+                templateUrl: viewBase + 'login.html',
                 controllerAs: 'vm'
             })
-            .otherwise({ redirectTo: '/home' });
+            .otherwise({ redirectTo: '/chart/:predictionSystem/:analysisGroup' });
     }
 
     run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
@@ -103,7 +108,7 @@
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in and trying to access a restricted page
-            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/prediction-templates','/prediction-outcomes','/analysis-components','/final-profile','/nak-dashas','/zod-dashas','/transits','/vargas']) === -1;
+            var restrictedPage = $.inArray($location.path(), ['/login', '/home','/experiment','/profile-settings','/prediction-templates','/prediction-outcomes','/analysis-components','/final-profile','/nak-dashas','/zod-dashas','/transits','/vargas','/manage-member','/manage-entity','/manage-admin']) === -1;
             var loggedIn = $rootScope.globals.currentUser;
             if (restrictedPage && !loggedIn) {
                 $location.path('/login');

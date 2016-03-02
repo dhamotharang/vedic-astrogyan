@@ -26,26 +26,26 @@
 	<div class="x_content">
 		<div data-example-id="togglable-tabs" role="tabpanel" class="">
 			<ul role="tablist" class="nav nav-tabs bar_tabs" id="myTab">
-				<li ng-class="{active: vm.isActiveTab(aspect.id)}"
-					role="presentation" ng-repeat="aspect in vm.aspects"><a
-					aria-expanded="vm.isActiveTab(aspect.id)" data-toggle="tab"
-					id="{{aspect.id}}" role="tab" href=""
-					ng-click="vm.changeActiveTab(aspect.id)">{{aspect.title}}</a></li>
+				<li ng-class="{active: vm.isActiveTab(analysisResult.code)}"
+					role="presentation" ng-repeat="analysisResult in vm.analysisResults"><a
+					aria-expanded="vm.isActiveTab(analysisResult.code)" data-toggle="tab"
+					id="{{analysisResult.code}}" role="tab" href=""
+					ng-click="vm.changeActiveTab(analysisResult.code)">{{analysisResult.name}}</a></li>
 			</ul>
 			<div class="tab-content" id="myTabContent">
-				<div aria-labelledby="{{aspect.id}}" 
-					ng-show="vm.isActiveTab(aspect.id)" role="tabpanel"
-					ng-repeat="aspect in vm.aspects">
+				<div aria-labelledby="{{analysisResult.code}}" 
+					ng-show="vm.isActiveTab(analysisResult.code)" role="tabpanel"
+					ng-repeat="analysisResult in vm.analysisResults">
 					<table
 						class="table table-striped responsive-utilities jambo_table bulk_action">
 						<thead>
 							<tr class="headings">
-								<th class="column-title" ng-repeat="field in aspect.fields">{{field}}</th>
+								<th class="column-title" ng-repeat="field in analysisResult.fields">{{field}}</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr ng-class="['even pointer', 'odd pointer'][$index %2]"
-								ng-repeat="tableData in aspect.data| filter:search">
+								ng-repeat="tableData in analysisResult.outcomes| filter:search">
 
 								<td class=" ">{{tableData.component}}</td>
 								<td class=" ">{{tableData.conditionChecked}}</td>

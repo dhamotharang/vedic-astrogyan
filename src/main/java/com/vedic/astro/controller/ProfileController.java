@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vedic.astro.dto.AnalysisResultDTO;
 import com.vedic.astro.dto.LevelProfileAspectDTO;
 import com.vedic.astro.dto.PathProfileAspectDTO;
 import com.vedic.astro.dto.PredictionOutcomeDTO;
@@ -39,19 +38,10 @@ final public class ProfileController extends BaseController {
 	@Qualifier("profileService")
 	private ProfileService profileService;
 
-	@RequestMapping(value = "/analysis/result/{memberPid}", method = RequestMethod.GET)
-	public RestServiceResponse<AnalysisResultDTO> getChartProfile(@PathVariable String memberPid)
-			throws BusinessException, SystemException {
-
-		AnalysisResultDTO analysisResultDTO = profileService.getAnalysisResult(memberPid);
-
-		return new RestServiceResponse<AnalysisResultDTO>(analysisResultDTO);
-	}
-
 	@RequestMapping(value = "/profile/tree", method = RequestMethod.GET)
 	public RestServiceResponse<List<ProfileAspectDTO>> getProfileHeirarchy() throws BusinessException, SystemException {
 
-		List<ProfileAspectDTO> profileHeirarchy = profileService.getProfileHierachyTree(PredictionSystem.Prashara, false, null);
+		List<ProfileAspectDTO> profileHeirarchy = profileService.getProfileHierachyTree(false, null);
 
 		return new RestServiceResponse<List<ProfileAspectDTO>>(profileHeirarchy);
 	}
@@ -59,7 +49,7 @@ final public class ProfileController extends BaseController {
 	@RequestMapping(value = "/profile/info", method = RequestMethod.GET)
 	public RestServiceResponse<List<ProfileAspectDTO>> getProfileHeirarchyInfo() throws BusinessException, SystemException {
 
-		List<ProfileAspectDTO> profileHeirarchy = profileService.getProfileHierachyTree(PredictionSystem.Prashara, true, null);
+		List<ProfileAspectDTO> profileHeirarchy = profileService.getProfileHierachyTree(true, null);
 
 		return new RestServiceResponse<List<ProfileAspectDTO>>(profileHeirarchy);
 	}
@@ -67,7 +57,7 @@ final public class ProfileController extends BaseController {
 	@RequestMapping(value = "/profile/filter", method = RequestMethod.POST)
 	public RestServiceResponse<List<ProfileAspectDTO>> getProfileHeirarchyFilter(@RequestBody @Valid ProfileFilterDTO profileFilterDTO) throws BusinessException, SystemException {
 
-		List<ProfileAspectDTO> profileHeirarchy = profileService.getProfileHierachyTree(PredictionSystem.Prashara, true, profileFilterDTO);
+		List<ProfileAspectDTO> profileHeirarchy = profileService.getProfileHierachyTree(true, profileFilterDTO);
 
 		return new RestServiceResponse<List<ProfileAspectDTO>>(profileHeirarchy);
 	}

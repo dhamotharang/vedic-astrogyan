@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.vedic.astro.dto.MemberDTO;
 import com.vedic.astro.dto.MemberSummaryDTO;
+import com.vedic.astro.enums.MemberType;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.SystemException;
 import com.vedic.astro.service.MemberService;
@@ -52,6 +53,30 @@ final public class MemberController extends BaseController {
 			throws BusinessException, SystemException {
 		
 		List<MemberSummaryDTO> memberDTOList = memberService.getAllMembersSummary();
+		return new RestServiceResponse<List<MemberSummaryDTO>>(memberDTOList);
+	}
+	
+	@RequestMapping(value = "/members/{adminId}", method = RequestMethod.GET)
+	public RestServiceResponse<List<MemberSummaryDTO>> getAll(@PathVariable String adminId)
+			throws BusinessException, SystemException {
+		
+		List<MemberSummaryDTO> memberDTOList = memberService.getAllMembersSummary(adminId);
+		return new RestServiceResponse<List<MemberSummaryDTO>>(memberDTOList);
+	}
+	
+	@RequestMapping(value = "/members/{memberType}/{adminId}", method = RequestMethod.GET)
+	public RestServiceResponse<List<MemberSummaryDTO>> getAll(@PathVariable String adminId, @PathVariable MemberType memberType)
+			throws BusinessException, SystemException {
+		
+		List<MemberSummaryDTO> memberDTOList = memberService.getAllMembersSummary(adminId, memberType);
+		return new RestServiceResponse<List<MemberSummaryDTO>>(memberDTOList);
+	}
+	
+	@RequestMapping(value = "/members/not/{memberType}/{adminId}", method = RequestMethod.GET)
+	public RestServiceResponse<List<MemberSummaryDTO>> getAllNotIn(@PathVariable String adminId, @PathVariable MemberType memberType)
+			throws BusinessException, SystemException {
+		
+		List<MemberSummaryDTO> memberDTOList = memberService.getAllMembersSummaryNotIn(adminId, memberType);
 		return new RestServiceResponse<List<MemberSummaryDTO>>(memberDTOList);
 	}
 }

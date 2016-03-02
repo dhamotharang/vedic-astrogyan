@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vedic.astro.dto.PlanetaryStrengthDTO;
+import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.SystemException;
 import com.vedic.astro.service.PlanetService;
@@ -26,14 +27,14 @@ final public class PlanetController extends BaseController {
 	@Qualifier("planetService")
 	private PlanetService planetService;
 
-	@RequestMapping(value = "planets/strength/{memberPid}", method = 
+	@RequestMapping(value = "planets/strength/{predictionSystem}/{memberPid}", method = 
 			RequestMethod.GET)
 	public RestServiceResponse<PlanetaryStrengthDTO> 
-						get(@PathVariable String memberPid)
+						get(@PathVariable PredictionSystem predictionSystem, @PathVariable String memberPid)
 			throws BusinessException, SystemException {
 
 		PlanetaryStrengthDTO planetaryStrengthDTO = 
-				planetService.getPlanetaryStrengths(memberPid);
+				planetService.getPlanetaryStrengths(predictionSystem, memberPid);
 		return new RestServiceResponse<PlanetaryStrengthDTO>(
 				planetaryStrengthDTO);
 	}

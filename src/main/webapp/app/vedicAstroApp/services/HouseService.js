@@ -13,8 +13,8 @@
         
         return service;
 
-        function getHousesStrengthInfo() {
-            return $http.get('/api/houses/strength/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
+        function getHousesStrengthInfo(predictionSystem) {
+            return $http.get('/api/houses/strength/' + predictionSystem + '/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
         function handleGetSuccess(res) {

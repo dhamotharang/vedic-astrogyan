@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.vedic.astro.dto.HousesStrengthDTO;
+import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.SystemException;
 import com.vedic.astro.service.HouseService;
@@ -26,14 +27,14 @@ final public class HouseController extends BaseController {
 	@Qualifier("houseService")
 	private HouseService houseService;
 
-	@RequestMapping(value = "/houses/strength/{memberPid}", method = 
+	@RequestMapping(value = "/houses/strength/{predictionSystem}/{memberPid}", method = 
 			RequestMethod.GET)
 	public RestServiceResponse<HousesStrengthDTO> 
-						get(@PathVariable String memberPid)
+						get(@PathVariable PredictionSystem predictionSystem, @PathVariable String memberPid)
 			throws BusinessException, SystemException {
 
 		HousesStrengthDTO housesStrengthDTO = 
-				houseService.getHousesStrengths(memberPid);
+				houseService.getHousesStrengths(predictionSystem, memberPid);
 		return new RestServiceResponse<HousesStrengthDTO>(
 				housesStrengthDTO);
 	}

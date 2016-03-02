@@ -4,8 +4,8 @@
 	angular.module('vedicAstroApp').controller('HouseStrengthsController',
 			HouseStrengthsController);
 
-	HouseStrengthsController.$inject = ['HouseService'];
-	function HouseStrengthsController(HouseService) {
+	HouseStrengthsController.$inject = ['$scope','HouseService'];
+	function HouseStrengthsController($scope, HouseService) {
 		var vm = this;
 
 		vm.panelTitle = '< House Strengths >';
@@ -20,7 +20,7 @@
 		})();
 
 		function loadHouseStrengthsInfo() {
-			HouseService.getHousesStrengthInfo()
+			HouseService.getHousesStrengthInfo($scope.predictionSystem)
                .then(function (housesStrengthInfo) {
             	   console.log(housesStrengthInfo);
                    vm.housesStrengthInfo = housesStrengthInfo;

@@ -23,7 +23,7 @@
                 if (response.success) {
                 	console.log("Response :" + response.responseData);
                     AuthService.setCredentials(vm.username, vm.password, response.responseData);
-                    $location.path('/');
+                    $location.path('/chart/Prashara/ChartAnalysis');
                     
                 } else {
                 	

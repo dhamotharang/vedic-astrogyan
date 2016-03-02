@@ -1,20 +1,18 @@
 (function() {
 	'use strict';
-	angular.module('vedicAstroApp').controller('MemberController',
-			MemberController);
+	angular.module('vedicAstroApp').controller('AdminController',
+			AdminController);
 
-	MemberController.$inject = [ '$rootScope', '$scope', 'MemberService',
+	AdminController.$inject = [ '$rootScope', '$scope', 'MemberService',
 			'ReferenceDataService' ];
 
-	function MemberController($rootScope, $scope, MemberService,
+	function AdminController($rootScope, $scope, MemberService,
 			ReferenceDataService) {
 		var vm = this;
 		vm.panelTitle = "< Manage member >";
 		vm.countries = [];
 		vm.member = {};
 		vm.cities = [];
-		
-		var memberType = 'Person';
 
 		$scope.members = [];
 		$scope.selected = undefined;
@@ -58,7 +56,7 @@
 		}
 
 		function loadMembers() {
-			MemberService.getMemberTypesByAdmin(memberType, $rootScope.globals.currentUser.id).then(function(members) {
+			MemberService.getAll().then(function(members) {
 				$scope.members = members;
 			});
 		}
@@ -70,8 +68,6 @@
 		}
 
 		function saveMember(member) {
-			member.memberType = memberType;
-			member.createdById = $rootScope.globals.currentUser.id;
 			MemberService.save(member).then(function(response) {
 						loadMembers();
 					});

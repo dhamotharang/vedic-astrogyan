@@ -8,12 +8,13 @@ import com.vedic.astro.dto.PlanetStrengthSignificanceDTO;
 import com.vedic.astro.dto.PlanetaryStrengthDTO;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.PlanetAge;
+import com.vedic.astro.enums.PredictionSystem;
 
 @Service("planetService")
 @Transactional
 public class PlanetService {
 
-	public PlanetaryStrengthDTO getPlanetaryStrengths(String memberId) {
+	public PlanetaryStrengthDTO getPlanetaryStrengths(PredictionSystem predictionSystem, String memberId) {
 		
 		PlanetaryStrengthDTO planetaryStrengthDTO = new PlanetaryStrengthDTO();
 	
