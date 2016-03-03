@@ -3,11 +3,14 @@ package com.vedic.astro.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vedic.astro.enums.MemberType;
+
 public class PredictionOutcomeDTO {
 	
 	private String code = null;
 	private String name = null;
 	private String templateCode = null;
+	private MemberType memberType = null;
 	
 	private List<PredictionObservationDTO> observations = 
 			new ArrayList<PredictionObservationDTO>();
@@ -35,6 +38,12 @@ public class PredictionOutcomeDTO {
 	}
 	public void setObservations(List<PredictionObservationDTO> observations) {
 		this.observations = observations;
+	}
+	public MemberType getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(MemberType memberType) {
+		this.memberType = memberType;
 	}
 	@Override
 	public String toString() {

@@ -42,7 +42,6 @@
             return $http.get('/api/analysis/' + predictionSystem + '/' + analysisGroup + '/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting Analysis result'));
         }
  
-        
         function getHouseProfile() {
             return $http.get('/api/profile/house/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
         }

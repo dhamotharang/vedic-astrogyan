@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.vedic.astro.enums.MemberType;
+
 @Document(collection="prediction_templates")
 @TypeAlias("prediction_template")
 public class PredictionTemplate {
@@ -16,6 +18,8 @@ public class PredictionTemplate {
 	private String name = null;
 	private String code = null;
 	private List<String> aspectCodes = new ArrayList<String>();
+	private MemberType memberType = null;
+	
 	public String getId() {
 		return id;
 	}
@@ -40,9 +44,15 @@ public class PredictionTemplate {
 	public void setAspectCodes(List<String> aspectCodes) {
 		this.aspectCodes = aspectCodes;
 	}
+	public MemberType getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(MemberType memberType) {
+		this.memberType = memberType;
+	}
 	@Override
 	public String toString() {
 		return "PredictionTemplate [id=" + id + ", name=" + name + ", code=" + code + ", aspectCodes=" + aspectCodes
-				+ "]";
+				+ ", memberType=" + memberType + "]";
 	}
 }

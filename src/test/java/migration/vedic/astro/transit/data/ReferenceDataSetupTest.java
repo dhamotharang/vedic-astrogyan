@@ -12,6 +12,7 @@ import com.vedic.astro.dto.ReferenceDataDTO;
 import com.vedic.astro.enums.AnalysisGroup;
 import com.vedic.astro.enums.BirthChartType;
 import com.vedic.astro.enums.House;
+import com.vedic.astro.enums.MemberType;
 import com.vedic.astro.enums.NakDashaSystem;
 import com.vedic.astro.enums.Nakshatra;
 import com.vedic.astro.enums.Planet;
@@ -209,7 +210,7 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 		referenceDataRepository.save(referenceData);
 	}
 	
-	@Test
+//	@Test
 	public void setupPredictionSystemData() {
 		ReferenceData referenceData = new ReferenceData();
 		referenceData.setName("prediction_systems");
@@ -226,4 +227,23 @@ public class ReferenceDataSetupTest extends BaseUtilTest {
 		referenceData.setData(referenceDataList);
 		referenceDataRepository.save(referenceData);
 	}
+	
+	@Test
+	public void setupMemberTypes() {
+		ReferenceData referenceData = new ReferenceData();
+		referenceData.setName("member_types");
+
+		List<ReferenceDataDTO> referenceDataList = new ArrayList<ReferenceDataDTO>();
+		for (MemberType memberType : MemberType.values()) {
+
+			ReferenceDataDTO referenceDataDTO = new ReferenceDataDTO();
+			referenceDataDTO.setCode(memberType.name());
+			referenceDataDTO.setName(memberType.name());
+
+			referenceDataList.add(referenceDataDTO);
+		}
+		referenceData.setData(referenceDataList);
+		referenceDataRepository.save(referenceData);
+	}
+
 }

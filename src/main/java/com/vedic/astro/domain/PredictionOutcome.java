@@ -7,6 +7,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.vedic.astro.enums.MemberType;
+
 @Document(collection="prediction_outcomes")
 @TypeAlias("prediction_outcome")
 public class PredictionOutcome {
@@ -16,6 +18,7 @@ public class PredictionOutcome {
 	private String code = null;
 	private String name = null;
 	private String templateCode = null;
+	private MemberType memberType = null;
 	
 	private Map<String, PredictionObservation> predictionObservations = 
 			new HashMap<String, PredictionObservation>();
@@ -50,9 +53,15 @@ public class PredictionOutcome {
 	public void setPredictionObservations(Map<String, PredictionObservation> predictionObservations) {
 		this.predictionObservations = predictionObservations;
 	}
+	public MemberType getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(MemberType memberType) {
+		this.memberType = memberType;
+	}
 	@Override
 	public String toString() {
-		return "PredictionGroup [id=" + id + ", code=" + code + ", name=" + name + ", templateCode=" + templateCode
-				+ ", predictionObservations=" + predictionObservations + "]";
+		return "PredictionOutcome [id=" + id + ", code=" + code + ", name=" + name + ", templateCode=" + templateCode
+				+ ", memberType=" + memberType + ", predictionObservations=" + predictionObservations + "]";
 	}
 }

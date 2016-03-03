@@ -8,7 +8,7 @@ import com.vedic.astro.dto.UserCredentialsDTO;
 import com.vedic.astro.dto.UserDTO;
 import com.vedic.astro.dto.UserInfoDTO;
 import com.vedic.astro.enums.UserRole;
-import com.vedic.astro.service.AuthService;
+import com.vedic.astro.service.AdminService;
 
 /**
  * Test case for unit testing the Member repository.
@@ -20,7 +20,7 @@ public class AuthServiceTest extends BaseUtilTest{
 
 	@Autowired
 	@Qualifier("authService")
-	private AuthService authService;
+	private AdminService authService;
 	
 	//@Test
 	public void testCreateUserInfo() throws Exception {

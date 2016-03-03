@@ -11,7 +11,10 @@
 		service.setCredentials = setCredentials;
 		service.clearCredentials = clearCredentials;
 		service.updateLastViewedMember = updateLastViewedMember;
-
+		service.getAllAdmins = getAllAdmins;
+		service.loadAdmin = loadAdmin;
+		service.saveAdmin = saveAdmin;
+		
 		return service;
 
 		function login(username, password, callback) {
@@ -60,8 +63,22 @@
 			}).then(handleSubmitSuccess,
 					handleError('Error updating last viewed member'));
 		}
-		;
+		
+		function getAllAdmins() {
+			return $http.get('/api/user/all').then(handleGetSuccess,
+					handleError('Error getting all users'));
+		}
 
+		function loadAdmin(id) {
+			return $http.get('/api/user/get/' + id).then(handleGetSuccess,
+					handleError('Error loading Admin'));
+		}
+		
+		function saveAdmin(admin) {
+			return $http.post('/api/user/save', admin).then(handleSubmitSuccess,
+					handleError('Error while saving user'));
+		}
+		
 		function handleGetSuccess(res) {
 			return res.data.responseData;
 		}

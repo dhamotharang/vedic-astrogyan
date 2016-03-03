@@ -1,6 +1,7 @@
 
-<div class="x_panel" ng-controller="MemberController as vm">
- <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+<div class="x_panel" ng-controller="AdminController as vm">
+	<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}"
+		close="closeAlert($index)">{{alert.msg}}</uib-alert>
 	<div class="x_title">
 		<div class="row">
 			<div class="col-md-5 col-sm-12 col-xs-12">
@@ -11,10 +12,11 @@
 			<div class="col-md-5 col-sm-5 col-xs-12 top_search">
 				<div class="input-group">
 					<input type="text" ng-model="selected"
-						uib-typeahead="member as member.name for member in members | filter:$viewValue | limitTo:8"
+						uib-typeahead="admin as admin.name for admin in admins | filter:$viewValue | limitTo:8"
 						class="form-control" placeholder="Search .. "> <span
 						class="input-group-btn">
-						<button class="btn btn-default" type="button" ng-click="vm.loadMember(selected.id)">Go!</button>
+						<button class="btn btn-default" type="button"
+							ng-click="vm.loadAdmin(selected.id)">Go!</button>
 					</span>
 				</div>
 			</div>
@@ -35,17 +37,7 @@
 				<div class="col-md-2 col-sm-6 col-xs-12"></div>
 				<div class="col-md-8 col-sm-6 col-xs-12 form-group has-feedback">
 					<input class="form-control has-feedback-right" id="inputSuccess1"
-						placeholder="First Name" type="text"
-						ng-model="vm.member.firstName"> <span
-						class="fa fa-user form-control-feedback right" aria-hidden="true"></span>
-				</div>
-				<div class="col-md-2 col-sm-6 col-xs-12"></div>
-			</div>
-			<div class="row">
-				<div class="col-md-2 col-sm-6 col-xs-12"></div>
-				<div class="col-md-8 col-sm-6 col-xs-12 form-group has-feedback">
-					<input class="form-control has-feedback-right" id="inputSuccess2"
-						placeholder="Last Name" type="text" ng-model="vm.member.lastName">
+						placeholder="First Name" type="text" ng-model="vm.admin.firstName">
 					<span class="fa fa-user form-control-feedback right"
 						aria-hidden="true"></span>
 				</div>
@@ -53,60 +45,10 @@
 			</div>
 			<div class="row">
 				<div class="col-md-2 col-sm-6 col-xs-12"></div>
-				<div class="col-md-2 col-sm-6 col-xs-12 form-group has-feedback">
-					<div class="radio">
-						<label> <input type="radio" name="optionsRadios"
-							value="Male" ng-model="vm.member.gender" checked=""> Male
-						</label>
-					</div>
-				</div>
-				<div class="col-md-2 col-sm-6 col-xs-12 form-group has-feedback">
-					<div class="radio">
-						<label> <input type="radio" name="optionsRadios"
-							value="Female" ng-model="vm.member.gender" > Female
-						</label>
-					</div>
-				</div>
-				<div class="col-md-6 col-sm-6 col-xs-12"></div>
-			</div>
-			<div class="row">
-				<div class="col-md-2 col-sm-6 col-xs-12"></div>
-				<div class="col-md-8 col-sm-6 col-xs-12">
-					<div class='input-group date' id='datetimepicker1'>
-					<input class="form-control" id="inputSuccess3"
-						type="text" ng-model="vm.member.dob" />
-						<span class="input-group-addon"> <span
-							class="glyphicon glyphicon-calendar"></span>
-						</span>
-					</div>
-				</div>
-				<div class="col-md-2 col-sm-6 col-xs-12"></div>
-			</div>
-
-			<div class="row">
-				<div class="col-md-2 col-sm-6 col-xs-12"></div>
 				<div class="col-md-8 col-sm-6 col-xs-12 form-group has-feedback">
-					<select class="form-control" ng-model="vm.member.country"
-						ng-options="country.name for country in vm.countries track by country.code">
-					</select>
-				</div>
-				<div class="col-md-2 col-sm-6 col-xs-12"></div>
-			</div>
-			<div class="row">
-				<div class="col-md-2 col-sm-6 col-xs-12"></div>
-				<div class="col-md-8 col-sm-6 col-xs-12 form-group has-feedback">
-					<select class="form-control" ng-model="vm.member.city"
-						ng-options="city.name for city in vm.cities track by city.code">
-					</select>
-				</div>
-				<div class="col-md-2 col-sm-6 col-xs-12"></div>
-			</div>
-			<div class="row">
-				<div class="col-md-2 col-sm-6 col-xs-12"></div>
-				<div class="col-md-8 col-sm-6 col-xs-12 form-group has-feedback">
-					<input class="form-control has-feedback-right" 
-						placeholder="Email" type="text" ng-model="vm.member.email"> <span
-						class="fa fa-envelope form-control-feedback right"
+					<input class="form-control has-feedback-right" id="inputSuccess2"
+						placeholder="Last Name" type="text" ng-model="vm.admin.lastName">
+					<span class="fa fa-user form-control-feedback right"
 						aria-hidden="true"></span>
 				</div>
 				<div class="col-md-2 col-sm-6 col-xs-12"></div>
@@ -114,25 +56,90 @@
 			<div class="row">
 				<div class="col-md-2 col-sm-6 col-xs-12"></div>
 				<div class="col-md-8 col-sm-6 col-xs-12 form-group has-feedback">
-					<input class="form-control" placeholder="Phone"
-						type="text" ng-model="vm.member.contact"> <span
-						class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
+					<input class="form-control has-feedback-right"
+						placeholder="Email / Username" type="text"
+						ng-model="vm.admin.email"> <span
+						class="fa fa-lock form-control-feedback right" aria-hidden="true"></span>
 				</div>
 				<div class="col-md-2 col-sm-6 col-xs-12"></div>
 			</div>
 			<div class="row">
 				<div class="col-md-2 col-sm-6 col-xs-12"></div>
+				<div class="col-md-8 col-sm-6 col-xs-12 form-group has-feedback">
+					<input class="form-control has-feedback-right" id="inputSuccess2"
+						placeholder="Password" type="password"
+						ng-model="vm.admin.password"> <span
+						class="fa fa-key form-control-feedback right" aria-hidden="true"></span>
+				</div>
+				<div class="col-md-2 col-sm-6 col-xs-12"></div>
+			</div>
+			<div class="row">
+				<div class="col-md-2 col-sm-6 col-xs-12"></div>
+				<div class="col-md-8 col-sm-6 col-xs-12 form-group has-feedback">
+					<input class="form-control" placeholder="Phone" type="text"
+						ng-model="vm.admin.contact"> <span
+						class="fa fa-phone form-control-feedback right" aria-hidden="true"></span>
+				</div>
+				<div class="col-md-2 col-sm-6 col-xs-12"></div>
+			</div>
+			<br>
+			<div class="row">
+			    <div class="col-md-2 col-sm-6 col-xs-12"></div>
+				<div class="col-md-4 col-sm-12 col-xs-12">
+					<p> <u>Accessible modules</u> </p>
+				</div>
+				<div class="col-md-6 col-sm-6 col-xs-12"></div>
+			</div>
+			<div class="row">
+			    <div class="col-md-2 col-sm-6 col-xs-12"></div>
+				<div class="col-md-3 col-sm-12 col-xs-12">
+					<p> <input type="checkbox" value="checked">
+						Prashar
+					</p>
+				</div>
+				<div class="col-md-3 col-sm-12 col-xs-12">
+					<p> <input type="checkbox" value="checked">
+						Jaimini
+					</p>
+				</div>
+				<div class="col-md-2 col-sm-12 col-xs-12">
+					<p> <input type="checkbox" value="checked"> KP
+					</p>
+				</div>
+				<div class="col-md-2 col-sm-6 col-xs-12"></div>
+			</div>
+		<div class="row">
+			    <div class="col-md-2 col-sm-6 col-xs-12"></div>
+				<div class="col-md-3 col-sm-12 col-xs-12">
+					<p> <input type="checkbox" value="checked">
+						Ashtavarga
+					</p>
+				</div>
+				<div class="col-md-3 col-sm-12 col-xs-12">
+					<p> <input type="checkbox" value="checked">
+						Tajika
+					</p>
+				</div>
+				<div class="col-md-2 col-sm-12 col-xs-12">
+					<p> <input type="checkbox" value="checked"> UM
+					</p>
+				</div>
+				<div class="col-md-2 col-sm-6 col-xs-12"></div>
+			</div>
+			<br>			
+			<div class="row">
+				<div class="col-md-2 col-sm-6 col-xs-12"></div>
 				<div class="col-md-2 col-sm-6 col-xs-12 form-group has-feedback">
 					<div class="radio">
-						<label> <input type="radio" name="activeMember"
-							value="N" checked="" ng-model="vm.member.blocked"> Active
+						<label> <input type="radio" name="activeMember" value="N"
+							checked="" ng-model="vm.admin.blocked"> Active
 						</label>
 					</div>
 				</div>
 				<div class="col-md-2 col-sm-6 col-xs-12 form-group has-feedback">
 					<div class="radio">
-						<label> <input type="radio" name="activeMember"
-							value="Y" ng-model="vm.member.blocked"> Blocked
+						<label> <input type="radio" name="activeMember" value="Y"
+							ng-model="vm.admin.blocked"> Blocked
 						</label>
 					</div>
 				</div>
@@ -141,8 +148,10 @@
 			<div class="ln_solid"></div>
 			<div class="form-group">
 				<div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-					<button type="submit" class="btn btn-primary" ng-click="vm.cancel()">Cancel</button>
-					<button type="submit" class="btn btn-success" ng-click="vm.saveMember(vm.member)">Submit</button>
+					<button type="submit" class="btn btn-primary"
+						ng-click="vm.cancel()">Cancel</button>
+					<button type="submit" class="btn btn-success"
+						ng-click="vm.saveAdmin(vm.admin)">Submit</button>
 				</div>
 			</div>
 		</form>

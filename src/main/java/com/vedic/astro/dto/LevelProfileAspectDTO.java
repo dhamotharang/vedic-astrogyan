@@ -1,11 +1,14 @@
 package com.vedic.astro.dto;
 
+import com.vedic.astro.enums.MemberType;
+
 public class LevelProfileAspectDTO {
 	
 	private String code = null;
 	private String name = null;
 	private String id = null;
 	private String parentCode = null;
+	private MemberType memberType = null;
 
 	public LevelProfileAspectDTO() {
 	}
@@ -38,10 +41,16 @@ public class LevelProfileAspectDTO {
 	public void setParentCode(String parentCode) {
 		this.parentCode = parentCode;
 	}
+	public MemberType getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(MemberType memberType) {
+		this.memberType = memberType;
+	}
 
 	@Override
 	public String toString() {
 		return "LevelProfileAspectDTO [code=" + code + ", name=" + name + ", id=" + id + ", parentCode=" + parentCode
-				+ "]";
+				+ ", memberType=" + memberType + "]";
 	}
 }

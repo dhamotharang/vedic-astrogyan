@@ -15,6 +15,8 @@
 		vm.panelPreviewTitle2 = "Flat Preview";
 		vm.labels = [ 'Aspect', 'Sub-aspect', 'Sub-sub-aspect' ]
 		vm.flatProfile = [];
+		vm.memberTypes = [];
+		vm.memberTypeSelected = {};
 		vm.parents = [];
 		vm.parentSelected = {};
 		vm.immediateChildren = [];
@@ -47,6 +49,24 @@
 			ProfileService.getAllParents().then(function(parents) {
 				vm.parents = parents;
 				vm.parentSelected = vm.parents[0];
+				
+				ProfileService.getImmediateChildren(vm.parentSelected.code).then(function(children) {
+					vm.immediateChildren = children;
+					vm.immediateChildSelected = vm.immediateChildren[0];
+					
+					ProfileService.getImmediateChildren(vm.immediateChildSelected.code).then(function(children) {
+						vm.furtherChildren = children;
+						vm.furtherChildSelected = vm.furtherChildren[0];
+						
+					});
+				});
+				
+			});
+		};
+		
+		function loadProfileTree() {
+			ProfileService.getProfileTree().then(function(aspects) {
+				$scope.aspects = aspects;
 			});
 		};
 		
@@ -164,7 +184,8 @@
 									vm.immediateChildren = children;
 									if (vm.immediateChildren) {
 										vm.immediateChildSelected = vm.immediateChildren[0];
-										vm.furtherChildren = [];
+										loadChildren(immediateChildSelected, 2);
+										
 									}
 								} else if (level == 2) {
 									vm.furtherChildren = children;

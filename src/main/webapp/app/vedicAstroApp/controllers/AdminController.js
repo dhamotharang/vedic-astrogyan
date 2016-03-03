@@ -3,18 +3,14 @@
 	angular.module('vedicAstroApp').controller('AdminController',
 			AdminController);
 
-	AdminController.$inject = [ '$rootScope', '$scope', 'MemberService',
-			'ReferenceDataService' ];
+	AdminController.$inject = ['$scope', 'AuthService'];
 
-	function AdminController($rootScope, $scope, MemberService,
-			ReferenceDataService) {
+	function AdminController($scope, AuthService) {
 		var vm = this;
-		vm.panelTitle = "< Manage member >";
-		vm.countries = [];
-		vm.member = {};
-		vm.cities = [];
+		vm.panelTitle = "< Manage Admin >";
+		vm.admin = {};
 
-		$scope.members = [];
+		$scope.admins = [];
 		$scope.selected = undefined;
 
 		$scope.alerts = [];
@@ -27,57 +23,42 @@
 
 		$scope.closeAlert = function(index) {
 			$scope.alerts.splice(index, 1);
-			vm.member = {};
+			vm.admin = {};
 			$scope.selected = undefined;
 		};
 
-		vm.loadMember = loadMember;
-		vm.saveMember = saveMember;
+		vm.saveAdmin = saveAdmin;
+		vm.loadAdmin = loadAdmin;
 		vm.cancel = cancel;
 
 		(function init() {
-			loadAllCountries();
-			loadAllCities();
-			angular.element(document.getElementById('datetimepicker1'))
-					.datetimepicker();
-			loadMembers();
+			loadAdmins();
 		})();
 
-		function loadAllCountries() {
-			ReferenceDataService.getData('countries').then(function(countries) {
-				vm.countries = countries;
+		function loadAdmins() {
+			AuthService.getAllAdmins().then(function(admins) {
+				$scope.admins = admins;
 			});
 		}
 
-		function loadAllCities() {
-			ReferenceDataService.getData('cities').then(function(cities) {
-				vm.cities = cities;
+		function loadAdmin(adminId) {
+			AuthService.loadAdmin(adminId).then(function(admin) {
+				vm.admin = admin;
 			});
 		}
 
-		function loadMembers() {
-			MemberService.getAll().then(function(members) {
-				$scope.members = members;
-			});
-		}
-
-		function loadMember(memberId) {
-			MemberService.getByMemberId(memberId).then(function(member) {
-				vm.member = member;
-			});
-		}
-
-		function saveMember(member) {
-			MemberService.save(member).then(function(response) {
-						loadMembers();
+		function saveAdmin(admin) {
+			AuthService.saveAdmin(admin).then(function(response) {
+				loadAdmins();
 					});
+			cancel();
 			$scope.alerts.push({
-				type : 'success', msg : 'Member saved successfully !'
+				type : 'success', msg : 'Admin saved successfully !'
 			});
 		}
 
 		function cancel() {
-			vm.member = {};
+			vm.admin = {};
 			$scope.selected = undefined;
 		}
 	}
