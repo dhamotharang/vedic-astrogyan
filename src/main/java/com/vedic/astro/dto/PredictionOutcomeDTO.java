@@ -48,6 +48,7 @@ public class PredictionOutcomeDTO {
 	@Override
 	public String toString() {
 		return "PredictionOutcomeDTO [code=" + code + ", name=" + name + ", templateCode=" + templateCode
-				+ ", observations=" + observations + "]";
+				+ ", memberType=" + memberType + ", observations=" + observations + "]";
 	}
+
 }

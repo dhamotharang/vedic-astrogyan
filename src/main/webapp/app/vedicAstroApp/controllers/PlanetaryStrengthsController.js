@@ -32,7 +32,6 @@
 		function loadPlanetaryStrengthsInfo() {
 			PlanetService.getPlanetsStrengthInfo($scope.predictionSystem)
                .then(function (planetsStrengthInfo) {
-            	   console.log(planetsStrengthInfo);
                    vm.planetsStrengthInfo = planetsStrengthInfo;
                    constructGauges();
                });

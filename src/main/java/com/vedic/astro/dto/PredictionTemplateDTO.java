@@ -10,7 +10,6 @@ public class PredictionTemplateDTO {
 	private String name = null;
 	private String code = null;
 	private List<String> aspectCodes = new ArrayList<String>();
-	private MemberType memberType = null;
 
 	public String getName() {
 		return name;
@@ -30,15 +29,9 @@ public class PredictionTemplateDTO {
 	public void setAspectCodes(List<String> aspectCodes) {
 		this.aspectCodes = aspectCodes;
 	}
-	public MemberType getMemberType() {
-		return memberType;
-	}
-	public void setMemberType(MemberType memberType) {
-		this.memberType = memberType;
-	}
 	@Override
 	public String toString() {
-		return "PredictionTemplateDTO [name=" + name + ", code=" + code + ", aspectCodes=" + aspectCodes
-				+ ", memberType=" + memberType + "]";
+		return "PredictionTemplateDTO [name=" + name + ", code=" + code + ", aspectCodes=" + aspectCodes + "]";
 	}
+
 }

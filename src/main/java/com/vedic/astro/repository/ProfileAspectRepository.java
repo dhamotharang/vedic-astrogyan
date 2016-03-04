@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.vedic.astro.domain.ProfileAspect;
+import com.vedic.astro.enums.MemberType;
 
 /**
  * The Repository which does all basic CRUD operations on the
@@ -21,10 +22,12 @@ import com.vedic.astro.domain.ProfileAspect;
 @Repository("profileAspectRepository")
 public interface ProfileAspectRepository extends CrudRepository<ProfileAspect, String>{
 
-	@Query(value="{'parentCode' : {$exists:false}}")
-	public Optional<List<ProfileAspect>> getAllParents();
+	@Query(value="{'parentCode' : {$exists:false}, 'memberType' : ?0}")
+	public Optional<List<ProfileAspect>> getAllParents(MemberType memberType);
 
-	@Query(value="{'parentCode' : ?0}")
-	public Optional<List<ProfileAspect>> getImmediateChildren(String parentCode);
+	@Query(value="{'parentCode' : ?0, 'memberType' : ?1}")
+	public Optional<List<ProfileAspect>> getImmediateChildren(String parentCode, MemberType memberType);
 
+	@Query(value="{'memberType' : ?0}")
+	public Optional<List<ProfileAspect>> findByMemberType(MemberType memberType);
 }

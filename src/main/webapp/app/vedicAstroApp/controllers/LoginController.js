@@ -21,7 +21,6 @@
             AuthService.login(vm.username, vm.password, function (response) {
             	
                 if (response.success) {
-                	console.log("Response :" + response.responseData);
                     AuthService.setCredentials(vm.username, vm.password, response.responseData);
                     $location.path('/chart/Prashara/ChartAnalysis');
                     

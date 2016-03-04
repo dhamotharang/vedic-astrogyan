@@ -3,11 +3,14 @@ package com.vedic.astro.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.vedic.astro.enums.MemberType;
+
 public class ProfileAspectDTO extends LevelProfileAspectDTO{
 	
 	private List<ProfileAspectDTO> children = new ArrayList<ProfileAspectDTO>();
 	private String mappedTemplates = null;
 	private List<ProfilePredictionDTO> predictions = null;
+	private MemberType memberType = null;
 	
 	public List<ProfileAspectDTO> getChildren() {
 		return children;
@@ -30,9 +33,15 @@ public class ProfileAspectDTO extends LevelProfileAspectDTO{
 	public void addChild(ProfileAspectDTO profileAspectDTO){
 		this.children.add(profileAspectDTO);
 	}
+	public MemberType getMemberType() {
+		return memberType;
+	}
+	public void setMemberType(MemberType memberType) {
+		this.memberType = memberType;
+	}
 	@Override
 	public String toString() {
 		return "ProfileAspectDTO [children=" + children + ", mappedTemplates=" + mappedTemplates + ", predictions="
-				+ predictions + "]";
+				+ predictions + ", memberType=" + memberType + "]";
 	}
 }

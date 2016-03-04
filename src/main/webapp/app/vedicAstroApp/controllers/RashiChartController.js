@@ -176,8 +176,6 @@
 		function prepareChart() {
 
 			ChartService.getRashiChartData().then(function(resChartData) {
-				console.log("res =" + resChartData);
-
 				for (var i = 0; i < vm.chartData.length; i++) {
 					for (var j = 0; j < resChartData.length; j++) {
 						if (resChartData[j].id == vm.chartData[i].id) {
@@ -185,7 +183,6 @@
 						}
 					}
 				}
-				console.log("js =" + vm.chartData);
 				renderChart(vm.chartData);
 				hideOrShow(vm.showNak,'nakshatra');
 				hideOrShow(vm.showPlanets,'planet');

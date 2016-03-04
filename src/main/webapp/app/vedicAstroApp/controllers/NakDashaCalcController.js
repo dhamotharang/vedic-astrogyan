@@ -84,7 +84,6 @@
 				asOfDate : date,
 				dashaSystem : nakDashaSytem
 			};
-			console.log(input);
 			DashaService.getNakMainPeriods(input).then(function(mahadashas) {
 
 				if (mahadashas != null) {

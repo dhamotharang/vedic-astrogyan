@@ -60,18 +60,9 @@
 				for (var i = 0; i < vm.aspectsSelected.length; i++) {
 					vm.aspectsSelected[i].selected = false;
 				}
-				logAspects("Before selecting");
 			});
 		};
 
-		function logAspects(msg){
-			for (var i = 0; i < vm.aspectsSelected.length; i++) {
-				console.log( msg + vm.aspectsSelected[i].path + " = " +vm.aspectsSelected[i].selected);
-			}
-			
-		}
-		
-		
 		function gotoNext(){
 			if(vm.currentStep.stepNo == 1){
 				loadProfileFlat();

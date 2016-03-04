@@ -18,9 +18,11 @@ import com.vedic.astro.dto.AnalysisResultDTO;
 import com.vedic.astro.dto.ComponentAnalysisResultDTO;
 import com.vedic.astro.dto.SubComponentOutcomeDTO;
 import com.vedic.astro.enums.AnalysisGroup;
+import com.vedic.astro.enums.MemberType;
 import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.repository.ComponentRepository;
 import com.vedic.astro.repository.MemberAnalysisRepository;
+import com.vedic.astro.repository.MemberRepository;
 import com.vedic.astro.repository.PredictionOutcomeRepository;
 import com.vedic.astro.repository.PredictionTemplateRepository;
 import com.vedic.astro.repository.ProfileAspectRepository;
@@ -53,6 +55,11 @@ public class MemberProfileService {
 	@Autowired
 	@Qualifier("memberAnalysisRepository")
 	private MemberAnalysisRepository memberAnalysisRepository;
+	
+	@Autowired
+	@Qualifier("memberRepository")
+	private MemberRepository memberRepository;
+
 
 	public AnalysisResultDTO getAnalysisResult(String memberId) {
 
@@ -118,6 +125,7 @@ public class MemberProfileService {
 		List<ComponentAnalysisResultDTO> analysisResultDTO = new ArrayList<ComponentAnalysisResultDTO>();
 		Optional<List<MemberAnalysis>> memberAnalysisOpt = memberAnalysisRepository
 				.findByAnalysisGroupAndPredictionSystem(predictionSystem, analysisGroup, memberId);
+		MemberType memberType = memberRepository.findOne(memberId).getMemberType();
 
 		if (memberAnalysisOpt.isPresent()) {
 			List<MemberAnalysis> memberAnalysisList = memberAnalysisOpt.get();
@@ -141,7 +149,7 @@ public class MemberProfileService {
 					subComponentOutcomeDTO.setConditionChecked(analysisSubComponent.getConditionChecked());
 
 					PredictionOutcome predictionOutcome = predictionOutcomeRepository
-							.findByCode(subComponentOutcome.getPredictionOutcomeCode()).get();
+							.findByCode(subComponentOutcome.getPredictionOutcomeCode(), memberType).get();
 					subComponentOutcomeDTO.setOutcome(predictionOutcome.getName());
 
 					subComponentOutcomeDTOList.add(subComponentOutcomeDTO);

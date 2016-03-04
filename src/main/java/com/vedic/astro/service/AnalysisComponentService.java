@@ -20,6 +20,7 @@ import com.vedic.astro.dto.PredictionTemplateDTO;
 import com.vedic.astro.dto.SubComponentDTO;
 import com.vedic.astro.dto.SubComponentInfoDTO;
 import com.vedic.astro.enums.AnalysisGroup;
+import com.vedic.astro.enums.MemberType;
 import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.repository.ComponentRepository;
 import com.vedic.astro.repository.PredictionOutcomeRepository;
@@ -104,7 +105,7 @@ public class AnalysisComponentService {
 		}
 	}
 
-	public List<SubComponentInfoDTO> findByComponent(String componentCode) {
+	public List<SubComponentInfoDTO> findByComponent(String componentCode, MemberType memberType) {
 		List<SubComponentInfoDTO> subComponentInfoList = new ArrayList<SubComponentInfoDTO>();	
 	
 
@@ -127,7 +128,7 @@ public class AnalysisComponentService {
 				subComponentInfoDTO
 						.setPredictionTemplate(getPredictionTemplateDTO(subComponent.getPredictionTemplateCode()));
 				Optional<List<PredictionOutcome>> predictionOutcomes = predictionOutcomeRepository
-						.getOutcomesForTemplate(subComponentInfoDTO.getPredictionTemplate().getCode());
+						.getOutcomesForTemplate(subComponentInfoDTO.getPredictionTemplate().getCode(), memberType);
 
 				List<PredictionOutcomeDTO> dtoList = new ArrayList<PredictionOutcomeDTO>();
 				

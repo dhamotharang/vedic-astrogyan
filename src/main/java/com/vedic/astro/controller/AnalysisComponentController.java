@@ -16,6 +16,7 @@ import com.vedic.astro.dto.ComponentDTO;
 import com.vedic.astro.dto.SubComponentDTO;
 import com.vedic.astro.dto.SubComponentInfoDTO;
 import com.vedic.astro.enums.AnalysisGroup;
+import com.vedic.astro.enums.MemberType;
 import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.exception.BusinessException;
 import com.vedic.astro.exception.SystemException;
@@ -65,12 +66,12 @@ final public class AnalysisComponentController extends BaseController {
 		return new RestServiceResponse<String>(returnValue);
 	}
 
-	@RequestMapping(value = "/subComponents/{componentCode}", method = RequestMethod.GET)
+	@RequestMapping(value = "/subComponents/{memberType}/{componentCode}", method = RequestMethod.GET)
 	public RestServiceResponse<List<SubComponentInfoDTO>> getSubComponents(
-			@PathVariable String componentCode) throws BusinessException, SystemException {
+			@PathVariable MemberType memberType, @PathVariable String componentCode) throws BusinessException, SystemException {
 
 		List<SubComponentInfoDTO> componentDTOList = 
-				analysisComponentService.findByComponent(componentCode);
+				analysisComponentService.findByComponent(componentCode, memberType);
 		return new RestServiceResponse<List<SubComponentInfoDTO>>(
 				componentDTOList);
 	}

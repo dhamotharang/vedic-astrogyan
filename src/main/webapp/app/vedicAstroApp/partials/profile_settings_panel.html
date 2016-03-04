@@ -20,8 +20,18 @@
 		</div>
 	</div>
 	<div class="x_content">
-
-
+	    <br>
+		<div class="row">
+			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+				<select class="form-control" ng-model="vm.memberTypeSelected"
+					ng-options="memberType.name for memberType in vm.memberTypes track by memberType.code"
+					ng-change="vm.loadAllParents()">
+				</select>
+			</div>
+			<div class="col-md-9 col-sm-12 col-xs-12 form-group">
+			</div>
+		</div>
+		<br>
 		<div class="row">
 			<div class="col-md-4 col-sm-12 col-xs-12 form-group">
 				<h4>
@@ -39,9 +49,7 @@
 				</h4>
 			</div>
 		</div>
-
 		<div class="row">
-
 			<div class="col-md-3 col-sm-12 col-xs-12 form-group">
 				<select class="form-control" size=5 ng-model="vm.parentSelected"
 					ng-selected="vm.parentSelected.code"
@@ -136,7 +144,8 @@
 			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
 				<div class="form-group">
 					<input type="text" name="cat1" id="cat1" class="form-control"
-						ng-model="vm.parentSelected.code" required readonly placeholder="Aspect" />
+						ng-model="vm.parentSelected.code" required readonly
+						placeholder="Aspect" />
 				</div>
 			</div>
 			<div class="col-md-2 col-sm-12 col-xs-12 form-group">
@@ -147,7 +156,8 @@
 			</div>
 			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
 				<div class="form-group">
-					<a href="" ng-click="vm.updateParentAspect(vm.parentSelected.code, vm.parentSelected.name, vm.parentSelected.id)"><i
+					<a href=""
+						ng-click="vm.updateParentAspect(vm.parentSelected.code, vm.parentSelected.name, vm.parentSelected.id)"><i
 						class="fa fa-check-square fa-2x"></i></a> <a href=""
 						ng-click="vm.deleteParentAspect(vm.parentSelected.id)"><i
 						class="fa fa-minus-square fa-2x"></i></a>
@@ -170,7 +180,8 @@
 			</div>
 			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
 				<div class="form-group">
-					<a href="" ng-click="vm.updateImmediateChildAspect(vm.immediateChildSelected.code, vm.immediateChildSelected.name, vm.parentSelected.code, vm.immediateChildSelected.id)"><i
+					<a href=""
+						ng-click="vm.updateImmediateChildAspect(vm.immediateChildSelected.code, vm.immediateChildSelected.name, vm.parentSelected.code, vm.immediateChildSelected.id)"><i
 						class="fa fa-check-square fa-2x"></i></a> <a href=""
 						ng-click="vm.deleteImmediateChildAspect(vm.immediateChildSelected.id, vm.parentSelected.code)"><i
 						class="fa fa-minus-square fa-2x"></i></a>
@@ -192,7 +203,8 @@
 			</div>
 			<div class="col-md-1 col-sm-12 col-xs-12 form-group">
 				<div class="form-group">
-					<a href="" ng-click="vm.updateFurtherChildAspect(vm.furtherChildSelected.code, vm.furtherChildSelected.name, vm.immediateChildSelected.code, vm.furtherChildSelected.id)"><i
+					<a href=""
+						ng-click="vm.updateFurtherChildAspect(vm.furtherChildSelected.code, vm.furtherChildSelected.name, vm.immediateChildSelected.code, vm.furtherChildSelected.id)"><i
 						class="fa fa-check-square fa-2x"></i></a> <a href=""
 						ng-click="vm.deleteFurtherChildAspect(vm.furtherChildSelected.id, vm.immediateChildSelected.code)"><i
 						class="fa fa-minus-square fa-2x"></i></a>

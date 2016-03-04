@@ -9,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.vedic.astro.domain.PredictionTemplate;
-import com.vedic.astro.dto.SubComponentDTO;
 import com.vedic.astro.dto.PredictionObservationDTO;
 import com.vedic.astro.dto.PredictionOutcomeDTO;
 import com.vedic.astro.dto.PredictionTemplateDTO;
-import com.vedic.astro.enums.AnalysisGroup;
+import com.vedic.astro.dto.SubComponentDTO;
 import com.vedic.astro.enums.ObservationNature;
 import com.vedic.astro.repository.ComponentRepository;
 import com.vedic.astro.repository.PredictionTemplateRepository;
@@ -141,7 +140,7 @@ public class ProfileServiceTest extends BaseUtilTest{
 			
 			analysisComponentService.saveSubComponent(componentDTO);
 	 	}
-		@Test
+		//@Test
 		public void testGetTemplateByAspectCode() throws Exception {
 			List<String> templates = new ArrayList<String>();
 			Optional<List<PredictionTemplate>> predictionTemplateList = predictionTemplateRepository
@@ -153,4 +152,5 @@ public class ProfileServiceTest extends BaseUtilTest{
 			}
 			System.out.println(templates.toString());
 		}
+	
 }

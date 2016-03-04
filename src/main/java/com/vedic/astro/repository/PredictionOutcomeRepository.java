@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.vedic.astro.domain.PredictionOutcome;
+import com.vedic.astro.enums.MemberType;
 
 /**
  * The Repository which does all basic CRUD operations on the
@@ -26,5 +27,11 @@ public interface PredictionOutcomeRepository extends CrudRepository<PredictionOu
 
 	@Query(value="{'code' : ?0}")
 	public Optional<PredictionOutcome> findByCode(String code);
+	
+	@Query(value="{'templateCode' : ?0, 'memberType' : ?1}")
+	public Optional<List<PredictionOutcome>> getOutcomesForTemplate(String templateCode, MemberType memberType);
 
+	@Query(value="{'code' : ?0, 'memberType' : ?1}")
+	public Optional<PredictionOutcome> findByCode(String code, MemberType memberType);
+	
 }

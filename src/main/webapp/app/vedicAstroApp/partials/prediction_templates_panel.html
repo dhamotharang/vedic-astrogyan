@@ -43,6 +43,15 @@
 					<div class="row">
 						<div class="col-md-3 col-sm-12 col-xs-12 form-group"></div>
 						<div class="col-md-5 col-sm-12 col-xs-12 form-group">
+						   <select class="form-control" ng-model="vm.memberTypeSelected"
+							ng-options="memberType.name for memberType in vm.memberTypes track by memberType.code">
+						  </select>
+						</div>
+						<div class="col-md-4 col-sm-12 col-xs-12 form-group"></div>
+					</div>
+					<div class="row">
+						<div class="col-md-3 col-sm-12 col-xs-12 form-group"></div>
+						<div class="col-md-5 col-sm-12 col-xs-12 form-group">
 							<select class="form-control" size=5 ng-model="vm.templateSelected"
 								ng-options="template.name for template in vm.predictionTemplates track by template.code">
 							</select>

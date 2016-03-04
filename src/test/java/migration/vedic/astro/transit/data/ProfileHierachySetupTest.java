@@ -7,8 +7,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.vedic.astro.domain.PredictionOutcome;
 import com.vedic.astro.domain.ProfileAspect;
-import com.vedic.astro.enums.PredictionSystem;
+import com.vedic.astro.enums.MemberType;
+import com.vedic.astro.repository.PredictionOutcomeRepository;
 import com.vedic.astro.repository.ProfileAspectRepository;
 import com.vedic.astro.service.ProfileService;
 
@@ -19,6 +21,10 @@ public class ProfileHierachySetupTest extends BaseUtilTest {
 	@Autowired
 	@Qualifier("profileAspectRepository")
 	private ProfileAspectRepository profileAspectRepository;
+	
+	@Autowired
+	@Qualifier("predictionOutcomeRepository")
+	private PredictionOutcomeRepository predictionOutcomeRepository;
 
 	@Autowired
 	@Qualifier("profileService")
@@ -75,8 +81,39 @@ public class ProfileHierachySetupTest extends BaseUtilTest {
 		profileAspectRepository.save(profileHierachy);
 	}
 
-	@Test
-	public void getFlatTree() {
-		System.out.println("Flat structure = " + profileService.getProfileHierachyFlat(PredictionSystem.Prashara));
+	//@Test
+	public void setupMigrateProfileData() {
+		Iterable<ProfileAspect> profileAspects = profileAspectRepository.findAll();
+		for (ProfileAspect profileAspect : profileAspects) {
+			profileAspect.setMemberType(MemberType.Country);
+			profileAspect.setId(null);
+		}
+		profileAspectRepository.save(profileAspects);
 	}
+
+	//@Test
+	public void getFlatTree() {
+		System.out.println("Flat structure = " + profileService.getProfileHierachyFlat(MemberType.Person));
+	}
+	
+	//@Test
+	public void setupMigratePredictionOutcomes() {
+		Iterable<PredictionOutcome> predictionOutcomes = predictionOutcomeRepository.findAll();
+		for (PredictionOutcome predictionOutcome : predictionOutcomes) {
+			predictionOutcome.setMemberType(MemberType.Person);
+		//	profileAspect.setId(null);
+		}
+		predictionOutcomeRepository.save(predictionOutcomes);
+	}
+	
+	@Test
+	public void setupMigratePredictionOutcomesForCountry() {
+		Iterable<PredictionOutcome> predictionOutcomes = predictionOutcomeRepository.findAll();
+		for (PredictionOutcome predictionOutcome : predictionOutcomes) {
+			predictionOutcome.setMemberType(MemberType.Country);
+			predictionOutcome.setId(null);
+		}
+		predictionOutcomeRepository.save(predictionOutcomes);
+	}
+
 }

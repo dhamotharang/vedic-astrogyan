@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vedic.astro.domain.AnalysisComponent;
 import com.vedic.astro.domain.AnalysisSubComponent;
+import com.vedic.astro.domain.Member;
 import com.vedic.astro.domain.MemberAnalysis;
 import com.vedic.astro.domain.PredictionObservation;
 import com.vedic.astro.domain.PredictionOutcome;
@@ -33,10 +34,12 @@ import com.vedic.astro.dto.ProfileFilterTypeDTO;
 import com.vedic.astro.dto.ProfilePredictionDTO;
 import com.vedic.astro.dto.TemplateAspectDTO;
 import com.vedic.astro.enums.AnalysisGroup;
+import com.vedic.astro.enums.MemberType;
 import com.vedic.astro.enums.ObservationNature;
 import com.vedic.astro.enums.PredictionSystem;
 import com.vedic.astro.repository.ComponentRepository;
 import com.vedic.astro.repository.MemberAnalysisRepository;
+import com.vedic.astro.repository.MemberRepository;
 import com.vedic.astro.repository.PredictionOutcomeRepository;
 import com.vedic.astro.repository.PredictionTemplateRepository;
 import com.vedic.astro.repository.ProfileAspectRepository;
@@ -67,13 +70,16 @@ public class ProfileService {
 	private MemberAnalysisRepository memberAnalysisRepository;
 
 	@Autowired
+	@Qualifier("memberRepository")
+	private MemberRepository memberRepository;
+
+	@Autowired
 	@Qualifier("componentRepository")
 	private ComponentRepository componentRepository;
 
-
-	public List<LevelProfileAspectDTO> getAllParents() {
+	public List<LevelProfileAspectDTO> getAllParents(MemberType memberType) {
 		List<LevelProfileAspectDTO> parents = new ArrayList<LevelProfileAspectDTO>();
-		Optional<List<ProfileAspect>> profileAspects = profileAspectRepository.getAllParents();
+		Optional<List<ProfileAspect>> profileAspects = profileAspectRepository.getAllParents(memberType);
 
 		for (ProfileAspect profileAspect : profileAspects.get()) {
 			LevelProfileAspectDTO parent = new LevelProfileAspectDTO();
@@ -102,13 +108,13 @@ public class ProfileService {
 
 		List<ProfileAspect> allAspectsToBeDeleted = new ArrayList<ProfileAspect>();
 		allAspectsToBeDeleted.add(aspect);
-		Optional<List<ProfileAspect>> immediateChildren = profileAspectRepository
-				.getImmediateChildren(aspect.getCode());
+		Optional<List<ProfileAspect>> immediateChildren = profileAspectRepository.getImmediateChildren(aspect.getCode(),
+				aspect.getMemberType());
 		if ((immediateChildren != null) && immediateChildren.isPresent()) {
 			for (ProfileAspect immediateChild : immediateChildren.get()) {
 				allAspectsToBeDeleted.addAll(immediateChildren.get());
 				Optional<List<ProfileAspect>> furtherChildren = profileAspectRepository
-						.getImmediateChildren(immediateChild.getCode());
+						.getImmediateChildren(immediateChild.getCode(), aspect.getMemberType());
 				if ((furtherChildren != null) && furtherChildren.isPresent()) {
 					allAspectsToBeDeleted.addAll(furtherChildren.get());
 				}
@@ -117,9 +123,10 @@ public class ProfileService {
 		return allAspectsToBeDeleted;
 	}
 
-	public List<LevelProfileAspectDTO> getImmediateChildren(String parentCode) {
+	public List<LevelProfileAspectDTO> getImmediateChildren(String parentCode, MemberType memberType) {
 		List<LevelProfileAspectDTO> children = new ArrayList<LevelProfileAspectDTO>();
-		Optional<List<ProfileAspect>> profileAspects = profileAspectRepository.getImmediateChildren(parentCode);
+		Optional<List<ProfileAspect>> profileAspects = profileAspectRepository.getImmediateChildren(parentCode,
+				memberType);
 
 		for (ProfileAspect profileAspect : profileAspects.get()) {
 			LevelProfileAspectDTO child = new LevelProfileAspectDTO();
@@ -130,19 +137,34 @@ public class ProfileService {
 		return children;
 	}
 
-	public List<ProfileAspectDTO> getProfileHierachyTree(boolean populateInfo,
+	public List<ProfileAspectDTO> getProfileHierachyTree(boolean populateInfo, ProfileFilterDTO profileFilterDTO,
+			MemberType memberType) {
+		Optional<List<ProfileAspect>> profileAspects = profileAspectRepository.findByMemberType(memberType);
+		return constructTree(profileAspects.get(), populateInfo, profileFilterDTO);
+	}
+
+	public List<ProfileAspectDTO> getMemberProfileHierachyTree(boolean populateInfo,
 			ProfileFilterDTO profileFilterDTO) {
-		Iterable<ProfileAspect> profileAspects = profileAspectRepository.findAll();
-		return constructTree(profileAspects, populateInfo, profileFilterDTO);
+
+		MemberType memberType = null;
+		if (profileFilterDTO.getFilterType().equals(ProfileFilterTypeDTO.MemberAnalysis)
+				&& profileFilterDTO.getFilterValue() != null) {
+			Member member = memberRepository.findOne(profileFilterDTO.getFilterValue());
+			if (member != null) {
+				memberType = member.getMemberType();
+			}
+		}
+		Optional<List<ProfileAspect>> profileAspects = profileAspectRepository.findByMemberType(memberType);
+		return constructTree(profileAspects.get(), populateInfo, profileFilterDTO);
 	}
 
-	public List<PathProfileAspectDTO> getProfileHierachyFlat(PredictionSystem model) {
-		Iterable<ProfileAspect> profileAspects = profileAspectRepository.findAll();
-		return constructFlat(profileAspects);
+	public List<PathProfileAspectDTO> getProfileHierachyFlat(MemberType memberType) {
+		Optional<List<ProfileAspect>> profileAspects = profileAspectRepository.findByMemberType(memberType);
+		return constructFlat(profileAspects.get());
 	}
 
-	private Map<String, String> getCodeToPathMap(PredictionSystem model) {
-		List<PathProfileAspectDTO> dtoList = getProfileHierachyFlat(model);
+	private Map<String, String> getCodeToPathMap(MemberType memberType) {
+		List<PathProfileAspectDTO> dtoList = getProfileHierachyFlat(memberType);
 		Map<String, String> codeToPathMap = new HashMap<String, String>();
 		for (PathProfileAspectDTO pathProfileAspectDTO : dtoList) {
 			codeToPathMap.put(pathProfileAspectDTO.getCode(), pathProfileAspectDTO.getPath());
@@ -150,8 +172,8 @@ public class ProfileService {
 		return codeToPathMap;
 	}
 
-	private List<ProfileAspectDTO> constructTree(Iterable<ProfileAspect> profileHierachy, 
-			boolean populateInfo, ProfileFilterDTO profileFilterDTO) {
+	private List<ProfileAspectDTO> constructTree(Iterable<ProfileAspect> profileHierachy, boolean populateInfo,
+			ProfileFilterDTO profileFilterDTO) {
 		List<ProfileAspectDTO> profileHierachyDTO = new ArrayList<ProfileAspectDTO>();
 
 		Map<String, Set<ProfileAspect>> parentMap = new HashMap<String, Set<ProfileAspect>>();
@@ -298,9 +320,10 @@ public class ProfileService {
 		return predictionTemplateDTOList;
 	}
 
-	public List<TemplateAspectDTO> getAllAspects(String templateCode) {
+	public List<TemplateAspectDTO> getAllAspects(String templateCode, MemberType memberType) {
 
-		List<PathProfileAspectDTO> profileAspects = constructFlat(profileAspectRepository.findAll());
+		List<PathProfileAspectDTO> profileAspects = constructFlat(
+				profileAspectRepository.findByMemberType(memberType).get());
 		List<TemplateAspectDTO> templateAspectDTOList = new ArrayList<TemplateAspectDTO>();
 		Optional<PredictionTemplate> template = predictionTemplateRepository.findByCode(templateCode);
 		List<String> aspectCodes = null;
@@ -336,7 +359,7 @@ public class ProfileService {
 				for (PredictionOutcome predictionOutcome : predictionOutcomes.get()) {
 					predictionOutcomeCodes.add(predictionOutcome.getCode());
 					predictionOutcomeRepository.delete(predictionOutcome);
-					
+
 				}
 			}
 
@@ -360,7 +383,10 @@ public class ProfileService {
 
 	public void savePredictionOutcome(PredictionOutcomeDTO predictionOutcomeDTO) {
 
-		Optional<PredictionOutcome> outcome = predictionOutcomeRepository.findByCode(predictionOutcomeDTO.getCode());
+		System.out.println("predictionOutcomeDTO = " + predictionOutcomeDTO);
+
+		Optional<PredictionOutcome> outcome = predictionOutcomeRepository.findByCode(predictionOutcomeDTO.getCode(),
+				predictionOutcomeDTO.getMemberType());
 		PredictionOutcome predictionOutcome = new PredictionOutcome();
 		BeanUtils.copyProperties(predictionOutcomeDTO, predictionOutcome);
 
@@ -411,9 +437,9 @@ public class ProfileService {
 				subComponentRepository.delete(subComponent);
 
 			}
-            List<String> predictionOutcomeCodes = new ArrayList<String>(); 
-            predictionOutcomeCodes.add(predictionOutcomeDTO.getCode());
-            
+			List<String> predictionOutcomeCodes = new ArrayList<String>();
+			predictionOutcomeCodes.add(predictionOutcomeDTO.getCode());
+
 			Optional<List<MemberAnalysis>> memberData = memberAnalysisRepository
 					.findByPredictionOutcomes(predictionOutcomeCodes);
 			if (memberData.isPresent()) {
@@ -424,11 +450,12 @@ public class ProfileService {
 		}
 	}
 
-	public List<PredictionOutcomeDTO> getOutcomes(String templateCode) {
+	public List<PredictionOutcomeDTO> getOutcomes(String templateCode, MemberType memberType) {
 
-		Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository.getOutcomesForTemplate(templateCode);
+		Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository.getOutcomesForTemplate(templateCode,
+				memberType);
 		List<PredictionOutcomeDTO> outcomeDTOList = new ArrayList<PredictionOutcomeDTO>();
-		Map<String, String> codeToPathMap = getCodeToPathMap(PredictionSystem.Prashara);
+		Map<String, String> codeToPathMap = getCodeToPathMap(memberType);
 		for (PredictionOutcome predictionOutcome : outcomes.get()) {
 			PredictionOutcomeDTO predictionOutcomeDTO = new PredictionOutcomeDTO();
 			BeanUtils.copyProperties(predictionOutcome, predictionOutcomeDTO);
@@ -469,7 +496,7 @@ public class ProfileService {
 
 					templates.add(predictionTemplate.getName());
 					Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
-							.getOutcomesForTemplate(predictionTemplate.getCode());
+							.getOutcomesForTemplate(predictionTemplate.getCode(), parent.getMemberType());
 					Optional<AnalysisSubComponent> subComp = subComponentRepository
 							.findByTemplate(predictionTemplate.getCode());
 
@@ -526,7 +553,7 @@ public class ProfileService {
 
 				templates.add(predictionTemplate.getName());
 				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
-						.getOutcomesForTemplate(predictionTemplate.getCode());
+						.getOutcomesForTemplate(predictionTemplate.getCode(), parent.getMemberType());
 				Optional<AnalysisSubComponent> subComp = subComponentRepository
 						.findByTemplate(predictionTemplate.getCode());
 
@@ -588,7 +615,7 @@ public class ProfileService {
 
 				templates.add(predictionTemplate.getName());
 				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
-						.getOutcomesForTemplate(predictionTemplate.getCode());
+						.getOutcomesForTemplate(predictionTemplate.getCode(), parent.getMemberType());
 				Optional<AnalysisSubComponent> subComp = subComponentRepository
 						.findByTemplate(predictionTemplate.getCode());
 				Optional<AnalysisComponent> component = null;
@@ -652,49 +679,49 @@ public class ProfileService {
 
 				templates.add(predictionTemplate.getName());
 				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
-						.getOutcomesForTemplate(predictionTemplate.getCode());
+						.getOutcomesForTemplate(predictionTemplate.getCode(), parent.getMemberType());
 				Optional<AnalysisSubComponent> subComp = subComponentRepository
 						.findByTemplate(predictionTemplate.getCode());
-				if(subComp.isPresent()){
-				Optional<AnalysisComponent> component = componentRepository
-						.findByCode(subComp.get().getComponentCode());
-				
+				if (subComp.isPresent()) {
+					Optional<AnalysisComponent> component = componentRepository
+							.findByCode(subComp.get().getComponentCode());
 
-				if (component.isPresent()) {
-					if (!analysisGroups.isEmpty() && analysisGroups.contains(component.get().getAnalysisGroup())) {
-						if (outcomes.isPresent()) {
+					if (component.isPresent()) {
+						if (!analysisGroups.isEmpty() && analysisGroups.contains(component.get().getAnalysisGroup())) {
+							if (outcomes.isPresent()) {
 
-							for (PredictionOutcome outcome : outcomes.get()) {
+								for (PredictionOutcome outcome : outcomes.get()) {
 
-								ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
+									ProfilePredictionDTO profilePredictDTO = new ProfilePredictionDTO();
 
-								if (subComp.isPresent()) {
+									if (subComp.isPresent()) {
 
-									AnalysisSubComponent subComponent = subComp.get();
-									if (component.isPresent()) {
-										profilePredictDTO.setAnalysisGroup(component.get().getAnalysisGroup());
-										profilePredictDTO.setComponentName(component.get().getName());
+										AnalysisSubComponent subComponent = subComp.get();
+										if (component.isPresent()) {
+											profilePredictDTO.setAnalysisGroup(component.get().getAnalysisGroup());
+											profilePredictDTO.setComponentName(component.get().getName());
+										}
+										profilePredictDTO.setSubComponentName(subComponent.getName());
+										profilePredictDTO.setConditionChecked(subComponent.getConditionChecked());
 									}
-									profilePredictDTO.setSubComponentName(subComponent.getName());
-									profilePredictDTO.setConditionChecked(subComponent.getConditionChecked());
+
+									Map<String, PredictionObservation> observationMap = outcome
+											.getPredictionObservations();
+									PredictionObservation observation = observationMap.get(parent.getCode());
+
+									profilePredictDTO.setNature(observation.getNature());
+									profilePredictDTO.setOutcome(outcome.getName());
+									profilePredictDTO.setObservation(observation.getObservation());
+									profilePredictDTO.setTimeDependent(observation.isTimeDependent());
+
+									observations.add(profilePredictDTO);
 								}
-
-								Map<String, PredictionObservation> observationMap = outcome.getPredictionObservations();
-								PredictionObservation observation = observationMap.get(parent.getCode());
-
-								profilePredictDTO.setNature(observation.getNature());
-								profilePredictDTO.setOutcome(outcome.getName());
-								profilePredictDTO.setObservation(observation.getObservation());
-								profilePredictDTO.setTimeDependent(observation.isTimeDependent());
-
-								observations.add(profilePredictDTO);
 							}
-						}
-						parent.setMappedTemplates(templates.toString());
+							parent.setMappedTemplates(templates.toString());
 
+						}
 					}
 				}
-			}
 			}
 		}
 		parent.setPredictions(observations);
@@ -717,25 +744,23 @@ public class ProfileService {
 			analysisGroups.add(AnalysisGroup.valueOf(profileFilterDTO.getFilterValue()));
 
 			this.populateInfoFilterBySource(parent, analysisGroups);
-		} else if (profileFilterDTO.getFilterType().equals(ProfileFilterTypeDTO.MemberAnalysis)){
+		} else if (profileFilterDTO.getFilterType().equals(ProfileFilterTypeDTO.MemberAnalysis)) {
 			String memberId = profileFilterDTO.getFilterValue();
-			Optional<List<MemberAnalysis>> memberAnalysisListOpt = memberAnalysisRepository.findByAnalysisGroupAndPredictionSystem(
-					profileFilterDTO.getModel(), 
-					profileFilterDTO.getAnalysisGroup(), 
-					memberId);
-			if(memberAnalysisListOpt.isPresent()){
+			Optional<List<MemberAnalysis>> memberAnalysisListOpt = memberAnalysisRepository
+					.findByAnalysisGroupAndPredictionSystem(profileFilterDTO.getModel(),
+							profileFilterDTO.getAnalysisGroup(), memberId);
+			if (memberAnalysisListOpt.isPresent()) {
 				Map<String, String> subcomponentToOutcomeMap = new HashMap<String, String>();
-				for(MemberAnalysis memberAnalysis : memberAnalysisListOpt.get()){
-					for(SubComponentOutcome subComponentOutcome : memberAnalysis.getSubcomponentOutcomes()){
-						subcomponentToOutcomeMap.put(
-								subComponentOutcome.getSubComponentCode(), 
+				for (MemberAnalysis memberAnalysis : memberAnalysisListOpt.get()) {
+					for (SubComponentOutcome subComponentOutcome : memberAnalysis.getSubcomponentOutcomes()) {
+						subcomponentToOutcomeMap.put(subComponentOutcome.getSubComponentCode(),
 								subComponentOutcome.getPredictionOutcomeCode());
 					}
 				}
-				
-				this.populateInfoFilterByOutcomes(parent, subcomponentToOutcomeMap, profileFilterDTO.getAnalysisGroup());
+
+				this.populateInfoFilterByOutcomes(parent, subcomponentToOutcomeMap,
+						profileFilterDTO.getAnalysisGroup());
 			}
-			
 
 		}
 	}
@@ -755,7 +780,7 @@ public class ProfileService {
 
 				templates.add(predictionTemplate.getName());
 				Optional<List<PredictionOutcome>> outcomes = predictionOutcomeRepository
-						.getOutcomesForTemplate(predictionTemplate.getCode());
+						.getOutcomesForTemplate(predictionTemplate.getCode(), parent.getMemberType());
 				Optional<AnalysisSubComponent> subComp = subComponentRepository
 						.findByTemplate(predictionTemplate.getCode());
 

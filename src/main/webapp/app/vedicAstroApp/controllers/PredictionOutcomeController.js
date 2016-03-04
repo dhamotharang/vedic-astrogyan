@@ -4,9 +4,9 @@
 	angular.module('vedicAstroApp').controller('PredictionOutcomeController',
 			PredictionOutcomeController);
 
-	PredictionOutcomeController.$inject = ['$route','ProfileService'];
+	PredictionOutcomeController.$inject = ['$route','ProfileService','ReferenceDataService'];
 
-	function PredictionOutcomeController($route,ProfileService) {
+	function PredictionOutcomeController($route,ProfileService,ReferenceDataService) {
 
 		var vm = this;
 		vm.panelTitle = '< Manage Prediction outcomes >';
@@ -14,6 +14,7 @@
 			code : '',
 			name : '',
 			templateCode :'',
+			memberType : '',
 			observations : []
 		};
 		vm.beneficOptions = [{code:'Benefic', name:'Benefic'},{code:'Malefic', name:'Malefic'},{code:'Neutral', name:'Neutral'}];
@@ -39,6 +40,10 @@
 		vm.deleteOutcome = deleteOutcome;
 		vm.getOutcomes = getOutcomes;
 
+		vm.memberTypes = [];
+		vm.memberTypeSelected = {};
+
+
 		vm.step1 = {
 			name : 'Step 1',
 			title : 'Add Outcome name',
@@ -60,38 +65,38 @@
 
 		(function init() {
 			vm.currentStep = vm.step1;
+			loadAllMemberTypes();
 			loadAllTemplates();
-  
 		})();
 
-		function addOutcome(outcome, templateCode) {
+		function addOutcome(outcome, templateCode, memberType) {
 			outcome.templateCode = templateCode;
+			outcome.memberType = memberType;
 			ProfileService.createOutcome(outcome).then(function(response) {
-				  getOutcomes(templateCode);
+				getOutcomes(templateCode, vm.memberTypeSelected.code);
 				  vm.newOutcome = {};
 			  });
 		};
 	
-		function getOutcomes(templateCode) {
-			 ProfileService.getOutcomes(templateCode).then(function(outcomes) {
+		function getOutcomes(templateCode, memberType) {
+			 ProfileService.getOutcomes(templateCode, memberType).then(function(outcomes) {
 				 vm.predictionOutcomes = outcomes;
 				 vm.outcomeSelected = vm.predictionOutcomes[0];
 
 			  });
 		};
 		
-		function updateOutcome(outcome) {
-			console.log('Updating outcome' + outcome);
+		function updateOutcome(outcome, memberType) {
+			outcome.memberType = memberType;
 			  ProfileService.saveOutcome(outcome).then(function(response) {
-				  getOutcomes(vm.templateSelected.code);
+				  getOutcomes(vm.templateSelected.code, vm.memberTypeSelected.code);
 			  });
 			 
 		};
 		
 		function deleteOutcome(outcome) {
-			console.log('deleting outcome' + outcome);
 			  ProfileService.deleteOutcome(outcome).then(function(response) {
-				  getOutcomes(vm.templateSelected.code);
+				  getOutcomes(vm.templateSelected.code, vm.memberTypeSelected.code);
 			  });
 			 
 		};
@@ -99,19 +104,13 @@
 			ProfileService.getAllTemplates().then(function(templates) {
 				vm.predictionTemplates = templates;
 				vm.templateSelected = vm.predictionTemplates[0];
-				getOutcomes(vm.templateSelected.code);
+				getOutcomes(vm.templateSelected.code, vm.memberTypeSelected.code);
 			});
-		};
-
-		function logAspects(msg) {
-			for (var i = 0; i < vm.aspectsSelected.length; i++) {
-				console.log(msg + vm.aspectsSelected[i].path + " = "
-						+ vm.aspectsSelected[i].selected);
-			}
 		};
 
 		function gotoNext() {
 			if (vm.currentStep.stepNo == 1) {
+				if(vm.outcomeSelected){
 				 for (var i = 0; i < vm.outcomeSelected.observations.length; i++) {
 					 var outcomeObservation = {};
 					 outcomeObservation.aspectCode = vm.outcomeSelected.observations[i].aspectCode;
@@ -126,7 +125,8 @@
 				vm.previousButton = '';
 				vm.nextButton = 'buttonDisabled';
 				vm.finishButton = '';
-			} 
+				} 
+			}
 		};
 		
 		function finish(observations){
@@ -141,7 +141,7 @@
 				 observation.timeDependent = observations[i].timeDependent.code;
 				 vm.outcomeSelected.observations.push(observation);
 			 }
-			updateOutcome(vm.outcomeSelected);
+			updateOutcome(vm.outcomeSelected, vm.memberTypeSelected.code);
 			reset();
 			$route.reload();
 		}
@@ -222,6 +222,12 @@
 				}
 			}
 			return result;
+		}
+		function loadAllMemberTypes() {
+			ReferenceDataService.getData('member_types').then(function(memberTypes) {
+				vm.memberTypes = memberTypes;
+				vm.memberTypeSelected = vm.memberTypes[0];
+			});
 		}
 	}
 }());

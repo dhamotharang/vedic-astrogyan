@@ -70,7 +70,7 @@
 						<div class="col-md-3 col-sm-12 col-xs-12 form-group">
 							<select class="form-control" size=5
 								ng-model="vm.componentSelected"
-								ng-change="vm.getSubComponents(vm.componentSelected.code)"
+								ng-change="vm.getSubComponents(vm.componentSelected.code, vm.memberTypeSelected.code)"
 								ng-options="component.name for component in vm.components track by component.code">
 							</select>
 						</div>
@@ -84,6 +84,7 @@
 						</div>
 						<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
 					</div>
+					<br>
 					<div class="row">
 						<div class="col-md-3 col-sm-12 col-xs-12 form-group">
 						<select class="form-control" ng-model="vm.predictionSystemSelected"
@@ -140,8 +141,12 @@
 
 					<div class="row">
 
-						<div class="col-md-4 col-sm-12 col-xs-12 form-group">
+						<div class="col-md-3 col-sm-12 col-xs-12 form-group">
+						<select class="form-control" ng-model="vm.memberTypeSelected"
+							ng-options="memberType.name for memberType in vm.memberTypes track by memberType.code">
+						</select>
 						</div>
+						<div class="col-md-1 col-sm-12 col-xs-12 form-group"></div>
 						<div class="col-md-1 col-sm-12 col-xs-12 form-group">
 							<div class="form-group">
 								<input type="text" name="cat1" id="cat1" class="form-control"
@@ -215,7 +220,7 @@
 										required placeholder="Add condition" /></td>
 									<td scope="row"><select class="form-control"
 										ng-model="subComponent.predictionTemplate"
-										ng-change="vm.getOutcomes(subComponent.code, subComponent.predictionTemplate.code)"
+										ng-change="vm.getOutcomes(subComponent.code, subComponent.predictionTemplate.code, vm.memberTypeSelected.code)"
 										ng-options="predictionTemplate.name for predictionTemplate in vm.predictionTemplates track by predictionTemplate.code">
 									</select></td>
 									<td scope="row">

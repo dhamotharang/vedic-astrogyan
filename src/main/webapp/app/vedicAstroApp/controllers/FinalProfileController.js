@@ -18,18 +18,21 @@
 		vm.templateSelected = {};
 		vm.analysisGroups = [];
 		vm.analysisGroupSelected = {};
+		vm.memberTypes = [];
+		vm.memberTypeSelected = {};
+
 		vm.filterByTemplate = filterByTemplate;
 		vm.filterByAnalysisGroup = filterByAnalysisGroup;
 		vm.loadProfileAspects = loadProfileAspects;
 
 		(function init() {
-			loadProfileAspects();
+			loadAllMemberTypes();
 			loadAllTemplates();
 			loadAllAnalysisGroups();
 		})();
 
-		function loadProfileAspects() {
-			ProfileService.getProfileInfo().then(function(aspects) {
+		function loadProfileAspects(memberType) {
+			ProfileService.getProfileInfo(memberType).then(function(aspects) {
 				$scope.aspects = aspects;
 				vm.templateSelected = {};
 				vm.analysisGroupSelected = {};
@@ -41,7 +44,7 @@
 				filterType : 'Template',
 				filterValue : templateCode
 			};
-			ProfileService.getFilteredProfile(filter).then(function(aspects) {
+			ProfileService.getFilteredProfile(filter, vm.memberTypeSelected.code).then(function(aspects) {
 				$scope.aspects = aspects;
 				vm.analysisGroupSelected = {};
 			});
@@ -52,7 +55,7 @@
 				filterType : 'AnalysisGroup',
 				filterValue : analysisGroupCode
 			};
-			ProfileService.getFilteredProfile(filter).then(function(aspects) {
+			ProfileService.getFilteredProfile(filter, vm.memberTypeSelected.code).then(function(aspects) {
 				$scope.aspects = aspects;
 				vm.templateSelected = {};
 			});
@@ -70,6 +73,14 @@
 					function(analysisGroups) {
 						vm.analysisGroups = analysisGroups;
 					});
+		}
+		
+		function loadAllMemberTypes() {
+			ReferenceDataService.getData('member_types').then(function(memberTypes) {
+				vm.memberTypes = memberTypes;
+				vm.memberTypeSelected = vm.memberTypes[0];
+				loadProfileAspects(vm.memberTypeSelected.code); 
+			});
 		}
 	}
 	

@@ -49,6 +49,9 @@
 
 		vm.predictionTemplates;
 		vm.getOutcomes = getOutcomes;
+		
+		vm.memberTypes = [];
+		vm.memberTypeSelected = {};
 
 		vm.step1 = {
 			name : 'Step 1',
@@ -71,6 +74,7 @@
 
 		(function init() {
 			vm.currentStep = vm.step1;
+			loadAllMemberTypes();
 			loadAllAnalysisGroupsAndPredictionSystems();
 		})();
 
@@ -115,7 +119,7 @@
 			subComponent.componentCode = componentCode;
 			ProfileService.saveSubComponent(subComponent).then(
 					function(response) {
-						getSubComponents(vm.componentSelected.code);
+						getSubComponents(vm.componentSelected.code, vm.memberTypeSelected.code);
 						vm.newSubComponent = {};
 					});
 		}
@@ -133,14 +137,14 @@
 		function saveSubComponent(subComponent) {
 			ProfileService.saveSubComponent(subComponent).then(
 					function(response) {
-						getSubComponents(vm.componentSelected.code);
+						getSubComponents(vm.componentSelected.code, vm.memberTypeSelected.code);
 					});
 		}
 		;
 
 		function saveSubComponents(subComponents) {
 			ProfileService.saveSubComponents(subComponents).then(function(response) {
-				getSubComponents(vm.componentSelected.code);
+				getSubComponents(vm.componentSelected.code, vm.memberTypeSelected.code);
 			});
 		}
 		;
@@ -151,7 +155,7 @@
 				if (components.length > 0) {
 					vm.components = components;
 					vm.componentSelected = vm.components[0];
-					getSubComponents(vm.componentSelected.code);
+					getSubComponents(vm.componentSelected.code, vm.memberTypeSelected.code);
 				}
 				else{
 					vm.components = [];
@@ -162,8 +166,8 @@
 		}
 		;
 
-		function getSubComponents(componentCode) {
-			ProfileService.getSubComponents(componentCode).then(
+		function getSubComponents(componentCode, memberType) {
+			ProfileService.getSubComponents(componentCode, memberType).then(
 					function(subComponents) {
 						vm.subComponents = subComponents;
 						vm.subComponentSelected = vm.subComponents[0];
@@ -172,7 +176,6 @@
 		;
 
 		function deleteComponent(component) {
-			console.log('deleting component' + component);
 			ProfileService.deleteComponent(component).then(
 					function(response) {
 						getComponents(vm.predictionSystemSelected.code,
@@ -183,10 +186,9 @@
 		;
 
 		function deleteSubComponent(subComponent) {
-			console.log('deleting subComponent' + subComponent);
 			ProfileService.deleteSubComponent(subComponent).then(
 					function(response) {
-						getSubComponents(vm.componentSelected.code);
+						getSubComponents(vm.componentSelected.code, vm.memberTypeSelected.code);
 					});
 
 		}
@@ -200,22 +202,14 @@
 		}
 		;
 
-		function getOutcomes(code, templateCode) {
-			ProfileService.getOutcomes(templateCode).then(function(outcomes) {
+		function getOutcomes(code, templateCode, memberType) {
+			ProfileService.getOutcomes(templateCode, memberType).then(function(outcomes) {
 				for (var i = 0; i < vm.subComponents.length; i++) {
 					if (vm.subComponents[i].code == code) {
 						vm.subComponents[i].predictionOutcomes = outcomes;
 					}
 				}
 			});
-		}
-		;
-
-		function logAspects(msg) {
-			for (var i = 0; i < vm.aspectsSelected.length; i++) {
-				console.log(msg + vm.aspectsSelected[i].path + " = "
-						+ vm.aspectsSelected[i].selected);
-			}
 		}
 		;
 
@@ -294,6 +288,12 @@
 			vm.finishButton = 'buttonDisabled';
 			vm.newComponent = {};
 		}
-		;
+		
+		function loadAllMemberTypes() {
+			ReferenceDataService.getData('member_types').then(function(memberTypes) {
+				vm.memberTypes = memberTypes;
+				vm.memberTypeSelected = vm.memberTypes[0];
+			});
+		}
 	}
 }());

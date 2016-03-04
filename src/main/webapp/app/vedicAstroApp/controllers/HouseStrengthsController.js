@@ -22,7 +22,6 @@
 		function loadHouseStrengthsInfo() {
 			HouseService.getHousesStrengthInfo($scope.predictionSystem)
                .then(function (housesStrengthInfo) {
-            	   console.log(housesStrengthInfo);
                    vm.housesStrengthInfo = housesStrengthInfo;
                    constructGauges();
                });

@@ -46,20 +46,20 @@
             return $http.get('/api/profile/house/' + $rootScope.globals.currentUser.memberId).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
-        function getProfileTree() {
-            return $http.get('/api/profile/tree').then(handleGetSuccess, handleError('Error getting profile hierarchy'));
+        function getProfileTree(memberType) {
+            return $http.get('/api/profile/tree/' + memberType).then(handleGetSuccess, handleError('Error getting profile hierarchy'));
         }
 
-        function getProfileFlat() {
-            return $http.get('/api/profile/flat').then(handleGetSuccess, handleError('Error getting profile hierarchy'));
+        function getProfileFlat(memberType) {
+            return $http.get('/api/profile/flat/' + memberType).then(handleGetSuccess, handleError('Error getting profile hierarchy'));
         }
 
-        function getAllParents() {
-            return $http.get('/api/profile/parents').then(handleGetSuccess, handleError('Error getting parents list'));
+        function getAllParents(memberType) {
+            return $http.get('/api/profile/parents/' + memberType).then(handleGetSuccess, handleError('Error getting parents list'));
         }
         
-        function getImmediateChildren(parentCode) {
-            return $http.get('/api/profile/children/' + parentCode).then(handleGetSuccess, handleError('Error getting all users'));
+        function getImmediateChildren(parentCode, memberType) {
+            return $http.get('/api/profile/children/' + memberType + '/' + parentCode).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
        function saveAspect(aspect) {
@@ -82,8 +82,8 @@
             return $http.get('/api/templates/all').then(handleGetSuccess, handleError('Error getting template list'));
         }
  
-        function getTemplateAspects(templateCode) {
-            return $http.get('/api/template/aspects/' + templateCode).then(handleGetSuccess, handleError('Error getting all users'));
+        function getTemplateAspects(templateCode, memberType) {
+            return $http.get('/api/template/aspects/' + memberType + '/'+ templateCode).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
         function createOutcome(outcome) {
@@ -98,8 +98,8 @@
             return $http.post('/api/outcome/delete', outcome).then(handleSubmitSuccess, handleError('Error adding template'));
         }
 
-        function getOutcomes(templateCode) {
-            return $http.get('/api/outcomes/' + templateCode).then(handleGetSuccess, handleError('Error getting all users'));
+        function getOutcomes(templateCode, memberType) {
+            return $http.get('/api/outcomes/' + memberType + '/' + templateCode).then(handleGetSuccess, handleError('Error getting all users'));
         }
         
         function saveComponent(component) {
@@ -126,22 +126,26 @@
             return $http.get('/api/components/' + predictionSystem + '/' + analysisGroup).then(handleGetSuccess, handleError('Error getting all users'));
         }
         
-        function getSubComponents(componentCode) {
-            return $http.get('/api/subComponents/' + componentCode).then(handleGetSuccess, handleError('Error getting all users'));
+        function getSubComponents(componentCode, memberType) {
+            return $http.get('/api/subComponents/' + memberType + '/' + componentCode).then(handleGetSuccess, handleError('Error getting all users'));
         }
 
         function saveSubComponents(subComponents) {
             return $http.post('/api/subComponents/save', subComponents).then(handleSubmitSuccess, handleError('Error adding template'));
         }
         
-        function getProfileInfo() {
-            return $http.get('/api/profile/info').then(handleGetSuccess, handleError('Error getting profile hierarchy'));
+        function getProfileInfo(memberType) {
+            return $http.get('/api/profile/info/' + memberType).then(handleGetSuccess, handleError('Error getting profile hierarchy'));
         }
         
+        function getFilteredProfile(filter, memberType) {
+            return $http.post('/api/profile/filter/' + memberType , filter).then(handleSubmitWithResponse, handleError('Error adding aspect'));
+        }
+
         function getFilteredProfile(filter) {
             return $http.post('/api/profile/filter', filter).then(handleSubmitWithResponse, handleError('Error adding aspect'));
         }
-        
+
         function handleGetSuccess(res) {
             return res.data.responseData;
         }

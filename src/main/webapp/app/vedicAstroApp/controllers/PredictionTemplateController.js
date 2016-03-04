@@ -4,9 +4,9 @@
 	angular.module('vedicAstroApp').controller('PredictionTemplateController',
 			PredictionTemplateController);
 
-	PredictionTemplateController.$inject = [ '$scope','ProfileService' ];
+	PredictionTemplateController.$inject = ['$scope','ProfileService', 'ReferenceDataService'];
 
-	function PredictionTemplateController($scope, ProfileService) {
+	function PredictionTemplateController($scope, ProfileService, ReferenceDataService) {
 
 		var vm = this;
 		vm.templatePanelTitle = '< Manage Prediction templates >';
@@ -20,6 +20,8 @@
 		vm.predictionTemplates = [];
 		vm.templateSelected = {};
 		vm.newTemplate = {};
+		vm.memberTypes = [];
+		vm.memberTypeSelected = {};
 		vm.gotoNextTemplate = gotoNextTemplate;
 		vm.gotoPreviousTemplate = gotoPreviousTemplate;
 		vm.finishTemplate = finishTemplate;
@@ -61,8 +63,7 @@
 		(function init() {
 			vm.currentTemplateStep = vm.templateStep1;
 			loadAllTemplates();
-		
-
+			loadAllMemberTypes();
 		})();
 
 		function addTemplate(template) {
@@ -90,22 +91,15 @@
 				vm.templateSelected = vm.predictionTemplates[0];
 			});
 		};
-		function loadProfileFlat(templateCode) {
-			ProfileService.getTemplateAspects(templateCode).then(function(aspects) {
+		function loadProfileFlat(templateCode, memberType) {
+			ProfileService.getTemplateAspects(templateCode, memberType).then(function(aspects) {
 				vm.aspectsSelected = aspects;
 			});
 		};
 
-		function logAspects(msg) {
-			for (var i = 0; i < vm.aspectsSelected.length; i++) {
-				console.log(msg + vm.aspectsSelected[i].path + " = "
-						+ vm.aspectsSelected[i].selected);
-			}
-		};
-
 		function gotoNextTemplate() {
 			if (vm.currentTemplateStep.stepNo == 1) {
-				loadProfileFlat(vm.templateSelected.code);
+				loadProfileFlat(vm.templateSelected.code, vm.memberTypeSelected.code);
 				moveFrontTemplate(vm.templateStep1, vm.templateStep2);
 				vm.previousTemplateButton = '';
 				vm.nextTemplateButton = 'buttonDisabled';
@@ -185,5 +179,14 @@
 			vm.finishOutcomeButton = 'buttonDisabled';
 			vm.newTemplate = {};
 		}
+		
+		function loadAllMemberTypes() {
+			ReferenceDataService.getData('member_types').then(function(memberTypes) {
+				vm.memberTypes = memberTypes;
+				vm.memberTypeSelected = vm.memberTypes[0];
+			});
+		}
 	}
+	
+
 }());

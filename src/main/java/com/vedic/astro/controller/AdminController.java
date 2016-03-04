@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.vedic.astro.dto.MemberDTO;
 import com.vedic.astro.dto.UserCredentialsDTO;
 import com.vedic.astro.dto.UserDTO;
 import com.vedic.astro.dto.UserInfoDTO;

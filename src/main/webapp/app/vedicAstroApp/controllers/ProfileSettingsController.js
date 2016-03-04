@@ -5,12 +5,13 @@
 	angular.module('vedicAstroApp').controller('ProfileSettingsController',
 			ProfileSettingsController);
 
-	ProfileSettingsController.$inject = [ '$rootScope', '$scope', 'ProfileService' ];
+	ProfileSettingsController.$inject = [ '$rootScope', '$scope', 'ProfileService', 'ReferenceDataService' ];
 
-	function ProfileSettingsController($rootScope, $scope, ProfileService) {
+	function ProfileSettingsController($rootScope, $scope, ProfileService, ReferenceDataService) {
 		$scope.aspects = [];
 		var vm = this;
 		vm.panelTitle = "< Profile setup >";
+		vm.memberTypeLabel = "Member type : ";
 		vm.panelPreviewTitle1 = "Tree Preview";
 		vm.panelPreviewTitle2 = "Flat Preview";
 		vm.labels = [ 'Aspect', 'Sub-aspect', 'Sub-sub-aspect' ]
@@ -38,52 +39,76 @@
 		vm.deleteParentAspect = deleteParentAspect;
 		vm.deleteImmediateChildAspect = deleteImmediateChildAspect;
 		vm.deleteFurtherChildAspect = deleteFurtherChildAspect;
+		vm.loadAllParents = loadAllParents;
 		
 		(function init() {
-			loadAllParents();
-			loadProfileTree();
-			loadProfileFlat();
+			loadAllMemberTypes();
+			//loadAllParents();
+			
 		})();
 
+		function loadAllMemberTypes() {
+			ReferenceDataService.getData('member_types').then(function(memberTypes) {
+				vm.memberTypes = memberTypes;
+				vm.memberTypeSelected = vm.memberTypes[0];
+				loadProfileTree();
+				loadProfileFlat();
+				ProfileService.getAllParents(vm.memberTypeSelected.code).then(function(parents) {
+					vm.parents = parents;
+					vm.parentSelected = vm.parents[0];
+					
+					ProfileService.getImmediateChildren(vm.parentSelected.code, vm.memberTypeSelected.code).then(function(children) {
+						vm.immediateChildren = children;
+						vm.immediateChildSelected = vm.immediateChildren[0];
+						
+						ProfileService.getImmediateChildren(vm.immediateChildSelected.code, vm.memberTypeSelected.code).then(function(children) {
+							vm.furtherChildren = children;
+							vm.furtherChildSelected = vm.furtherChildren[0];
+							
+						});
+					});
+				});
+			});
+		}
 		function loadAllParents() {
-			ProfileService.getAllParents().then(function(parents) {
+			ProfileService.getAllParents(vm.memberTypeSelected.code).then(function(parents) {
 				vm.parents = parents;
 				vm.parentSelected = vm.parents[0];
-				
-				ProfileService.getImmediateChildren(vm.parentSelected.code).then(function(children) {
+				if(parents.length > 0){
+				ProfileService.getImmediateChildren(vm.parentSelected.code,vm.memberTypeSelected.code).then(function(children) {
 					vm.immediateChildren = children;
 					vm.immediateChildSelected = vm.immediateChildren[0];
 					
-					ProfileService.getImmediateChildren(vm.immediateChildSelected.code).then(function(children) {
+					ProfileService.getImmediateChildren(vm.immediateChildSelected.code, vm.memberTypeSelected.code).then(function(children) {
 						vm.furtherChildren = children;
 						vm.furtherChildSelected = vm.furtherChildren[0];
 						
 					});
 				});
-				
+				}
+				else{
+					vm.immediateChildren = [];
+					vm.furtherChildren = [];
+				}
 			});
+			loadProfileTree();
+			loadProfileFlat();
 		};
 		
 		function loadProfileTree() {
-			ProfileService.getProfileTree().then(function(aspects) {
-				$scope.aspects = aspects;
-			});
-		};
-		
-		function loadProfileTree() {
-			ProfileService.getProfileTree().then(function(aspects) {
+			ProfileService.getProfileTree(vm.memberTypeSelected.code).then(function(aspects) {
 				$scope.aspects = aspects;
 			});
 		};
 		
 		function loadProfileFlat() {
-			ProfileService.getProfileFlat().then(function(flatProfile) {
+			ProfileService.getProfileFlat(vm.memberTypeSelected.code).then(function(flatProfile) {
 				vm.flatProfile = flatProfile;
 			});
 		};
 		
 		function addParentAspect(code, name) {
-			var aspect = {code: code, name : name};
+			var aspect = {code: code, name : name, memberType : vm.memberTypeSelected.code};
 			ProfileService.saveAspect(aspect).then(function(response) {
 				vm.newParent = {};
 				loadAllParents();
@@ -94,7 +119,7 @@
 		;
 
 		function addImmediateChildAspect(code, name, parentCode) {
-			var aspect = {code: code, name : name, parentCode : parentCode};
+			var aspect = {code: code, name : name, parentCode : parentCode, memberType : vm.memberTypeSelected.code};
 			ProfileService.saveAspect(aspect).then(function(response) {
 				vm.newImmediateChild = {};
 				loadChildren(parentCode, 1);
@@ -105,7 +130,7 @@
 		;
 
 		function addFurtherChildAspect(code, name, parentCode) {
-			var aspect = {code: code, name : name, parentCode : parentCode};
+			var aspect = {code: code, name : name, parentCode : parentCode, memberType : vm.memberTypeSelected.code};
 			ProfileService.saveAspect(aspect).then(function(response) {
 				vm.newFurtherChild = {};
 				loadChildren(parentCode, 2);
@@ -116,7 +141,7 @@
 		;
 		
 		function updateParentAspect(code, name, id) {
-			var aspect = {code: code, name : name, id : id};
+			var aspect = {code: code, name : name, id : id, memberType : vm.memberTypeSelected.code};
 			ProfileService.saveAspect(aspect).then(function(response) {
 				loadAllParents();
 				loadProfileTree();
@@ -126,7 +151,7 @@
 		;
 
 		function updateImmediateChildAspect(code, name, parentCode, id) {
-			var aspect = {code: code, name : name, parentCode : parentCode, id : id};
+			var aspect = {code: code, name : name, parentCode : parentCode, id : id, memberType : vm.memberTypeSelected.code};
 			ProfileService.saveAspect(aspect).then(function(response) {
 				loadChildren(parentCode, 1);
 				loadProfileTree();
@@ -136,7 +161,7 @@
 		;
 
 		function updateFurtherChildAspect(code, name, parentCode, id) {
-			var aspect = {code: code, name : name, parentCode : parentCode, id : id};
+			var aspect = {code: code, name : name, parentCode : parentCode, id : id, memberType : vm.memberTypeSelected.code};
 			ProfileService.saveAspect(aspect).then(function(response) {
 				loadChildren(parentCode, 2);
 				loadProfileTree();
@@ -161,7 +186,6 @@
 				loadProfileFlat();
 			});
 		}
-		;
 
 		function deleteFurtherChildAspect(id, parentCode) {
 			ProfileService.deleteAspect(id).then(function(response) {
@@ -170,21 +194,17 @@
 				loadProfileFlat();
 			});
 		}
-		;
-
 		
 		function loadChildren(parent, level) {
-			console.log("parent = " + parent + "level = " + level);
 			ProfileService
-					.getImmediateChildren(parent)
+					.getImmediateChildren(parent, vm.memberTypeSelected.code)
 					.then(
 							function(children) {
-								console.log("children = " + children);
 								if (level == 1) {
 									vm.immediateChildren = children;
 									if (vm.immediateChildren) {
 										vm.immediateChildSelected = vm.immediateChildren[0];
-										loadChildren(immediateChildSelected, 2);
+										loadChildren(vm.immediateChildSelected, 2);
 										
 									}
 								} else if (level == 2) {
