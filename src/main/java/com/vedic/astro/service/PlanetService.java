@@ -1,40 +1,71 @@
 package com.vedic.astro.service;
 
+import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vedic.astro.domain.BirthChartData;
+import com.vedic.astro.domain.PlanetStrength;
+import com.vedic.astro.domain.PlanetStrengths;
 import com.vedic.astro.dto.PlanetStrengthDTO;
-import com.vedic.astro.dto.PlanetStrengthSignificanceDTO;
 import com.vedic.astro.dto.PlanetaryStrengthDTO;
 import com.vedic.astro.enums.Planet;
 import com.vedic.astro.enums.PlanetAge;
 import com.vedic.astro.enums.PredictionSystem;
+import com.vedic.astro.repository.BirthChartRepository;
+import com.vedic.astro.repository.PlanetStrengthRepository;
+import com.vedic.astro.util.PlanetUtil;
+import com.vedic.astro.util.RelationshipUtil;
+import com.vedic.astro.vo.BirthChartCalcPrep;
 
 @Service("planetService")
 @Transactional
 public class PlanetService {
 
+	@Autowired
+	@Qualifier("planetStrengthRepository")
+	private PlanetStrengthRepository planetStrengthRepository;
+
+	@Autowired
+	@Qualifier("birthChartRepository")
+	private BirthChartRepository birthChartRepository;
+
+	@Autowired
+	@Qualifier("relationshipUtil")
+	private RelationshipUtil relationshipUtil;
+
+	@Autowired
+	@Qualifier("planetUtil")
+	private PlanetUtil planetUtil;
+
 	public PlanetaryStrengthDTO getPlanetaryStrengths(PredictionSystem predictionSystem, String memberId) {
-		
+
 		PlanetaryStrengthDTO planetaryStrengthDTO = new PlanetaryStrengthDTO();
-	
-		planetaryStrengthDTO.addStrength(new PlanetStrengthDTO("sun", Planet.SUN, PlanetAge.Mature, 38.34));
-		planetaryStrengthDTO.addStrength(new PlanetStrengthDTO("mon", Planet.MON, PlanetAge.Teen, 25.54));
-		planetaryStrengthDTO.addStrength(new PlanetStrengthDTO("mer", Planet.MER, PlanetAge.Young, 18.84));
-		planetaryStrengthDTO.addStrength(new PlanetStrengthDTO("ven", Planet.VEN, PlanetAge.Old, 33.84));
-		planetaryStrengthDTO.addStrength(new PlanetStrengthDTO("mar", Planet.MAR, PlanetAge.Mature, 57.34));
-		planetaryStrengthDTO.addStrength(new PlanetStrengthDTO("jup", Planet.JUP, PlanetAge.Young, 12.94));
-		planetaryStrengthDTO.addStrength(new PlanetStrengthDTO("sat", Planet.SAT, PlanetAge.Infant, 48.25));
-		
-		planetaryStrengthDTO.addSignificance(new PlanetStrengthSignificanceDTO(Planet.SUN, "SUN body", "SUN mind", "SUN actions", "SUN age"));
-		planetaryStrengthDTO.addSignificance(new PlanetStrengthSignificanceDTO(Planet.MON, "MON body", "MON mind", "MON actions", "MON age"));
-		planetaryStrengthDTO.addSignificance(new PlanetStrengthSignificanceDTO(Planet.MER, "MER body", "MER mind", "MER actions", "MER age"));
-		planetaryStrengthDTO.addSignificance(new PlanetStrengthSignificanceDTO(Planet.VEN, "VEN body", "VEN mind", "VEN actions", "VEN age"));
-		planetaryStrengthDTO.addSignificance(new PlanetStrengthSignificanceDTO(Planet.MAR, "MAR body", "MAR mind", "MAR actions", "MAR age"));
-		planetaryStrengthDTO.addSignificance(new PlanetStrengthSignificanceDTO(Planet.JUP, "JUP body", "JUP mind", "JUP actions", "JUP age"));
-		planetaryStrengthDTO.addSignificance(new PlanetStrengthSignificanceDTO(Planet.SAT, "SAT body", "SAT mind", "SAT actions", "SAT age"));
-		
-		
+
+		Optional<BirthChartData> birthChartData = birthChartRepository.findByPid(memberId);
+		Map<Planet, Double> planetLongsMap = null;
+		if (birthChartData.isPresent()) {
+			BirthChartCalcPrep birthChartCalcPrep = relationshipUtil
+					.preparePlanetsForCalc(birthChartData.get().getChartHouses());
+			planetLongsMap = birthChartCalcPrep.getPlanetAgeMapping();
+		}
+
+		Optional<PlanetStrengths> planetStrengths = planetStrengthRepository.findByMemberIdAndPredictionSystem(memberId,
+				predictionSystem);
+		if (planetStrengths.isPresent()) {
+			for (PlanetStrength planetStrength : planetStrengths.get().getStrengths()) {
+
+				planetaryStrengthDTO.addStrength(new PlanetStrengthDTO(planetStrength.getPlanet().name().toLowerCase(),
+						planetStrength.getPlanet(), planetUtil.findAge(planetLongsMap.get(planetStrength.getPlanet())),
+						planetStrength.getStrength()));
+
+			}
+		}
+
 		return planetaryStrengthDTO;
 	}
 }

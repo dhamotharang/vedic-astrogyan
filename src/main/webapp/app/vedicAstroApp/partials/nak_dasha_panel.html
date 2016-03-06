@@ -9,7 +9,7 @@
 			<div class="col-md-3 col-sm-5 col-xs-12">
 				<p>
 					<select class="form-control" ng-model="vm.nakDashaSelected"
-					   ng-change="vm.changeInput()"
+						ng-change="vm.changeInput()"
 						ng-options="nakDasha.name for nakDasha in vm.nakDashaOptions track by nakDasha.code">
 					</select>
 				</p>
@@ -21,8 +21,8 @@
 						is-open="vm.popup1.opened" min-date="vm.minDate"
 						max-date="vm.maxDate" datepicker-options="vm.dateOptions"
 						date-disabled="vm.disabled(date, mode)" ng-required="true"
-						close-text="Close" alt-input-formats="vm.altInputFormats" ng-change="vm.changeInput()"/> <span
-						class="input-group-btn" >
+						close-text="Close" alt-input-formats="vm.altInputFormats"
+						ng-change="vm.changeInput()" /> <span class="input-group-btn">
 						<button type="button" class="btn btn-default"
 							ng-click="vm.open1()">
 							<i class="glyphicon glyphicon-calendar"></i>
@@ -43,7 +43,8 @@
 	<div class="x_content">
 		<br>
 		<div class="row">
-			<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="col-md-1 col-sm-6 col-xs-12"></div>
+			<div class="col-md-2 col-sm-6 col-xs-12">
 				<h5>
 					<b>{{vm.mainPeriodSelected.startDate}} -
 						{{vm.mainPeriodSelected.endDate}}</b>
@@ -60,7 +61,8 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="col-md-1 col-sm-6 col-xs-12"></div>
+			<div class="col-md-2 col-sm-6 col-xs-12">
 				<h5>
 					<b>{{vm.subPeriod1Selected.startDate}} -
 						{{vm.subPeriod1Selected.endDate}}</b>
@@ -70,14 +72,15 @@
 				<div data-toggle="buttons" class="btn-group">
 					<label ng-repeat="subPeriod1 in vm.subPeriods1"
 						class="btn {{vm.evaluateCurrentOrDefault(subPeriod1.current)}}"
-						ng-click="vm.changeSubPeriod1Planet(subPeriod1)">
-						<input type="radio">{{subPeriod1.planet}}
+						ng-click="vm.changeSubPeriod1Planet(subPeriod1)"> <input
+						type="radio">{{subPeriod1.planet}}
 					</label>
 				</div>
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-md-3 col-sm-6 col-xs-12">
+			<div class="col-md-1 col-sm-6 col-xs-12"></div>
+			<div class="col-md-2 col-sm-6 col-xs-12">
 				<h5>
 					<b>{{vm.subPeriod2Selected.startDate}} -
 						{{vm.subPeriod2Selected.endDate}}</b>
@@ -87,8 +90,44 @@
 				<div data-toggle="buttons" class="btn-group">
 					<label ng-repeat="subPeriod2 in vm.subPeriods2"
 						class="btn {{vm.evaluateCurrentOrDefault(subPeriod2.current)}}"
-						ng-click="vm.changeSubPeriod2Planet(subPeriod2)">
-						<input type="radio">{{subPeriod2.planet}}
+						ng-click="vm.changeSubPeriod2Planet(subPeriod2)"> <input
+						type="radio">{{subPeriod2.planet}}
+					</label>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1 col-sm-6 col-xs-12"></div>
+			<div class="col-md-2 col-sm-6 col-xs-12">
+				<h5>
+					<b>{{vm.subPeriod3Selected.startDate}} -
+						{{vm.subPeriod3Selected.endDate}}</b>
+				</h5>
+			</div>
+			<div class="col-md-9 col-sm-6 col-xs-12">
+				<div data-toggle="buttons" class="btn-group">
+					<label ng-repeat="subPeriod3 in vm.subPeriods3"
+						class="btn {{vm.evaluateCurrentOrDefault(subPeriod3.current)}}"
+						ng-click="vm.changeSubPeriod3Planet(subPeriod3)"> <input
+						type="radio">{{subPeriod3.planet}}
+					</label>
+				</div>
+			</div>
+		</div>
+			<div class="row">
+			<div class="col-md-1 col-sm-6 col-xs-12"></div>
+			<div class="col-md-2 col-sm-6 col-xs-12">
+				<h5>
+					<b>{{vm.subPeriod4Selected.startDate}} -
+						{{vm.subPeriod4Selected.endDate}}</b>
+				</h5>
+			</div>
+			<div class="col-md-9 col-sm-6 col-xs-12">
+				<div data-toggle="buttons" class="btn-group">
+					<label ng-repeat="subPeriod4 in vm.subPeriods4"
+						class="btn {{vm.evaluateCurrentOrDefault(subPeriod4.current)}}"
+						ng-click="vm.changeSubPeriod4Planet(subPeriod4)"> <input
+						type="radio">{{subPeriod4.planet}}
 					</label>
 				</div>
 			</div>

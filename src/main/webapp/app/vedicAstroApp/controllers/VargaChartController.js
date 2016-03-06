@@ -193,9 +193,9 @@
 			}).attr("class", "zodiac").text(function(d) {
 				return vm.zodiacMap(d.content.zod);
 			}); // define the text to display
-			houseText.append("tspan").attr("class", "lord").text(function(d) {
-				return "[" + d.content.lord + "]";
-			}); // define the text to display
+		//	houseText.append("tspan").attr("class", "lord").text(function(d) {
+		//		return "[" + d.content.lord + "]";
+		//	}); // define the text to display
 			houseText.append("tspan").attr("x", function(d) {
 				return d.layout.text.x;
 			}).attr("dy", 15).attr("dx", -10).attr("class", "planet").text(

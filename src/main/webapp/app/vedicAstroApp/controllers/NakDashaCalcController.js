@@ -22,15 +22,22 @@
 		vm.changeMainPeriodPlanet = changeMainPeriodPlanet;
 		vm.changeSubPeriod1Planet = changeSubPeriod1Planet;
 		vm.changeSubPeriod2Planet = changeSubPeriod2Planet;
+		vm.changeSubPeriod3Planet = changeSubPeriod3Planet;
+		vm.changeSubPeriod4Planet = changeSubPeriod4Planet;
 		vm.changeInput = changeInput;
 		vm.nakDashaOptions = [];
 		vm.nakDashaSelected = {};
 		vm.mainPeriods = [];
 		vm.subPeriods1 = [];
 		vm.subPeriods2 = [];
+		vm.subPeriods3 = [];
+		vm.subPeriods4 = [];
 		vm.mainPeriodSelected = {};
 		vm.subPeriod1Selected = {};
 		vm.subPeriod2Selected = {};
+		vm.subPeriod3Selected = {};
+		vm.subPeriod4Selected = {};
+		
 		vm.popup1 = {
 			opened : false
 		};
@@ -151,11 +158,57 @@
 							startDate : vm.subPeriods2[j].startDate,
 							endDate : vm.subPeriods2[j].endDate
 						};
+						loadSubPeriod3(vm.subPeriods2[j]);
 						break;
 					}
 				}
 			});
 		}
+		function loadSubPeriod3(subPeriod2) {
+			var input = {
+				planet : subPeriod2.planet,
+				startDate : subPeriod2.startDate,
+				endDate : subPeriod2.endDate,
+				asOfDate : vm.dt,
+				dashaSystem : vm.nakDashaSelected.code
+			}
+			DashaService.getNakSubPeriods(input).then(function(subperiods) {
+				vm.subPeriods3 = subperiods;
+				for (var j = 0; j < vm.subPeriods3.length; j++) {
+					if (vm.subPeriods3[j].current) {
+						vm.subPeriod3Selected = {
+							startDate : vm.subPeriods3[j].startDate,
+							endDate : vm.subPeriods3[j].endDate
+						};
+						loadSubPeriod4(vm.subPeriods3[j]);
+						break;
+					}
+				}
+			});
+		}
+
+		function loadSubPeriod4(subPeriod3) {
+			var input = {
+				planet : subPeriod3.planet,
+				startDate : subPeriod3.startDate,
+				endDate : subPeriod3.endDate,
+				asOfDate : vm.dt,
+				dashaSystem : vm.nakDashaSelected.code
+			}
+			DashaService.getNakSubPeriods(input).then(function(subperiods) {
+				vm.subPeriods4 = subperiods;
+				for (var j = 0; j < vm.subPeriods4.length; j++) {
+					if (vm.subPeriods4[j].current) {
+						vm.subPeriod4Selected = {
+							startDate : vm.subPeriods4[j].startDate,
+							endDate : vm.subPeriods4[j].endDate
+						};
+						break;
+					}
+				}
+			});
+		}
+
 		function changeMainPeriodPlanet(mainPeriod) {
 
 			for (var j = 0; j < vm.mainPeriods.length; j++) {
@@ -168,8 +221,10 @@
 				}
 			}
 			loadSubPeriod1(mainPeriod);
-			vm.subPeriod1Selected = {};
-			vm.subPeriod2Selected = {};
+			//vm.subPeriod1Selected = {};
+			//vm.subPeriod2Selected = {};
+			//vm.subPeriod3Selected = {};
+			//vm.subPeriod4Selected = {};
 		}
 
 		function changeSubPeriod1Planet(subPeriod1) {
@@ -183,7 +238,9 @@
 				}
 			}
 			loadSubPeriod2(subPeriod1);
-			vm.subPeriod2Selected = {};
+			//vm.subPeriod2Selected = {};
+			//vm.subPeriod3Selected = {};
+			//vm.subPeriod4Selected = {};
 		}
 
 		function changeSubPeriod2Planet(subPeriod2) {
@@ -196,6 +253,37 @@
 					break;
 				}
 			}
+			loadSubPeriod3(subPeriod2);
+			//vm.subPeriod3Selected = {};
+			//vm.subPeriod4Selected = {};
+		}
+
+		function changeSubPeriod3Planet(subPeriod3) {
+			for (var j = 0; j < vm.subPeriods3.length; j++) {
+				if (vm.subPeriods3[j].planet == subPeriod3.planet) {
+					vm.subPeriod3Selected = {
+						startDate : vm.subPeriods3[j].startDate,
+						endDate : vm.subPeriods3[j].endDate
+					};
+					break;
+				}
+			}
+			loadSubPeriod4(subPeriod3);
+			//vm.subPeriod3Selected = {};
+			//vm.subPeriod4Selected = {};
+		}
+
+		function changeSubPeriod4Planet(subPeriod4) {
+			for (var j = 0; j < vm.subPeriods4.length; j++) {
+				if (vm.subPeriods4[j].planet == subPeriod4.planet) {
+					vm.subPeriod4Selected = {
+						startDate : vm.subPeriods4[j].startDate,
+						endDate : vm.subPeriods4[j].endDate
+					};
+					break;
+				}
+			}
+			//vm.subPeriod4Selected = {};
 		}
 
 		function changeInput() {
