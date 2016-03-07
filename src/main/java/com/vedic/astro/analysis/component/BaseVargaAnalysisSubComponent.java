@@ -15,6 +15,7 @@ import com.vedic.astro.domain.VargaBirthChartData;
 import com.vedic.astro.exception.SystemException;
 import com.vedic.astro.repository.ComponentRepository;
 import com.vedic.astro.repository.SubComponentRepository;
+import com.vedic.astro.vo.BirthChartCalcPrep;
 
 public abstract class BaseVargaAnalysisSubComponent {
 
@@ -61,8 +62,8 @@ public abstract class BaseVargaAnalysisSubComponent {
 		}
 	}
 
-	public SubComponentOutcome evaluateOutcome(VargaBirthChartData vargaBirthChartData) {
-		SubComponentOutcome outcome = getOutcome(vargaBirthChartData);
+	public SubComponentOutcome evaluateOutcome(BirthChartCalcPrep chartPrep) {
+		SubComponentOutcome outcome = getOutcome(chartPrep);
 		if (outcome != null) {
 			if (!this.validOutcome(outcome)) {
 				throw new SystemException("Outcome does not belong to subcomponent", null);
@@ -71,7 +72,7 @@ public abstract class BaseVargaAnalysisSubComponent {
 		return outcome;
 	}
 
-	protected abstract SubComponentOutcome getOutcome(VargaBirthChartData vargaBirthChartData);
+	protected abstract SubComponentOutcome getOutcome(BirthChartCalcPrep chartPrep);
 
 	private boolean validOutcome(SubComponentOutcome subComponentOutcome) {
 		return outcomeCodes.contains(subComponentOutcome.getPredictionOutcomeCode());

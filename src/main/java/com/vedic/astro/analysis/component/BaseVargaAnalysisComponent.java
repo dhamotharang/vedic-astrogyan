@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 
 import com.vedic.astro.domain.AnalysisComponent;
 import com.vedic.astro.domain.AnalysisSubComponent;
@@ -17,6 +18,8 @@ import com.vedic.astro.exception.SystemException;
 import com.vedic.astro.repository.ComponentRepository;
 import com.vedic.astro.repository.MemberAnalysisRepository;
 import com.vedic.astro.repository.SubComponentRepository;
+import com.vedic.astro.util.RelationshipUtil;
+import com.vedic.astro.vo.BirthChartCalcPrep;
 
 public abstract class BaseVargaAnalysisComponent {
 
@@ -34,6 +37,10 @@ public abstract class BaseVargaAnalysisComponent {
 	@Autowired
 	@Qualifier("memberAnalysisRepository")
 	private MemberAnalysisRepository memberAnalysisRepository;
+	
+	@Autowired
+	@Qualifier("relationshipUtil")
+	private RelationshipUtil relationshipUtil;
 
 	public BaseVargaAnalysisComponent(String componentCode) {
 		super();
@@ -48,9 +55,12 @@ public abstract class BaseVargaAnalysisComponent {
 		}
 	}
 
+	@Async
 	public VargaBirthChartData analyzeVargaChart(VargaBirthChartData vargaBirthChartData) {
 
-		MemberAnalysis memberAnalysis = evaluateCondition(vargaBirthChartData);
+		BirthChartCalcPrep chartPrep = relationshipUtil.prepareVargaChartForCalc(vargaBirthChartData.getChartHouses());
+		
+		MemberAnalysis memberAnalysis = evaluateCondition(chartPrep);
 		if (memberAnalysis != null) {
 			this.verifyAnalysis(memberAnalysis);
 			memberAnalysisRepository.save(memberAnalysis);
@@ -58,7 +68,7 @@ public abstract class BaseVargaAnalysisComponent {
     	return vargaBirthChartData;
 	}
 
-	protected abstract MemberAnalysis evaluateCondition(VargaBirthChartData vargaBirthChartData);
+	protected abstract MemberAnalysis evaluateCondition(BirthChartCalcPrep chartPrep);
 
 	private void verifyAnalysis(MemberAnalysis memberAnalysis) {
 		List<SubComponentOutcome> outcomes = memberAnalysis.getSubcomponentOutcomes();
