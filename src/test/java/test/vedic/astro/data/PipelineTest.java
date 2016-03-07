@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vedic.astro.pipeline.service.BirthChartPipelineGateway;
+import com.vedic.astro.calc.component.BirthChartPipelineGateway;
 
 /**
  * Main class to invoke 
@@ -16,7 +16,7 @@ public class PipelineTest extends BaseUtilTest{
 	private static final Logger log = Logger.getLogger(PipelineTest.class);
 	
 	@Autowired
-	BirthChartPipelineGateway birthChartPipelineGateway;
+	private BirthChartPipelineGateway birthChartPipelineGateway;
 	
 	@Test
 	public void testBirthChartPipeline() throws Exception {

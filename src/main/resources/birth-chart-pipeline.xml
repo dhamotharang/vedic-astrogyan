@@ -10,7 +10,7 @@
 		http://www.springframework.org/schema/integration/stream/spring-integration-stream.xsd">
 
 	<!-- Declare the gateway -->
-	<int:gateway id="birthChartPipelineGateway" service-interface="com.vedic.astro.pipeline.service.BirthChartPipelineGateway" />
+	<int:gateway id="birthChartPipelineGateway" service-interface="com.vedic.astro.calc.component.BirthChartPipelineGateway" />
 
 	<!-- Declare the input channel in which Orders are placed for processing -->
 	<int:channel id="personalInfoChannel" />
@@ -20,44 +20,42 @@
 		level="INFO"  expression="'payload: ' + getPayload()" />
 
 	<int:channel id="birthChartChannel">
-		 <!--  declare wiretap on 'orderItemsChannel' channel 	-->
-		 <!-- TODO: not currently working -->
 		<int:interceptors>
 			<int:wire-tap channel="logger"/>
 		</int:interceptors>	
 	</int:channel>
 
-	<beans:bean id="birthChartCalcService" class="com.vedic.astro.pipeline.service.BirthChartCalcService" />
+	<beans:bean id="birthChartCalcComponent" class="com.vedic.astro.calc.component.BirthChartCalcComponent" />
 
 	<int:service-activator input-channel="personalInfoChannel"
-		ref="birthChartCalcService" method="calcBirthChart" output-channel="birthChartChannel" />
+		ref="birthChartCalcComponent" method="calcBirthChart" output-channel="birthChartChannel" />
 
-	<beans:bean id="divChartCalcService" class="com.vedic.astro.pipeline.service.DivChartCalcService" />
+	<beans:bean id="divChartCalcComponent" class="com.vedic.astro.calc.component.DivChartCalcComponent" />
 
 	<int:service-activator input-channel="birthChartChannel"
-		ref="divChartCalcService" method="calculateDivCharts" output-channel="divChartChannel" />
+		ref="divChartCalcComponent" method="calculateDivCharts" output-channel="divChartChannel" />
 
 	<!-- drink order items are aggregated in a call to the waiter -->
 	<int:channel id="divChartChannel" />
 
-	<beans:bean id="divChartAnalysisService" class="com.vedic.astro.pipeline.service.DivChartAnalysisService" />
+	<beans:bean id="divChartAnalysisComponent" class="com.vedic.astro.analysis.component.DivChartAnalysisComponent" />
 
 	<int:service-activator input-channel="divChartChannel"
-		ref="divChartAnalysisService" method="analyzeDivCharts" output-channel="entityStrengthsChannel"/>
+		ref="divChartAnalysisComponent" method="analyzeDivCharts" output-channel="entityStrengthsChannel"/>
 
     <int:publish-subscribe-channel id="entityStrengthsChannel"/>
-    <beans:bean id="planetaryStrengthCalcService" class="com.vedic.astro.pipeline.service.PlanetaryStrengthsCalcService" />
-    <beans:bean id="houseStrengthCalcService" class="com.vedic.astro.pipeline.service.HouseStrengthsCalcService" />
-    <beans:bean id="dashaStrengthCalcService" class="com.vedic.astro.pipeline.service.DashaStrengthsCalcService" />
+    <beans:bean id="planetaryStrengthCalcComponent" class="com.vedic.astro.calc.component.PlanetaryStrengthsCalcComponent" />
+    <beans:bean id="houseStrengthCalcComponent" class="com.vedic.astro.calc.component.HouseStrengthsCalcComponent" />
+    <beans:bean id="dashaStrengthCalcComponent" class="com.vedic.astro.calc.component.DashaStrengthsCalcComponent" />
     
     <int:service-activator input-channel="entityStrengthsChannel"
-		ref="planetaryStrengthCalcService" method="calculateStrengths" output-channel="yogasChannel" />
+		ref="planetaryStrengthCalcComponent" method="calculateStrengths" output-channel="yogasChannel" />
 
     <int:service-activator input-channel="entityStrengthsChannel"
-		ref="houseStrengthCalcService" method="calculateStrengths" />
+		ref="houseStrengthCalcComponent" method="calculateStrengths" />
 
     <int:service-activator input-channel="entityStrengthsChannel"
-		ref="dashaStrengthCalcService" method="calculateStrengths" />
+		ref="dashaStrengthCalcComponent" method="calculateStrengths" />
 	
 	<int:channel id="yogasChannel" />
 	<int:channel id="channelA" />
@@ -77,8 +75,8 @@
     <int:service-activator input-channel="channelC"
 		ref="channelCService" method="calculateStrengths" />
 
-    <beans:bean id="channelAService" class="com.vedic.astro.pipeline.service.ChannelAService" />
-    <beans:bean id="channelBService" class="com.vedic.astro.pipeline.service.ChannelBService" />
-    <beans:bean id="channelCService" class="com.vedic.astro.pipeline.service.ChannelCService" />
+    <beans:bean id="channelAService" class="com.vedic.astro.calc.component.ChannelAComponent" />
+    <beans:bean id="channelBService" class="com.vedic.astro.calc.component.ChannelBComponent" />
+    <beans:bean id="channelCService" class="com.vedic.astro.calc.component.ChannelCComponent" />
     
 </beans:beans>

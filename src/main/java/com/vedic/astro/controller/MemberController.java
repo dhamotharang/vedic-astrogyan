@@ -36,8 +36,9 @@ final public class MemberController extends BaseController {
 	@RequestMapping(value = "/member/save", method = RequestMethod.POST)
 	public RestServiceResponse<String> add(@RequestBody @Valid MemberDTO memberDTO) {
 		
-		String pid = memberService.saveMember(memberDTO);
-		return new RestServiceResponse<String>(pid);
+		memberService.saveMember(memberDTO);
+		String success = "Member successfully saved";
+		return new RestServiceResponse<String>(success);
 	}
 
 	@RequestMapping(value = "/member/get/{id}", method = RequestMethod.GET)

@@ -1,4 +1,4 @@
-package com.vedic.astro.pipeline.service;
+package com.vedic.astro.calc.component;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +17,7 @@ import com.vedic.astro.util.BirthChartUtil;
 import com.vedic.astro.util.DateUtil;
 import com.vedic.astro.vo.AbsolutePlanetaryPositions;
 
-public class BirthChartCalcService {
+public class BirthChartCalcComponent {
 	
 	@Autowired
 	@Qualifier("planetPositionsDataService")
@@ -36,29 +36,28 @@ public class BirthChartCalcService {
 	private BirthChartUtil birthChartUtil;
  
 	@Async
-	public BirthChartData calcBirthChart(Member personalInfo){
+	public BirthChartData calcBirthChart(Member member){
 		
 		Optional<List<LocationInfo>> locationList = locationInfoRepository.getLocationByCountryAndCity(
-				personalInfo.getCountryCode(), 
-				personalInfo.getCityCode());
+				member.getCountryCode(), 
+				member.getCityCode());
 		
 		Integer locationId = null;
 		
 		if(locationList.isPresent()){
 		   locationId = locationList.get().get(0).getLocationId();
-			
 		}
 		
 		AbsolutePlanetaryPositions absolutePlanetaryPositions = 
 				planetPositionsDataService.getPlanetPositionsData(
-						DateUtil.fromDate(personalInfo.getDateOfBirth(), "dd/MM/yyyy"), 
-						DateUtil.fromDate(personalInfo.getDateOfBirth(), "kk:mm:ss"), 
+						DateUtil.fromDate(member.getDateOfBirth(), "dd/MM/yyyy"), 
+						DateUtil.fromDate(member.getDateOfBirth(), "kk:mm:ss"), 
 						locationId);
 		
 		System.out.println("absolutePlanetaryPositions =" + absolutePlanetaryPositions);
 		
 		BirthChartData birthChartData = birthChartUtil.generateD1Chart(absolutePlanetaryPositions);
-		birthChartData.setPid(personalInfo.getPid());
+		birthChartData.setPid(member.getPid());
 		
 		birthChartRepository.save(birthChartData);
 		

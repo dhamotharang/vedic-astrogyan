@@ -28,6 +28,7 @@ public class Member {
 	private Date updatedDt = null;
 	private String createdById = null;
 	private MemberType memberType = null;
+	private SunriseSunsetData sunriseSunset = null;
 	
 	public String getPid() {
 		return pid;
@@ -140,12 +141,21 @@ public class Member {
 	public void setMemberType(MemberType memberType) {
 		this.memberType = memberType;
 	}
+	
+	public SunriseSunsetData getSunriseSunset() {
+		return sunriseSunset;
+	}
+
+	public void setSunriseSunset(SunriseSunsetData sunriseSunset) {
+		this.sunriseSunset = sunriseSunset;
+	}
 
 	@Override
 	public String toString() {
 		return "Member [pid=" + pid + ", firstName=" + firstName + ", lastName=" + lastName + ", gender=" + gender
 				+ ", dateOfBirth=" + dateOfBirth + ", cityCode=" + cityCode + ", countryCode=" + countryCode
 				+ ", email=" + email + ", contact=" + contact + ", active=" + active + ", createdDt=" + createdDt
-				+ ", updatedDt=" + updatedDt + ", createdById=" + createdById + ", memberType=" + memberType + "]";
+				+ ", updatedDt=" + updatedDt + ", createdById=" + createdById + ", memberType=" + memberType
+				+ ", sunriseSunset=" + sunriseSunset + "]";
 	}
 }

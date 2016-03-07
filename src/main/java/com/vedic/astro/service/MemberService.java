@@ -8,16 +8,20 @@ import java.util.Optional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.vedic.astro.calc.component.BirthChartPipelineGateway;
 import com.vedic.astro.constant.Constants;
+import com.vedic.astro.domain.LocationInfo;
 import com.vedic.astro.domain.Member;
+import com.vedic.astro.domain.SunriseSunsetData;
 import com.vedic.astro.dto.MemberDTO;
 import com.vedic.astro.dto.MemberSummaryDTO;
 import com.vedic.astro.enums.MemberType;
 import com.vedic.astro.exception.BusinessException;
-import com.vedic.astro.pipeline.service.BirthChartPipelineGateway;
+import com.vedic.astro.repository.LocationInfoRepository;
 import com.vedic.astro.repository.MemberRepository;
 import com.vedic.astro.util.DateUtil;
 
@@ -37,18 +41,46 @@ public class MemberService {
 	@Qualifier("birthChartPipelineGateway")
 	private BirthChartPipelineGateway birthChartPipelineGateway;
 
-	public String saveMember(MemberDTO memberDTO) {
+	@Autowired
+	@Qualifier("sunriseSunsetDataService")
+	private SunriseSunsetDataService sunriseSunsetDataService;
 
+	@Autowired
+	@Qualifier("locationInfoRepository")
+	private LocationInfoRepository locationInfoRepository;
+
+	@Async
+	public void saveMember(MemberDTO memberDTO) {
+		boolean firePipeline = true;
+		
+		if(memberDTO.getPid()!=null){
+		Member existingMember = this.memberRepository.findOne(memberDTO.getPid());
+		Member updatedMember = convertfromDTO(memberDTO);
+
+		if (existingMember != null) {
+
+			String cityCode = existingMember.getCityCode();
+			String countryCode = existingMember.getCountryCode();
+			Date dob = existingMember.getDateOfBirth();
+
+			if (cityCode.equals(updatedMember.getCityCode()) && countryCode.equals(updatedMember.getCountryCode())
+					&& dob.equals(updatedMember.getDateOfBirth())) {
+				firePipeline = true;
+			}
+		}
+		}
 		Member member = this.memberRepository.save(convertfromDTO(memberDTO));
-		birthChartPipelineGateway.startBirthChartPipeline(member);
+		if (firePipeline) {
+			birthChartPipelineGateway.startBirthChartPipeline(member);
+		}
 
-		return member.getPid();
 	}
 
 	public MemberDTO getMember(String id) throws BusinessException {
 		Member member = this.memberRepository.findOne(id);
 		if (member == null) {
-			throw new BusinessException(Constants.MEMBER_NOT_FOUND, "Member with this id does not exist");
+			throw new BusinessException(Constants.MEMBER_NOT_FOUND, 
+					"Member with this id does not exist");
 		}
 
 		return convertToDTO(member);
@@ -72,9 +104,11 @@ public class MemberService {
 		for (Member member : members) {
 
 			MemberSummaryDTO memberSummaryDTO = new MemberSummaryDTO();
-			memberSummaryDTO.setName(member.getFirstName() + " " + member.getLastName());
+			memberSummaryDTO.setName(member.getFirstName() + " " + 
+			member.getLastName());
 			if (member.getDateOfBirth() != null) {
-				memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), "MM/dd/yyyy hh:mm a"));
+				memberSummaryDTO.setDob(DateUtil.fromDate(member.getDateOfBirth(), 
+						"MM/dd/yyyy hh:mm a"));
 			}
 			memberSummaryDTO.setId(member.getPid());
 
@@ -143,8 +177,9 @@ public class MemberService {
 
 		return memberList;
 	}
-	
-	public List<MemberSummaryDTO> getAllMembersSummaryNotIn(String adminId, MemberType memberType) throws BusinessException {
+
+	public List<MemberSummaryDTO> getAllMembersSummaryNotIn(String adminId, MemberType memberType)
+			throws BusinessException {
 		Optional<List<Member>> members = this.memberRepository.findByAdminIdNotMemberType(adminId, memberType);
 		List<MemberSummaryDTO> memberList = new ArrayList<MemberSummaryDTO>();
 
@@ -198,7 +233,21 @@ public class MemberService {
 
 		member.setCityCode(memberDTO.getCity().getCode());
 		member.setCountryCode(memberDTO.getCountry().getCode());
-		member.setDateOfBirth(DateUtil.toDate(memberDTO.getDob(), "MM/dd/yyyy hh:mm a"));
+		Date dateOfBirth = DateUtil.toDate(memberDTO.getDob(), "MM/dd/yyyy hh:mm a");
+		member.setDateOfBirth(dateOfBirth);
+
+		Optional<List<LocationInfo>> locationList = locationInfoRepository
+				.getLocationByCountryAndCity(memberDTO.getCountry().getCode(), memberDTO.getCity().getCode());
+
+		Integer locationId = null;
+
+		if (locationList.isPresent()) {
+			locationId = locationList.get().get(0).getLocationId();
+		}
+
+		SunriseSunsetData sunriseSunsetData = sunriseSunsetDataService.getSunriseSunsetData(locationId,
+				DateUtil.fromDate(dateOfBirth, "dd/MM/yyyy"));
+		member.setSunriseSunset(sunriseSunsetData);
 
 		if (memberDTO.getPid() != null) {
 			member.setUpdatedDt(new Date());

@@ -14,11 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vedic.astro.domain.PlanetTransitData;
 import com.vedic.astro.domain.SunriseSunsetData;
-import com.vedic.astro.enums.Planet;
-import com.vedic.astro.enums.Zodiac;
-import com.vedic.astro.util.DateUtil;
 
 @Service("sunriseSunsetDataService")
 @Transactional

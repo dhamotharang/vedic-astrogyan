@@ -1,15 +1,15 @@
-package com.vedic.astro.pipeline.service;
+package com.vedic.astro.calc.component;
 
 import org.springframework.scheduling.annotation.Async;
 
 import com.vedic.astro.pipeline.msg.BirthChartMsg;
 
-public class ChannelCService {
+public class ChannelBComponent {
 	
 	@Async
 	public void calculateStrengths(BirthChartMsg msg){
 		
-		System.out.println("Inside ChannelCService: " + msg);
+		System.out.println("Inside ChannelBService: " + msg);
 		
 	}
 

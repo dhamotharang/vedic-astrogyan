@@ -1,11 +1,11 @@
-package com.vedic.astro.pipeline.service;
+package com.vedic.astro.analysis.component;
 
 import org.springframework.scheduling.annotation.Async;
 
 import com.vedic.astro.pipeline.msg.BirthChartMsg;
 import com.vedic.astro.pipeline.msg.DivChartMsg;
 
-public class DivChartAnalysisService {
+public class DivChartAnalysisComponent {
 	
 	@Async
 	public BirthChartMsg analyzeDivCharts(DivChartMsg msg){
